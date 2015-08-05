@@ -8,8 +8,5 @@ meteor-platform
 autopublish
 insecure
 meteorhacks:npm
-
-
-npm-container
 meteorhacks:async
 uzumaxy:sigma
