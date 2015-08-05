@@ -1,0 +1,3 @@
+npm-container/*
+!npm-container/index.js
+!npm-container/package.js
