@@ -1,0 +1,20 @@
+.list-group {
+  width: 600px;
+  padding-top: 20px;
+  margin: 0 auto;
+}
+
+.input-group {
+  padding-top: 50px;
+  width: 500px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.input-group .form-control {
+  height: 43px;
+}
+
+#star {
+  font-size: 15px;
+}
