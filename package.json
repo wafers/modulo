@@ -1,0 +1,38 @@
+{
+  "name": "modulo",
+  "version": "1.0.0",
+  "description": "A better way to find NPM modules.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wafers/modulo.git"
+  },
+  "keywords": [
+    "npm",
+    "modules",
+    "visualization",
+    "ranking",
+    "find",
+    "npm",
+    "registry"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wafers/modulo/issues"
+  },
+  "homepage": "https://github.com/wafers/modulo#readme",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "cheerio": "^0.19.0",
+    "express": "^4.13.3",
+    "moment": "^2.10.6",
+    "npm-download-counts": "^0.1.1",
+    "npm-registry": "^0.1.13",
+    "request": "^2.60.0",
+    "underscore": "^1.8.3"
+  }
+}
