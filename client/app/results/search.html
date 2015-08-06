@@ -1,5 +1,5 @@
 <div class="input-group">
-  <input type="text" class="form-control" placeholder="Search for..." ng-model="searchInput">
+  <input type="text" class="form-control" placeholder="find packages" ng-model="searchInput">
   <span class="input-group-btn">
 	<button class="btn btn-default" type="button" ng-click="getResults()">
 		<i class="material-icons">search</i>
@@ -12,9 +12,9 @@
     <h4 class="list-group-item-heading">{{result.name}}</h4>
     <p class="list-group-item-text">{{result.description}}</p>
     <div class="list-group-item-details" style="position: absolute; right: 0; top:0;" align="right">
-      Last Update: {{result.lastUpdate}} || <i class="material-icons" id="star">star</i> {{result.stars}}
+      Updated: {{result.lastUpdate}} || <i class="material-icons" id="star">star</i> {{result.stars}}
       <br>
-      Used by {{result.length}} modules || DL {{result.downloads}} 
+      Used by {{result.length}} packages || {{result.downloads}} downloads
     </div>
   </li>
 </div>
