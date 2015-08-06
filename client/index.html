@@ -10,27 +10,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   </head>
-  <body>
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button"><i class="material-icons">search</i></button>
-      </span>
+  <body ng-app="app">
+    <div ui-view="app.search"></div>
+    
+    <div class="content-wrapper">
+      <div ui-view></div>
     </div>
-    <div class="list-group" style="position: relative">
-      <li class="list-group-item">
-        <h4 class="list-group-item-heading">iriver</h4>
-        <p class="list-group-item-text">Data Visualization Generator Lib</p>
-        <div class="list-group-item-details" style="position: absolute; right: 0; top:0;" align="right">
-          Last Update: 04/04/14 <i class="material-icons" id="star">star</i> 57
-          <br>
-          Used by 2000 modules DL 456 
-        </div>
-      </li>
-      <li class="list-group-item">
-        <h4 class="list-group-item-heading">d3plus</h4>
-        <p class="list-group-item-text">Data visualization made easy. A javascript library that extends the popular D3.js to enable fast and beautiful visualizations.</p>
-      </li>
-    </div>
+    
+    <script src="app.js"></script>
+    <script src="app/content.js"></script>
+    <script src="app/results/results.js"></script>
+    <script src="app/results/search.js"></script>
   </body>
 </html>
