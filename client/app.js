@@ -9,7 +9,7 @@ angular.module('app', ['ui.router'])
     url: '/',
     views: {
       'app.search': {
-        templateUrl: './app/search.html',
+        templateUrl: './app/results/search.html',
         controller:'searchController'
       },
       '': {
@@ -18,8 +18,13 @@ angular.module('app', ['ui.router'])
     }
   })
 
+  .state('app.results', {
+    templateUrl: './app/results/results.html',
+    controller: 'ResultsController'
+  })
+
   .state('app.allgraphs', {
-    templateUrl: './app/graphs/allgraphs.html',
+    templateUrl: './app/results/allgraphs.html',
     controller: 'AllGraphsController'
   })
 });
