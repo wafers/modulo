@@ -1,10 +1,20 @@
 <div class="input-group">
   <input type="text" class="form-control" placeholder="Search for..." ng-model="searchInput">
   <span class="input-group-btn">
-  	<a ui-sref="app.results">
-  		<button class="btn btn-default" type="button" ng-click="getResults()">
-  			<i class="material-icons">search</i>
-  		</button>
-  	</a>
+	<button class="btn btn-default" type="button" ng-click="getResults()">
+		<i class="material-icons">search</i>
+	</button>
   </span>
+</div>
+
+<div class="list-group" style="position: relative">
+  <li class="list-group-item" ng-repeat="result in results">
+    <h4 class="list-group-item-heading">{{result.name}}</h4>
+    <p class="list-group-item-text">{{result.description}}</p>
+    <div class="list-group-item-details" style="position: absolute; right: 0; top:0;" align="right">
+      Last Update: {{result.lastUpdate}} || <i class="material-icons" id="star">star</i> {{result.stars}}
+      <br>
+      Used by {{result.length}} modules || DL {{result.downloads}} 
+    </div>
+  </li>
 </div>
