@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'search', 'results'])
+angular.module('app', ['ui.router', 'search'])
  
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -18,13 +18,8 @@ angular.module('app', ['ui.router', 'search', 'results'])
     }
   })
 
-  .state('app.results', {
-    templateUrl: './app/results/results.html',
-    controller: 'ResultsController'
-  })
-
-  // .state('app.allgraphs', {
-  //   templateUrl: './app/results/allgraphs.html',
-  //   controller: 'AllGraphsController'
-  // })
+/* .state('app.allgraphs', {
+    templateUrl: './app/results/allgraphs.html',
+    controller: 'AllGraphsController'
+  }) */
 });

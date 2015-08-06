@@ -4,6 +4,10 @@
   margin: 0 auto;
 }
 
+.list-group-item-details {
+  font-size: 10px;
+}
+
 .input-group {
   padding-top: 50px;
   width: 500px;
@@ -16,5 +20,5 @@
 }
 
 #star {
-  font-size: 15px;
+  font-size: 10px;
 }

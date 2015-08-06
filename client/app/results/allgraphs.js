@@ -1,5 +1,5 @@
-angular.module('allgraphs', [])
+// angular.module('allgraphs', [])
 
-.controller('AllGraphsController', function($scope, $http){
+// .controller('AllGraphsController', function($scope, $http){
 
-});
+// });
