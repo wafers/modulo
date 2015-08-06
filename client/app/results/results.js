@@ -1,4 +1,4 @@
-angular.module('app.results', [])
+angular.module('results', [])
 
 .controller('ResultsController', function($scope, $http){
 

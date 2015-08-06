@@ -1,4 +1,4 @@
-angular.module('app.content', [])
+angular.module('content', [])
 
 .controller('ContentController', function($scope, $http){
 

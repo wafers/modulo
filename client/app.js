@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router'])
+angular.module('app', ['ui.router', 'search', 'results'])
  
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -10,7 +10,7 @@ angular.module('app', ['ui.router'])
     views: {
       'app.search': {
         templateUrl: './app/results/search.html',
-        controller:'searchController'
+        controller:'SearchController'
       },
       '': {
         templateUrl: './app/content.html'
@@ -23,8 +23,8 @@ angular.module('app', ['ui.router'])
     controller: 'ResultsController'
   })
 
-  .state('app.allgraphs', {
-    templateUrl: './app/results/allgraphs.html',
-    controller: 'AllGraphsController'
-  })
+  // .state('app.allgraphs', {
+  //   templateUrl: './app/results/allgraphs.html',
+  //   controller: 'AllGraphsController'
+  // })
 });
