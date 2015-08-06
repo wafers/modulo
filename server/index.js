@@ -8,6 +8,7 @@ var app = express();
 app.use(express.static(__dirname+'/../client'));
 app.use(bodyParser.json());
 app.post('/search', function(req, res){
+  console.log(req.body.data)
   searchHelpers.searchResults(req.body.data, function(err, results){
     res.send(results)
   })
