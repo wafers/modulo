@@ -59,9 +59,15 @@ var versionTracker = module.exports.versionTracker = function(module, cb) {
         console.log('ERROR: ',err);
         cb(err, null);
       }
+      console.log(module.name)
       var $ = cheerio.load(body);
-      module.lastUpdate = moment($('.last-publisher')['0']['children'][3]['attribs']['data-date'], moment.ISO_8601)['_d'];
-      module.versionCount = $('.last-publisher')['0']['next']['next']['children'][2]['data'].replace(/\s/g, ',').split(',').splice(-7,1)[0]-0 || 1;
+      if ($('.last-publisher')){
+        module.lastUpdate = moment($('.last-publisher')['0']['children'][3]['attribs']['data-date'], moment.ISO_8601)['_d'];
+      } else {
+        module.lastUpdate = 'Not available';
+      }
+      // Refactoring the selection for the screen scrape
+      module.versionCount = $('.box')['children']['1']['children'][2]['data'].replace(/\s/g, ',').split(',').splice(-7,1)[0]-0 || 1;
       // console.log('Versions Data:',data);
       cb(null, module);
     })
@@ -98,7 +104,7 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 
 
 
-var searchResults = function(searchInput){  
+var searchResults = module.exports.searchResults = function(searchInput, cb){  
   var finishedRuns = 0;
   // npmSearchScrapper - results, # of stars, descripiton, etc
     // Versiontracker - 
@@ -116,6 +122,7 @@ var searchResults = function(searchInput){
             finishedRuns++;
             if(finishedRuns === npmSearchResults.length - 1){
               console.log(npmSearchResults);
+              cb(null, npmSearchResults);
             }
           });
         })
@@ -124,7 +131,7 @@ var searchResults = function(searchInput){
   });
 }
 
-searchResults('yahoo finance');
+// searchResults('yahoo finance');
 
 
 
