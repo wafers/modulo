@@ -12,10 +12,9 @@ module.exports = {};
 
 // Returns an array of all the dependents
 var findDependents = module.exports.findDependents = function(module, cb){
-  console.log(module);
   npm.packages.depended(module.name, function(err, data){
     if(err){
-      cb(err, null);
+      cb(err, module);
     }else{
       module.dependents = data.map(function(row){
         return row.name;
@@ -33,10 +32,13 @@ var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module
   // console.log('inside monthly downloads');
   downloadCount(module.name, start, end, function(err, data) {
     if(err){
-      cb(err,null);
+      console.log('ERRRRRRR', module.name, err)
+      module.downloads = 0;
+      cb(err,module);
     }else{
       if(data === undefined){
-        return;
+        module.downloads = 0;
+        cb(null, module);
       }
       module.downloads = data.map(function(obj){ return obj.count }).reduce(function(total, e){
         if(!e){
@@ -57,18 +59,15 @@ var versionTracker = module.exports.versionTracker = function(module, cb) {
     request(url, function(err, res, body){
       if (err) {
         console.log('ERROR: ',err);
-        cb(err, null);
+        cb(err, module);
       }
-      console.log(module.name)
       var $ = cheerio.load(body);
-      if ($('.last-publisher')){
+      if ($('.last-publisher')['0']){
         module.lastUpdate = moment($('.last-publisher')['0']['children'][3]['attribs']['data-date'], moment.ISO_8601)['_d'];
       } else {
         module.lastUpdate = 'Not available';
       }
-      // Refactoring the selection for the screen scrape
-      module.versionCount = $('.box')['children']['1']['children'][2]['data'].replace(/\s/g, ',').split(',').splice(-7,1)[0]-0 || 1;
-      // console.log('Versions Data:',data);
+      //module.versionCount = $('.box')['children']['1']['children'][2]['data'].replace(/\s/g, ',').split(',').splice(-7,1)[0]-0 || 1;
       cb(null, module);
     })
   }
@@ -111,17 +110,13 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
     // Dependent Count
     // Download Count (set to monthly atm)
   npmSearchScraper(searchInput, function(err, npmSearchResults){
-    console.log('inside npmSearchScraper');
-    npmSearchResults.forEach(function(searchResult){
+    npmSearchResults.forEach(function(searchResult,i,a){
       versionTracker(searchResult, function(err, searchResultWithVersion){
-        console.log('inside versionTracker');
         findMonthlyDownloads(searchResultWithVersion, function(err, searchWithVersionAndDownloadCount){
-          console.log('inside findMonthly Downloads');
           findDependents(searchWithVersionAndDownloadCount, function(err, finalSearchResult){
-            console.log('inside findDependents');
             finishedRuns++;
-            if(finishedRuns === npmSearchResults.length - 1){
-              console.log(npmSearchResults);
+            if(finishedRuns === a.length){
+              console.log('READY TO SEND TO CLIENT');
               cb(null, npmSearchResults);
             }
           });
