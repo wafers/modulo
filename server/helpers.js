@@ -98,7 +98,7 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 
 
 
-var searchResults = function(searchInput){  
+var searchResults = module.exports.searchResults = function(searchInput, cb){  
   var finishedRuns = 0;
   // npmSearchScrapper - results, # of stars, descripiton, etc
     // Versiontracker - 
@@ -116,6 +116,7 @@ var searchResults = function(searchInput){
             finishedRuns++;
             if(finishedRuns === npmSearchResults.length - 1){
               console.log(npmSearchResults);
+              cb(null, npmSearchResults);
             }
           });
         })
@@ -124,7 +125,7 @@ var searchResults = function(searchInput){
   });
 }
 
-searchResults('yahoo finance');
+// searchResults('yahoo finance');
 
 
 
