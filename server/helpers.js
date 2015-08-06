@@ -126,11 +126,88 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
   });
 }
 
-// searchResults('yahoo finance');
+// fs.readFile('npm_module_names.txt', 'utf-8', function(err, entireFile){
+//   var allModuleNames = JSON.parse(entireFile);
+//   var allModules = allModulesNames.map(function(name){
+//     return {name: name};
+//   });
+
+// });
 
 
 
+var moduleDataBuilder = function(moduleName, cb){
+  var module = {name: moduleName};
+  console.log(moduleName);
+  npm.packages.get(moduleName, function(err, results){
+    console.log('inside npm-registry get');
+    if(err){
+      console.log('ERRRRR', err);
+      return;
+    } 
+    // console.log(results);
+    module['description'] = results[0].description;
+    module['time'] = results[0].time;
+    module['repository'] = results[0].repository;
+    module['url'] = results[0]['homepage'].url;
+    module['keywords'] = results[0].keywords;
+    module['starred'] = results[0].starred;
+    // console.log('before sending', module)
+    findMonthlyDownloads(module, function(err, moduleWithDownloads){
+      console.log('inside find monthly downloads')
+      findDependents(module, function(err, finalData){
+        console.log('inside findDependents')
+        cb(finalData);
+      })
+    })
+    // description, time, repository, homepage.url, keywords, starred
+      // THEN GET downloads/month and dependents from helper functions
+  });
+}
 
+// fs.readFile('npm_module_names.txt', 'utf-8', function(err, results){
+//   var names = JSON.parse(results);
+//   names.forEach(function(name){
+//     moduleDataBuilder(name, function(data){
+//       fs.appendFile('datadump.txt', JSON.stringify(data), function(err){
+//         if(err) console.log(err);
+//         else{
+//           // console.log(data);
+//           console.log(data.name)
+//         }
+//       });
+//     })
+//   })
+// })
+
+
+
+// var names = ["0","001","001_skt","001_test","007","008-somepackage","01","01-simple","06_byvoidmodule","0latency","0model","0x21","0x23","1","1-1-help-desk-system","1-liners","1.0.1","1.0.2","10","100","101","101-es6","101-tomekwi","102","10bis","10bisjs","10er10","10tcl","11","11-packagemath","11-packagename","110","1129","11zgit-fs","11znode-meta","11zsimple-mime","11zstack","11zwheat","12-03-2014-michelle-speak","12-3-14_breana-gonzales_speak","1212","123","12306","1234","1257-server","127-ssh","12byvoidmodule","12env","12factor-config","12factor-dotenv","12factor-log","1664","16pixels","1985","1bit-chart-bars","1broker","1campus_nodedsa","1css","1pass","1password","1pif-to-csv","1pif-to-keepass","1px","1rm"]
+// names.forEach(function(name){
+//   moduleDataBuilder(name, function(data){
+//     fs.appendFile('datadump.txt', ','+JSON.stringify(data), function(err){
+//       if(err) console.log(err);
+//       else{
+//         console.log(data.name)
+//       }
+//     });
+//   })
+// })
+
+
+fs.readFile('./server/npm_module_names.txt', 'utf-8', function(err, data){
+  data = JSON.parse(data);
+  data.forEach(function(name){
+    moduleDataBuilder(name, function(data){
+      fs.appendFile('datadump.txt', ','+JSON.stringify(data), function(err){
+        if(err) console.log(err);
+        else{
+          console.log(data.name + 'WRITTEN!');
+        }
+      });
+    });
+  });
+});
 
 
 
