@@ -9,10 +9,6 @@
   margin: 0 auto;
 }
 
-.list-group-item-details {
-  font-size: 10px;
-}
-
 .input-group {
   padding-top: 10px;
   width: 500px;
@@ -25,5 +21,48 @@
 }
 
 #star {
+  font-size: 12px;
+}
+
+#content {
+  width: 250px;
+  height: 30px;
+  position: absolute;
+  top: 0px;
+  right: -35px;
   font-size: 10px;
+}
+
+#content .A {
+  width: 62%;
+  height: 50%;
+  float: right;
+}
+
+#content .B {
+  width: 38%;
+  height: 50%;
+  float: right;
+}
+
+#content .C {
+  width: 62%;
+  height: 50%;
+  float: right;
+}
+
+#content .D {
+  width: 38%;
+  height: 50%;
+  float: right;
+}
+
+#content, #content > div {
+  -webkit-box-sixing: border-box;
+  -moz-box-sizing: border-box; 
+  box-sizing: border-box;
+}
+
+.show-div {
+  height: 500px;
 }
