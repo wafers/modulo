@@ -90,6 +90,8 @@ function grapher(dataStore) {
       buckets = 4;
       colors = ['315B7E', '1699C5', '00CCFF'];
 
+  // var x = d3.scale.linear()
+  //     .range([0, width]);
   var x = d3.time.scale() 
     .domain([dateFormat(new Date(2014, 0, 1)), dateFormat(new Date(2015, 7, 7))]) 
     .range([0, width]);
@@ -111,37 +113,43 @@ function grapher(dataStore) {
       .ticks(10)
       // .tickFormat(d3.format("s"));
 
-  var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([-10, 0])
-    .html(function(d) {
-      var date = d.date.toString().substring(3,15);
-      var str = "<strong>Version:</strong> <span style='color:#00CCFF'>" + d.versionLabel + "</span>";
-      str += "</br><string>Date:</strong><span style='color:#00CCFF'> " + date + "</span>";
-      return str;
-    })    
-
-
-  x.domain([data[0]['date'], dateFormat.parse(dateFormat(new Date(2015, 7, 7)))]);
-  y.domain([0, d3.max(data, function(d) { return d.versionValue+2; })]);
-  // Create main svg for drawing 
-  var svg = d3.select(".versionVis").append("svg")
+  var svg = d3.select("body").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  svg.call(tip);
-  // Create x-axis
+  var data = [];
+  var dataStoreArray = Object.keys(dataStore);
+  for (var i=0; i<dataStoreArray.length; i++) {
+    var key = dataStoreArray[i];
+    var prevKey = dataStoreArray[i-1] || '0.0.0';
+    var versionObj = {};
+    var thisVersion = (key.split('.')[0]-0)*100+(key.split('.')[1]-0)*10+(key.split('.')[2]-0);
+    var lastVersion = (prevKey.split('.')[0]-0)*100+(prevKey.split('.')[1]-0)*10+(prevKey.split('.')[2]-0);
+    if (key !== 'modified' && key !== 'created') {
+      versionObj['versionLabel'] = key;
+      versionObj['date'] = dateFormat.parse(dataStore[key]);
+      versionObj['versionValue'] = thisVersion - lastVersion;
+      data.push(versionObj);
+    }
+  }
+
+
+  x.domain([data[0]['date'], dateFormat.parse(dateFormat(new Date(2015, 7, 7)))]);
+  y.domain([0, d3.max(data, function(d) { return d.versionValue+2; })]);
+
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
+      // .attr("transform", "rotate(-45)")
       .call(xAxis)
-      // Rotate text labels
       .selectAll('text')
+        // .attr('y', 0)
         .attr('x', 0)
         .attr('dx', 15)
+        // .attr("dy", 5)
         .attr('transform', 'rotate(30)')
-  // Create y-axis and label
+
   svg.append("g")
       .attr("class", "y axis")
       .call(yAxis)
@@ -151,22 +159,15 @@ function grapher(dataStore) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Version Update");
-  // Load in data and create bars for each
+
   svg.selectAll(".bar")
       .data(data)
       .enter().append("rect")
         .attr("class", "bar")
-        // Position bar at correct x position
-        .attr("x", function(d) {return x(d.date)})
-        .attr("width", 5)
-        // Position top of bar at correct y-position
-        .attr("y", function(d) {return y(d.versionValue) || 1})
-        // Draw bar down to the bottom
-        .attr("height", function(d) { return height - y(d.versionValue); })
-        .attr("fill", function(d) {return '#'+colorScale(d.versionValue)})
-        .attr('opacity', 0.7)
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide)
+        .attr("x", function(d) {return x(d.date); })
+        .attr("width", 1)
+        .attr("y", function(d) {return y(d.versionValue)})
+        .attr("height", function(d) { return height - y(d.versionValue); });
 };
 
 function circlePlotter(dataStore){
