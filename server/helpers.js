@@ -10,6 +10,7 @@ var npm = new Registry({});
 
 module.exports = {};
 
+///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
 var findDependents = module.exports.findDependents = function(module, cb){
   npm.packages.depended(module.name, function(err, data){
@@ -23,7 +24,6 @@ var findDependents = module.exports.findDependents = function(module, cb){
     }
   })
 }
-
 // Returns an integer of the total # of downloads last month
 var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module, cb){
   var start = moment().subtract(5, 'years').toDate();
@@ -39,26 +39,25 @@ var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module
         module.downloads = 0;
         cb(null, module);
       }
-      module.downloads = downloadData;
-
-      // module.downloads = downloadData.map(intoDlCount).reduce(sum);
-
-      function intoDlCount(module){
-        return obj.count;
+      module.downloads = downloadData; // Daily download numbers
+      module.monthlyDownloadSum = downloadSum(downloadData); // Total downloads for the past month
+      function downloadSum(downloadData) {
+        var days = Object.keys(downloadData);
+        if (days.length > 0) {
+          var lastMonth = days.slice(-30);
+          var sum = 0;
+          for (var i=0; i<lastMonth.length; i++) {
+            sum += downloadData[lastMonth[i]]['count'];
+          }
+          return sum;
+        }
       }
-
-      function sum(total, num){
-        return !e ? total : total + e;
-      }
-
       cb(null, module);
     }
   })
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Give me the version # and latest update
 var versionTracker = module.exports.versionTracker = function(module, cb) {
-  //
     var url = 'https://www.npmjs.com/package/'+module.name;
     request(url, function(err, res, body){
       if (err) {
@@ -71,20 +70,16 @@ var versionTracker = module.exports.versionTracker = function(module, cb) {
       } else {
         module.lastUpdate = 'Not available';
       }
-      //module.versionCount = $('.box')['children']['1']['children'][2]['data'].replace(/\s/g, ',').split(',').splice(-7,1)[0]-0 || 1;
       cb(null, module);
     })
   }
-
 // gives the npm search results
 var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, cb) {
     // Takes in search terms and returns array of search result objects in npmjs search order
     var url = 'https://www.npmjs.com/search?q='+searchTerms
 
     request(url, function (err, res, body) {
-        if (err) {
-            return cb(err);
-        }
+        if (err) {return cb(err)}
 
         var $ = cheerio.load(body);
         var results = [];
@@ -106,13 +101,10 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
   }
 
 
-
+///////////////// MAIN EXPORT FUNCTIONS /////////////////
+// Used by server for finding npmjs search results. Takes in a search term and sends back an array of modules.
 var searchResults = module.exports.searchResults = function(searchInput, cb){  
   var finishedRuns = 0;
-  // npmSearchScrapper - results, # of stars, descripiton, etc
-    // Versiontracker - 
-    // Dependent Count
-    // Download Count (set to monthly atm)
   npmSearchScraper(searchInput, function(err, npmSearchResults){
     npmSearchResults.forEach(function(searchResult,i,a){
       versionTracker(searchResult, function(err, searchResultWithVersion){
@@ -129,182 +121,80 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
     });
   });
 }
-
-// fs.readFile('npm_module_names.txt', 'utf-8', function(err, entireFile){
-//   var allModuleNames = JSON.parse(entireFile);
-//   var allModules = allModulesNames.map(function(name){
-//     return {name: name};
-//   });
-
-// });
-
-
-
-var moduleDataBuilder = function(moduleName, cb){
+// Used by the database for gathering detailed stats. Takes in a module name and sends back a stats object.
+var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, cb){
   var module = {name: moduleName};
-  console.log(moduleName);
+  console.log('Getting',moduleName);
   npm.packages.get(moduleName, function(err, results){
-    console.log('inside npm-registry get');
+
     if(err){
+      console.log('Something went wrong. Will try',moduleName,'again later.')
       console.log('ERRRRR', err);
-      return;
-    } 
-    // console.log(results);
-    module['description'] = results[0].description;
-    module['time'] = results[0].time;
-    module['repository'] = results[0].repository;
-    module['url'] = results[0]['homepage'].url;
-    module['keywords'] = results[0].keywords;
-    module['starred'] = results[0].starred;
-    // console.log('before sending', module)
-    findMonthlyDownloads(module, function(err, moduleWithDownloads){
-      console.log('inside find monthly downloads')
-      findDependents(module, function(err, finalData){
-        console.log('inside findDependents')
-        cb(finalData);
-      })
-    })
-    // description, time, repository, homepage.url, keywords, starred
-      // THEN GET downloads/month and dependents from helper functions
-  });
-}
-
-// fs.readFile('npm_module_names.txt', 'utf-8', function(err, results){
-//   var names = JSON.parse(results);
-//   names.forEach(function(name){
-//     moduleDataBuilder(name, function(data){
-//       fs.appendFile('datadump.txt', JSON.stringify(data), function(err){
-//         if(err) console.log(err);
-//         else{
-//           // console.log(data);
-//           console.log(data.name)
-//         }
-//       });
-//     })
-//   })
-// })
-
-// names.forEach(function(name){
-//   moduleDataBuilder(name, function(data){
-//     fs.appendFile('datadump.txt', ','+JSON.stringify(data), function(err){
-//       if(err) console.log(err);
-//       else{
-//         console.log(data.name)
-//       }
-//     });
-//   })
-// })
-
-
-var fetching = false;
-if(fetching){
-  fs.readFile('./server/npm_module_names.txt', 'utf-8', function(err, data){
-    data = JSON.parse(data);
-    data.forEach(function(name){
-      moduleDataBuilder(name, function(data){
-        fs.appendFile('datadump.txt', ','+JSON.stringify(data), function(err){
-          if(err) console.log(err);
-          else{
-            console.log(data.name + 'WRITTEN!');
+      cb(err, module);
+      // write module to errorQueue
+    } else if (results[0] && results[0].description !== '' && results[0].starred) {
+      module['description'] = results[0].description;
+      module['time'] = results[0].time;
+      module['repository'] = results[0].repository;
+      module['url'] = results[0]['homepage'].url;
+      module['keywords'] = results[0].keywords;
+      module['starred'] = results[0].starred;
+      findMonthlyDownloads(module, function(err, moduleWithDownloads){
+        findDependents(module, function(err, finalData){
+          if (finalData.dependents && finalData.downloads){
+            console.log('Success!', moduleName, 'going back to DB now.')
+            cb(null, finalData);
+          } else {
+            console.log('Something went wrong. Will try',moduleName,'again later.')
+            // write module to errorQueue
           }
-        });
-      });
-    });
+        })
+      })      
+    } else {
+      console.log('Something went wrong. Will try',moduleName,'again later.')
+      // write module to errorQueue
+    }
   });
 }
 
+// Can be used to read in the names of all NPM modules. Sends back an array of all module names.
+var getAllNames = module.exports.getAllNames = function (cb){
+  fs.readFile('./server/npm_module_names.txt', 'utf-8', function(err, results){
+  var names = JSON.parse(results);
+  console.log(names.length, 'modules found'); 
+  cb(names); 
+  })
+}
+
+//EXAMPLE USE OF getAllNames and moduleDataBuilder:
+/*
+var helpers = require('./helpers.js');
+
+var names = [];
+
+helpers.getAllNames(function(nameArray){
+  names = nameArray; // 'names' contains ALL npm module names
+  console.log(names.length) // => ~170k
+  namesubset = names.slice(0,1000) // To run only the first 1000 names
+  putIntoDB(namesubset);
+});
+
+function putIntoDB(nameArray) {
+  var finished = 0;
+  for (var i=0; i<nameArray.length; i++){
+    helpers.moduleDataBuilder(nameArray[i], function(err, res){
+      if (err) ...
+      else {
+        finished++;
+        save deps.
+        insert. 
+        if (finished === names.length)
+          insert relationships
+      }
+    })
+  }
+}
 
 
+*/
 
-
-
-
-
-
-// // DOING THE DATA for UNDERSCORE
-// var moduleNameLol = 'underscore';
-// var results = [];
-// var cbCount = 0;
- 
-// fs.readFile('underscore_dependents', 'utf-8', function(err, results){
-//   console.log('FILE READ DONE!');
-//   JSON.parse(results).forEach(function(dependent, i, a){
-//     findMonthlyDownloads(dependent, function(err, downloads){
-//       results.push({name: dependent, downloads : downloads});
-//       // console.log(results.slice(-1)[0]);
-//       cbCount++;
-//       if(cbCount === a.length-1){
-//         var top20 = getTop20Downloads(results);
-//         console.log(top20);
-//       }
-//     });
-//   });
-// })
-// function getTop20Downloads(arr){
-//   arr.sort(function(a,b){
-//     return b.downloads-a.downloads;
-//   })
-//   return arr.slice(0,20);
-// }
-
-// findDependents(moduleNameLol, function(err, dependentsArr){
-//   fs.writeFile('underscore_dependents', JSON.stringify(dependentsArr), function(err){
-//     console.log('FILE WRITE DONE!');
-//   })
-//   // Find all the downloads for each dependent
-//   dependentsArr.forEach(function(dependentName,i,a){
-//     findMonthlyDownloads(dependentName, function(err, downloads){
-//       results.push({name: dependentName, downloads : downloads})
-//       console.log(results.slice(-1)[0]);
-//       cbCount++;
-//       if(cbCount === a.length-1){
-//         // Logic to run when the LAST one has run???
-//         // console.log(results);
-//         // console.log(results.length);
-//         var top20 = getTop20Downloads(results);
-//         console.log(top20);
-//       }
-//     });
-//   });
-// });
-
-// fs.readFile('underscore_dependents', 'utf-8', function(err, results){
-//   var data = JSON.parse(results);
-
-//   while(data.length > 0){
-//     var sendData = data.splice(0,100);
-//     var concatUrl = 'https://api.npmjs.org/downloads/point/last-month/'+sendData.join(',');
-
-//     request.get(concatUrl, function(err, results){
-//       if(err){
-//         console.log(err)
-//         return;
-//       } 
-//       console.log(results.body);
-//       fs.appendFile('lol', JSON.stringify(results.body), function(err){
-//         if(err) console.log(err);
-//         console.log('file write finished');
-//       })
-//     });
-//   }
-// })
-
-
-
-// LETS MAKE IT WORK
-// request.get('https://api.npmjs.org/downloads/point/last-month/underscore,express', function(err, results){
-//   if(err){
-//     console.log(err)
-//     return;
-//   } 
-//   fs.appendFile('lol2', results.body, function(err){
-//     if(err) console.log(err);
-//     console.log('file write finished');
-//   })
-// });
-
-// fs.readFile('lol2', 'utf-8', function(err, data){
-//   var data = JSON.parse(data);
-//   console.log(data.express);
-//   console.log(data.underscore);
-// })
