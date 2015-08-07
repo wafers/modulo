@@ -1,3 +1,8 @@
+.title {
+  padding-top: 10px;
+  text-align: center;
+}
+
 .list-group {
   width: 600px;
   padding-top: 20px;
@@ -9,7 +14,7 @@
 }
 
 .input-group {
-  padding-top: 50px;
+  padding-top: 10px;
   width: 500px;
   height: auto;
   margin: 0 auto;
