@@ -26,4 +26,8 @@ angular.module('search', [])
     result.show = !result.show;
   }
 
+  $scope.openTab = function() {
+    $scope.url = './app/results/details.html';
+}
+
 });
