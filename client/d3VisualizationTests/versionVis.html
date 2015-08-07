@@ -36,8 +36,6 @@ function grapher(dataStore) {
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-  // var x = d3.scale.linear()
-  //     .range([0, width]);
   var x = d3.time.scale() 
     .domain([dateFormat(new Date(2014, 0, 1)), dateFormat(new Date(2015, 7, 7))]) 
     .range([0, width]);
@@ -55,11 +53,6 @@ function grapher(dataStore) {
       .ticks(10)
       // .tickFormat(d3.format("s"));
 
-  var svg = d3.select("body").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   var data = [];
   var dataStoreArray = Object.keys(dataStore);
   for (var i=0; i<dataStoreArray.length; i++) {
@@ -78,19 +71,24 @@ function grapher(dataStore) {
 
   x.domain([data[0]['date'], dateFormat.parse(dateFormat(new Date(2015, 7, 7)))]);
   y.domain([0, d3.max(data, function(d) { return d.versionValue+2; })]);
-
+  // Create main svg for drawing 
+  var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+  // Create x-axis
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
-      // .attr("transform", "rotate(-45)")
       .call(xAxis)
+      // Rotate text labels
       .selectAll('text')
-        // .attr('y', 0)
         .attr('x', 0)
         .attr('dx', 15)
-        // .attr("dy", 5)
         .attr('transform', 'rotate(30)')
-
+  // Create y-axis and label
   svg.append("g")
       .attr("class", "y axis")
       .call(yAxis)
@@ -100,14 +98,17 @@ function grapher(dataStore) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Version Update");
-
+  // Load in data and create bars for each
   svg.selectAll(".bar")
       .data(data)
       .enter().append("rect")
         .attr("class", "bar")
-        .attr("x", function(d) {return x(d.date); })
+        // Position bar at correct x position
+        .attr("x", function(d) {return x(d.date)})
         .attr("width", 1)
+        // Position top of bar at correct y-position
         .attr("y", function(d) {return y(d.versionValue)})
+        // Draw bar down to the bottom
         .attr("height", function(d) { return height - y(d.versionValue); });
 };
 
