@@ -10,6 +10,7 @@ var npm = new Registry({});
 
 module.exports = {};
 
+///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
 var findDependents = module.exports.findDependents = function(module, cb){
   npm.packages.depended(module.name, function(err, data){
@@ -23,7 +24,6 @@ var findDependents = module.exports.findDependents = function(module, cb){
     }
   })
 }
-
 // Returns an integer of the total # of downloads last month
 var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module, cb){
   var start = moment().subtract(5, 'years').toDate();
@@ -41,8 +41,6 @@ var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module
       }
       module.downloads = downloadData;
 
-      // module.downloads = downloadData.map(intoDlCount).reduce(sum);
-
       function intoDlCount(module){
         return obj.count;
       }
@@ -55,10 +53,8 @@ var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module
     }
   })
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Give me the version # and latest update
 var versionTracker = module.exports.versionTracker = function(module, cb) {
-  //
     var url = 'https://www.npmjs.com/package/'+module.name;
     request(url, function(err, res, body){
       if (err) {
@@ -71,20 +67,16 @@ var versionTracker = module.exports.versionTracker = function(module, cb) {
       } else {
         module.lastUpdate = 'Not available';
       }
-      //module.versionCount = $('.box')['children']['1']['children'][2]['data'].replace(/\s/g, ',').split(',').splice(-7,1)[0]-0 || 1;
       cb(null, module);
     })
   }
-
 // gives the npm search results
 var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, cb) {
     // Takes in search terms and returns array of search result objects in npmjs search order
     var url = 'https://www.npmjs.com/search?q='+searchTerms
 
     request(url, function (err, res, body) {
-        if (err) {
-            return cb(err);
-        }
+        if (err) {return cb(err)}
 
         var $ = cheerio.load(body);
         var results = [];
@@ -106,13 +98,10 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
   }
 
 
-
+///////////////// MAIN EXPORT FUNCTIONS /////////////////
+// Used by server for finding npmjs search results. Takes in a search term and sends back an array of modules.
 var searchResults = module.exports.searchResults = function(searchInput, cb){  
   var finishedRuns = 0;
-  // npmSearchScrapper - results, # of stars, descripiton, etc
-    // Versiontracker - 
-    // Dependent Count
-    // Download Count (set to monthly atm)
   npmSearchScraper(searchInput, function(err, npmSearchResults){
     npmSearchResults.forEach(function(searchResult,i,a){
       versionTracker(searchResult, function(err, searchResultWithVersion){
@@ -129,34 +118,22 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
     });
   });
 }
-
-// fs.readFile('npm_module_names.txt', 'utf-8', function(err, entireFile){
-//   var allModuleNames = JSON.parse(entireFile);
-//   var allModules = allModulesNames.map(function(name){
-//     return {name: name};
-//   });
-
-// });
-
-
-
-var moduleDataBuilder = function(moduleName, cb){
+// Used by the database for gathering detailed stats. Takes in a module name and sends back a stats object.
+var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, cb){
   var module = {name: moduleName};
-  console.log(moduleName);
+  console.log('Getting',moduleName);
   npm.packages.get(moduleName, function(err, results){
     console.log('inside npm-registry get');
     if(err){
       console.log('ERRRRR', err);
       return;
     } 
-    // console.log(results);
     module['description'] = results[0].description;
     module['time'] = results[0].time;
     module['repository'] = results[0].repository;
     module['url'] = results[0]['homepage'].url;
     module['keywords'] = results[0].keywords;
     module['starred'] = results[0].starred;
-    // console.log('before sending', module)
     findMonthlyDownloads(module, function(err, moduleWithDownloads){
       console.log('inside find monthly downloads')
       findDependents(module, function(err, finalData){
@@ -164,8 +141,6 @@ var moduleDataBuilder = function(moduleName, cb){
         cb(finalData);
       })
     })
-    // description, time, repository, homepage.url, keywords, starred
-      // THEN GET downloads/month and dependents from helper functions
   });
 }
 
