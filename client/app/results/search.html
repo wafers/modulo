@@ -8,13 +8,19 @@
 </div>
 
 <div class="list-group" style="position: relative">
-  <li class="list-group-item" ng-repeat="result in results">
+  <li class="list-group-item" ng-repeat="result in results" ng-click="show = !show">
     <h4 class="list-group-item-heading">{{result.name}}</h4>
     <p class="list-group-item-text">{{result.description}}</p>
+
     <div class="list-group-item-details" style="position: absolute; right: 0; top:0;" align="right">
       Updated: {{result.lastUpdate}} || <i class="material-icons" id="star">star</i> {{result.stars}}
       <br>
       Used by {{result.length}} packages || {{result.downloads}} downloads
+    </div>
+
+    <div class="resultData" ng-show="show">
+    	<br>
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
     </div>
   </li>
 </div>
