@@ -1,10 +1,10 @@
 angular.module('search', [])
 
-.controller('SearchController', function($scope, $http){
+.controller('SearchController', function($scope, $http) {
   $scope.searchInput = null;
   $scope.results = [];
 
-  $scope.getResults = function(){
+  $scope.getResults = function() {
   	console.log("getting results")
     console.log($scope.searchInput)
     return $http.post('/search', {'data': $scope.searchInput}).
@@ -20,6 +20,10 @@ angular.module('search', [])
         console.log('error');
         console.log(data);
       });
+  }
+
+  $scope.toggle = function(result) {
+    result.show = !result.show;
   }
 
 });
