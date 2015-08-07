@@ -12,12 +12,13 @@
     <h4 class="list-group-item-heading">{{result.name}}</h4>
     <p class="list-group-item-text">{{result.description}}</p>
 
-    <div class="list-group-item-details" style="position: absolute; right: 0; top:0;" align="right">
-      Updated: {{result.lastUpdate}} || <i class="material-icons" id="star">star</i> {{result.stars}}
-      <br>
-      Used by {{result.length}} packages || {{result.downloads}} downloads
+    <div id="content">
+      <div class="A">Last update {{result.lastUpdate}}</div>
+      <div class="B"><i class="material-icons" id="star">star</i> {{result.stars}} on NPM</div>
+      <div class="C">Used by {{result.length}} packages</div>
+      <div class="D">{{result.downloads}} downloads</div>
     </div>
 
-    <div ng-show="result.show">test</div>
+    <div class="show-div" ng-show="result.show">test</div>
   </li>
 </div>
