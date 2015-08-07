@@ -39,16 +39,19 @@ var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module
         module.downloads = 0;
         cb(null, module);
       }
-      module.downloads = downloadData;
-
-      function intoDlCount(module){
-        return obj.count;
+      module.downloads = downloadData; // Daily download numbers
+      module.monthlyDownloadSum = downloadSum(downloadData); // Total downloads for the past month
+      function downloadSum(downloadData) {
+        var days = Object.keys(downloadData);
+        if (days.length > 0) {
+          var lastMonth = days.slice(-30);
+          var sum = 0;
+          for (var i=0; i<lastMonth.length; i++) {
+            sum += downloadData[lastMonth[i]]['count'];
+          }
+          return sum;
+        }
       }
-
-      function sum(total, num){
-        return !e ? total : total + e;
-      }
-
       cb(null, module);
     }
   })
@@ -123,40 +126,75 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
   var module = {name: moduleName};
   console.log('Getting',moduleName);
   npm.packages.get(moduleName, function(err, results){
-    console.log('inside npm-registry get');
+
     if(err){
+      console.log('Something went wrong. Will try',moduleName,'again later.')
       console.log('ERRRRR', err);
-      return;
-    } 
-    module['description'] = results[0].description;
-    module['time'] = results[0].time;
-    module['repository'] = results[0].repository;
-    module['url'] = results[0]['homepage'].url;
-    module['keywords'] = results[0].keywords;
-    module['starred'] = results[0].starred;
-    findMonthlyDownloads(module, function(err, moduleWithDownloads){
-      console.log('inside find monthly downloads')
-      findDependents(module, function(err, finalData){
-        console.log('inside findDependents')
-        cb(finalData);
-      })
-    })
+      cb(err, module);
+      // write module to errorQueue
+    } else if (results[0] && results[0].description !== '' && results[0].starred) {
+      module['description'] = results[0].description;
+      module['time'] = results[0].time;
+      module['repository'] = results[0].repository;
+      module['url'] = results[0]['homepage'].url;
+      module['keywords'] = results[0].keywords;
+      module['starred'] = results[0].starred;
+      findMonthlyDownloads(module, function(err, moduleWithDownloads){
+        findDependents(module, function(err, finalData){
+          if (finalData.dependents && finalData.downloads){
+            console.log('Success!', moduleName, 'going back to DB now.')
+            cb(null, finalData);
+          } else {
+            console.log('Something went wrong. Will try',moduleName,'again later.')
+            // write module to errorQueue
+          }
+        })
+      })      
+    } else {
+      console.log('Something went wrong. Will try',moduleName,'again later.')
+      // write module to errorQueue
+    }
   });
 }
 
-// fs.readFile('npm_module_names.txt', 'utf-8', function(err, results){
-//   var names = JSON.parse(results);
-//   names.forEach(function(name){
-//     moduleDataBuilder(name, function(data){
-//       fs.appendFile('datadump.txt', JSON.stringify(data), function(err){
-//         if(err) console.log(err);
-//         else{
-//           // console.log(data);
-//           console.log(data.name)
-//         }
-//       });
-//     })
-//   })
-// })
+// Can be used to read in the names of all NPM modules. Sends back an array of all module names.
+var getAllNames = module.exports.getAllNames = function (cb){
+  fs.readFile('./server/npm_module_names.txt', 'utf-8', function(err, results){
+  var names = JSON.parse(results);
+  console.log(names.length, 'modules found'); 
+  cb(names); 
+  })
+}
 
+//EXAMPLE USE OF getAllNames and moduleDataBuilder:
+/*
+var helpers = require('./helpers.js');
+
+var names = [];
+
+helpers.getAllNames(function(nameArray){
+  names = nameArray; // 'names' contains ALL npm module names
+  console.log(names.length) // => ~170k
+  namesubset = names.slice(0,1000) // To run only the first 1000 names
+  putIntoDB(namesubset);
+});
+
+function putIntoDB(nameArray) {
+  var finished = 0;
+  for (var i=0; i<nameArray.length; i++){
+    helpers.moduleDataBuilder(nameArray[i], function(err, res){
+      if (err) ...
+      else {
+        finished++;
+        save deps.
+        insert. 
+        if (finished === names.length)
+          insert relationships
+      }
+    })
+  }
+}
+
+
+*/
 
