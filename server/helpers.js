@@ -26,27 +26,31 @@ var findDependents = module.exports.findDependents = function(module, cb){
 
 // Returns an integer of the total # of downloads last month
 var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module, cb){
-  var start = moment().subtract(1, 'months').toDate();
+  var start = moment().subtract(5, 'years').toDate();
   var end = new Date();
 
-  // console.log('inside monthly downloads');
-  downloadCount(module.name, start, end, function(err, data) {
+  downloadCount(module.name, start, end, function(err, downloadData) {
     if(err){
       console.log('ERRRRRRR', module.name, err)
       module.downloads = 0;
       cb(err,module);
     }else{
-      if(data === undefined){
+      if(downloadData === undefined){
         module.downloads = 0;
         cb(null, module);
       }
-      module.downloads = data.map(function(obj){ return obj.count }).reduce(function(total, e){
-        if(!e){
-          return total;
-        }else{
-          return total + e;
-        }
-      },0);
+      module.downloads = downloadData;
+
+      // module.downloads = downloadData.map(intoDlCount).reduce(sum);
+
+      function intoDlCount(module){
+        return obj.count;
+      }
+
+      function sum(total, num){
+        return !e ? total : total + e;
+      }
+
       cb(null, module);
     }
   })
@@ -180,9 +184,6 @@ var moduleDataBuilder = function(moduleName, cb){
 //   })
 // })
 
-
-
-// var names = ["0","001","001_skt","001_test","007","008-somepackage","01","01-simple","06_byvoidmodule","0latency","0model","0x21","0x23","1","1-1-help-desk-system","1-liners","1.0.1","1.0.2","10","100","101","101-es6","101-tomekwi","102","10bis","10bisjs","10er10","10tcl","11","11-packagemath","11-packagename","110","1129","11zgit-fs","11znode-meta","11zsimple-mime","11zstack","11zwheat","12-03-2014-michelle-speak","12-3-14_breana-gonzales_speak","1212","123","12306","1234","1257-server","127-ssh","12byvoidmodule","12env","12factor-config","12factor-dotenv","12factor-log","1664","16pixels","1985","1bit-chart-bars","1broker","1campus_nodedsa","1css","1pass","1password","1pif-to-csv","1pif-to-keepass","1px","1rm"]
 // names.forEach(function(name){
 //   moduleDataBuilder(name, function(data){
 //     fs.appendFile('datadump.txt', ','+JSON.stringify(data), function(err){
@@ -195,19 +196,22 @@ var moduleDataBuilder = function(moduleName, cb){
 // })
 
 
-fs.readFile('./server/npm_module_names.txt', 'utf-8', function(err, data){
-  data = JSON.parse(data);
-  data.forEach(function(name){
-    moduleDataBuilder(name, function(data){
-      fs.appendFile('datadump.txt', ','+JSON.stringify(data), function(err){
-        if(err) console.log(err);
-        else{
-          console.log(data.name + 'WRITTEN!');
-        }
+var fetching = false;
+if(fetching){
+  fs.readFile('./server/npm_module_names.txt', 'utf-8', function(err, data){
+    data = JSON.parse(data);
+    data.forEach(function(name){
+      moduleDataBuilder(name, function(data){
+        fs.appendFile('datadump.txt', ','+JSON.stringify(data), function(err){
+          if(err) console.log(err);
+          else{
+            console.log(data.name + 'WRITTEN!');
+          }
+        });
       });
     });
   });
-});
+}
 
 
 
