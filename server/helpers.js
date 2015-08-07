@@ -26,27 +26,31 @@ var findDependents = module.exports.findDependents = function(module, cb){
 
 // Returns an integer of the total # of downloads last month
 var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module, cb){
-  var start = moment().subtract(1, 'months').toDate();
+  var start = moment().subtract(5, 'years').toDate();
   var end = new Date();
 
-  // console.log('inside monthly downloads');
-  downloadCount(module.name, start, end, function(err, data) {
+  downloadCount(module.name, start, end, function(err, downloadData) {
     if(err){
       console.log('ERRRRRRR', module.name, err)
       module.downloads = 0;
       cb(err,module);
     }else{
-      if(data === undefined){
+      if(downloadData === undefined){
         module.downloads = 0;
         cb(null, module);
       }
-      module.downloads = data.map(function(obj){ return obj.count }).reduce(function(total, e){
-        if(!e){
-          return total;
-        }else{
-          return total + e;
-        }
-      },0);
+      module.downloads = downloadData;
+
+      // module.downloads = downloadData.map(intoDlCount).reduce(sum);
+
+      function intoDlCount(module){
+        return obj.count;
+      }
+
+      function sum(total, num){
+        return !e ? total : total + e;
+      }
+
       cb(null, module);
     }
   })
@@ -126,11 +130,88 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
   });
 }
 
-// searchResults('yahoo finance');
+// fs.readFile('npm_module_names.txt', 'utf-8', function(err, entireFile){
+//   var allModuleNames = JSON.parse(entireFile);
+//   var allModules = allModulesNames.map(function(name){
+//     return {name: name};
+//   });
+
+// });
 
 
 
+var moduleDataBuilder = function(moduleName, cb){
+  var module = {name: moduleName};
+  console.log(moduleName);
+  npm.packages.get(moduleName, function(err, results){
+    console.log('inside npm-registry get');
+    if(err){
+      console.log('ERRRRR', err);
+      return;
+    } 
+    // console.log(results);
+    module['description'] = results[0].description;
+    module['time'] = results[0].time;
+    module['repository'] = results[0].repository;
+    module['url'] = results[0]['homepage'].url;
+    module['keywords'] = results[0].keywords;
+    module['starred'] = results[0].starred;
+    // console.log('before sending', module)
+    findMonthlyDownloads(module, function(err, moduleWithDownloads){
+      console.log('inside find monthly downloads')
+      findDependents(module, function(err, finalData){
+        console.log('inside findDependents')
+        cb(finalData);
+      })
+    })
+    // description, time, repository, homepage.url, keywords, starred
+      // THEN GET downloads/month and dependents from helper functions
+  });
+}
 
+// fs.readFile('npm_module_names.txt', 'utf-8', function(err, results){
+//   var names = JSON.parse(results);
+//   names.forEach(function(name){
+//     moduleDataBuilder(name, function(data){
+//       fs.appendFile('datadump.txt', JSON.stringify(data), function(err){
+//         if(err) console.log(err);
+//         else{
+//           // console.log(data);
+//           console.log(data.name)
+//         }
+//       });
+//     })
+//   })
+// })
+
+// names.forEach(function(name){
+//   moduleDataBuilder(name, function(data){
+//     fs.appendFile('datadump.txt', ','+JSON.stringify(data), function(err){
+//       if(err) console.log(err);
+//       else{
+//         console.log(data.name)
+//       }
+//     });
+//   })
+// })
+
+
+var fetching = false;
+if(fetching){
+  fs.readFile('./server/npm_module_names.txt', 'utf-8', function(err, data){
+    data = JSON.parse(data);
+    data.forEach(function(name){
+      moduleDataBuilder(name, function(data){
+        fs.appendFile('datadump.txt', ','+JSON.stringify(data), function(err){
+          if(err) console.log(err);
+          else{
+            console.log(data.name + 'WRITTEN!');
+          }
+        });
+      });
+    });
+  });
+}
 
 
 
