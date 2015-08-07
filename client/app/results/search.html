@@ -7,8 +7,8 @@
   </span>
 </div>
 
-<div class="list-group" style="position: relative">
-  <li class="list-group-item" ng-repeat="result in results" ng-click="show = !show">
+<div class="list-group" style="position: relative" ng-cloak>
+  <li class="list-group-item" ng-repeat="result in results" ng-click="toggle(result)">
     <h4 class="list-group-item-heading">{{result.name}}</h4>
     <p class="list-group-item-text">{{result.description}}</p>
 
@@ -18,9 +18,6 @@
       Used by {{result.length}} packages || {{result.downloads}} downloads
     </div>
 
-    <div class="resultData" ng-show="show">
-    	<br>
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-    </div>
+    <div ng-show="result.show">test</div>
   </li>
 </div>
