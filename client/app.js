@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'search', 'details'])
+angular.module('app', ['ui.router', 'results', 'details'])
  
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -8,14 +8,18 @@ angular.module('app', ['ui.router', 'search', 'details'])
   .state('app', {
     url: '/',
     views: {
-      'app.search': {
-        templateUrl: './app/results/search.html',
-        controller:'SearchController'
+      'app.nav': {
+        templateUrl: './app/results/nav.html'
       },
       '': {
         templateUrl: './app/content.html'
       }
     }
+  })
+
+ .state('app.results', {
+    templateUrl: './app/results/results.html',
+    controller: 'ResultsController'
   })
 
  .state('app.details', {

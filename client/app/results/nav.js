@@ -1,6 +1,6 @@
-angular.module('search', [])
+angular.module('app', [])
 
-.controller('SearchController', function($scope, $http) {
+.controller('NavController', function($scope, $http) {
   $scope.searchInput = null;
   $scope.results = [];
 

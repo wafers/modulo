@@ -1,5 +1,5 @@
 angular.module('details', [])
 
-.controller('DetailsController', function($scope, $http){
+.controller('DetailsController', function($scope, $http, $location, $stateParams, $rootScope){
 
 });
