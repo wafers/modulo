@@ -1,5 +1,3 @@
-<a class="btn btn-default" type="button" ui-sref="app.details">DETAILS DIV</a>
-
 <div class="list-group" style="position: relative" ng-cloak>
   <li class="list-group-item" ng-repeat="result in results" ng-click="toggle(result)">
     <h4 class="list-group-item-heading">{{result.name}}</h4>
@@ -12,10 +10,10 @@
       <div class="D">{{result.monthlyDownloadSum}} monthly downloads</div>
     </div>
 
-    <div class="-div" ng-show="result.show">
+    <div class="details-div" ng-show="result.show">
      view details
     </div>
   </li>
-</div>
 
-<div class="details-div"></div>
+  <a class="btn btn-default" type="button" ui-sref="app.details">go to graphs</a>
+</div>

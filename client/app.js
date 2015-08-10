@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'results', 'details'])
+angular.module('app', ['ui.router', 'service', 'nav', 'results', 'details'])
  
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -9,7 +9,8 @@ angular.module('app', ['ui.router', 'results', 'details'])
     url: '/',
     views: {
       'app.nav': {
-        templateUrl: './app/results/nav.html'
+        templateUrl: './app/results/nav.html',
+        controller: 'NavController'
       },
       '': {
         templateUrl: './app/content.html'
