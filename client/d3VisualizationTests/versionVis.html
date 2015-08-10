@@ -27,7 +27,7 @@ body {
   stroke-width: 1.5px;
 }
 
-.circle:hover {
+.circle:hover, .bar:hover {
   fill: brown;
 }
 
@@ -40,28 +40,18 @@ body {
   border-radius: 2px;
 }
 
-/* Creates a small triangle extender for the tooltip */
-/*.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}*/
-
 </style>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script>
 
-//(dataStore = {"modified": "date", "created": "date", "0.0.1": "date", "0.0.2": "date"})
+//(dataStore = module.time)
 function grapher(dataStore) {  
   var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
+  var data = [];
+  var dataStoreArray = Object.keys(dataStore);
+  var last = '0.0.0'
   var updateCalculator = function(oldVersion, newVersion) {
     newVersion = newVersion.split('.');
     oldVersion = oldVersion.split('.');
@@ -76,31 +66,6 @@ function grapher(dataStore) {
     console.log('difference', versionDiff > 0 ? versionDiff : 1)
     return versionDiff > 0 ? versionDiff : 1;
   }
-
-  var margin = {top: 20, right: 20, bottom: 30, left: 40},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
-
-  var x = d3.time.scale() 
-    .domain([dateFormat(new Date(2014, 0, 1)), dateFormat(new Date(2015, 7, 7))]) 
-    .range([0, width]);
-
-  var y = d3.scale.linear()
-      .range([height, 0]);
-
-  var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
-
-  var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
-      .ticks(10)
-      // .tickFormat(d3.format("s"));
-
-  var data = [];
-  var dataStoreArray = Object.keys(dataStore);
-  var last = '0.0.0'
   for (var i=0; i<dataStoreArray.length; i++) {
       if (dataStoreArray[i].split('.')[2]-0>=0){ // remove alpha/beta testing versions
         console.log(last, '->', dataStoreArray[i])
@@ -118,6 +83,44 @@ function grapher(dataStore) {
   }
   data.shift()
 
+  var margin = {top: 20, right: 20, bottom: 30, left: 40},
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+      buckets = 4;
+      colors = ['315B7E', '1699C5', '00CCFF'];
+
+  var x = d3.time.scale() 
+    .domain([dateFormat(new Date(2014, 0, 1)), dateFormat(new Date(2015, 7, 7))]) 
+    .range([0, width]);
+
+  var y = d3.scale.linear()
+      .range([height, 0]);
+
+  var colorScale = d3.scale.quantile()
+   .domain([0, buckets - 1, d3.max(data, function (d) { return d.versionValue; })])
+   .range(colors);    
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left")
+      .ticks(10)
+      // .tickFormat(d3.format("s"));
+
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      var date = d.date.toString().substring(3,15);
+      var str = "<strong>Version:</strong> <span style='color:#00CCFF'>" + d.versionLabel + "</span>";
+      str += "</br><string>Date:</strong><span style='color:#00CCFF'> " + date + "</span>";
+      return str;
+    })    
+
+
   x.domain([data[0]['date'], dateFormat.parse(dateFormat(new Date(2015, 7, 7)))]);
   y.domain([0, d3.max(data, function(d) { return d.versionValue+2; })]);
   // Create main svg for drawing 
@@ -126,7 +129,7 @@ function grapher(dataStore) {
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  
+  svg.call(tip);
   // Create x-axis
   svg.append("g")
       .attr("class", "x axis")
@@ -159,6 +162,10 @@ function grapher(dataStore) {
         .attr("y", function(d) {return y(d.versionValue) || 1})
         // Draw bar down to the bottom
         .attr("height", function(d) { return height - y(d.versionValue); })
+        .attr("fill", function(d) {return '#'+colorScale(d.versionValue)})
+        .attr('opacity', 0.7)
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide)
 };
 
 function circlePlotter(dataStore){
@@ -172,9 +179,6 @@ function circlePlotter(dataStore){
     var lastTotal = lastVersion[0]+lastVersion[1]+lastVersion[2];
     var versionDiff = thisTotal - lastTotal;
     
-    // console.log('old', (oldVersion[0]-0)+'.'+(oldVersion[1]-0)+'.'+(oldVersion[2]-0), lastTotal)
-    // console.log('new', (newVersion[0]-0)+'.'+(newVersion[1]-0)+'.'+(newVersion[2]-0), thisTotal)
-    // console.log('difference', versionDiff > 0 ? versionDiff : 1)
     return versionDiff > 0 ? versionDiff : 1;
   }
   var data = [];
@@ -198,7 +202,7 @@ function circlePlotter(dataStore){
 
   var margin = {top: 520, right: 20, bottom: 30, left: 40},
       width = 960 - margin.left - margin.right,
-      height = 250 - margin.top - margin.bottom;
+      height = 300 - margin.top - margin.bottom;
       buckets = 4;
       colors = ['315B7E', '1699C5', '00CCFF'];
 
@@ -267,9 +271,37 @@ function circlePlotter(dataStore){
 
 }
 
-//grapher({"modified":"2015-07-02T13:01:26.069Z","created":"2015-04-19T15:11:38.595Z","0.0.1":"2015-04-19T15:11:38.595Z","0.0.2":"2015-04-22T16:20:36.717Z","0.0.3":"2015-04-22T17:04:22.690Z","0.0.4":"2015-04-23T06:53:00.596Z","0.0.5":"2015-04-23T17:39:16.395Z","0.0.6":"2015-04-23T18:07:45.677Z","0.0.7":"2015-04-24T14:55:03.530Z","0.0.8":"2015-04-26T08:11:04.430Z","0.1.0":"2015-04-29T16:24:26.264Z","0.1.1":"2015-05-02T07:59:05.329Z","0.1.2":"2015-05-03T09:32:20.409Z","0.1.3":"2015-05-03T09:37:19.923Z","0.1.4":"2015-05-04T17:38:46.763Z","0.2.0":"2015-05-11T05:55:22.739Z","0.2.1":"2015-05-11T06:00:24.731Z","0.2.2":"2015-05-12T10:22:20.502Z","0.2.3":"2015-05-16T07:06:52.543Z","0.2.5":"2015-05-19T15:04:03.877Z","0.2.6":"2015-05-21T14:26:13.751Z","0.2.7":"2015-05-25T09:19:58.178Z","0.2.9":"2015-06-05T21:21:59.192Z","0.2.10":"2015-06-06T20:29:02.495Z","0.3.0":"2015-06-11T08:37:45.129Z","0.3.1":"2015-06-17T10:42:59.381Z","0.3.2":"2015-06-18T15:01:40.909Z","0.3.3":"2015-06-24T12:51:48.665Z","0.3.4":"2015-06-25T09:38:34.709Z","0.3.5":"2015-07-02T13:01:26.069Z"})
-
-var other = {"modified":"2015-07-02T13:01:26.069Z","created":"2015-04-19T15:11:38.595Z","0.0.1":"2015-04-19T15:11:38.595Z","0.0.2":"2015-04-22T16:20:36.717Z","0.0.3":"2015-04-22T17:04:22.690Z","0.0.4":"2015-04-23T06:53:00.596Z","0.0.5":"2015-04-23T17:39:16.395Z","0.0.6":"2015-04-23T18:07:45.677Z","0.0.7":"2015-04-24T14:55:03.530Z","0.0.8":"2015-04-26T08:11:04.430Z","0.1.0":"2015-04-29T16:24:26.264Z","0.1.1":"2015-05-02T07:59:05.329Z","0.1.2":"2015-05-03T09:32:20.409Z","0.1.3":"2015-05-03T09:37:19.923Z","0.1.4":"2015-05-04T17:38:46.763Z","0.2.0":"2015-05-11T05:55:22.739Z","0.2.1":"2015-05-11T06:00:24.731Z","0.2.2":"2015-05-12T10:22:20.502Z","0.2.3":"2015-05-16T07:06:52.543Z","0.2.5":"2015-05-19T15:04:03.877Z","0.2.6":"2015-05-21T14:26:13.751Z","0.2.7":"2015-05-25T09:19:58.178Z","0.2.9":"2015-06-05T21:21:59.192Z","0.2.10":"2015-06-06T20:29:02.495Z","0.3.0":"2015-06-11T08:37:45.129Z","0.3.1":"2015-06-17T10:42:59.381Z","0.3.2":"2015-06-18T15:01:40.909Z","0.3.3":"2015-06-24T12:51:48.665Z","0.3.4":"2015-06-25T09:38:34.709Z","0.3.5":"2015-07-02T13:01:26.069Z"}
+var other = {
+  "modified":"2015-07-02T13:01:26.069Z",
+  "created":"2015-04-19T15:11:38.595Z",
+  "0.0.1":"2015-04-19T15:11:38.595Z",
+  "0.0.2":"2015-04-22T16:20:36.717Z",
+  "0.0.3":"2015-04-22T17:04:22.690Z",
+  "0.0.4":"2015-04-23T06:53:00.596Z",
+  "0.0.5":"2015-04-23T17:39:16.395Z",
+  "0.0.6":"2015-04-23T18:07:45.677Z",
+  "0.0.7":"2015-04-24T14:55:03.530Z",
+  "0.0.8":"2015-04-26T08:11:04.430Z",
+  "0.1.0":"2015-04-29T16:24:26.264Z",
+  "0.1.1":"2015-05-02T07:59:05.329Z",
+  "0.1.2":"2015-05-03T09:32:20.409Z",
+  "0.1.3":"2015-05-03T09:37:19.923Z",
+  "0.1.4":"2015-05-04T17:38:46.763Z",
+  "0.2.0":"2015-05-11T05:55:22.739Z",
+  "0.2.1":"2015-05-11T06:00:24.731Z",
+  "0.2.2":"2015-05-12T10:22:20.502Z",
+  "0.2.3":"2015-05-16T07:06:52.543Z",
+  "0.2.5":"2015-05-19T15:04:03.877Z",
+  "0.2.6":"2015-05-21T14:26:13.751Z",
+  "0.2.7":"2015-05-25T09:19:58.178Z",
+  "0.2.9":"2015-06-05T21:21:59.192Z",
+  "0.2.10":"2015-06-06T20:29:02.495Z",
+  "0.3.0":"2015-06-11T08:37:45.129Z",
+  "0.3.1":"2015-06-17T10:42:59.381Z",
+  "0.3.2":"2015-06-18T15:01:40.909Z",
+  "0.3.3":"2015-06-24T12:51:48.665Z",
+  "0.3.4":"2015-06-25T09:38:34.709Z",
+  "0.3.5":"2015-07-02T13:01:26.069Z"}
 
 var express = {
   "modified":"2015-08-03T05:04:40.888Z",
