@@ -28,7 +28,7 @@ var chart = d3.select(".chart")
 // load this tsv file from like a website
 d3.tsv("underscore.tsv", type, function(error, data) {
   data = data.filter(onlyWeekdays);
-  addMovingAverage(data, 20);
+  addMovingAverage(data, 100);
   // var movingAverages = addMovingAverage(data.map(function(e){return e.downloads}), 20);
 
   function addMovingAverage(dataArr, period){ // passed in array of downloads
@@ -60,6 +60,11 @@ d3.tsv("underscore.tsv", type, function(error, data) {
   x.domain([dateFormat.parse(data[0].day), dateFormat.parse(data[data.length-1].day)])
   y.domain([0, d3.max(data, function(d) { return d.downloads; })]);
 
+  var line = d3.svg.line()
+    .x(function(d){ return x(dateFormat.parse(d.day)) })
+    .y(function(d){ return y(d.movingAverage) })
+    .interpolate('basis')
+
   chart.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
@@ -77,7 +82,6 @@ d3.tsv("underscore.tsv", type, function(error, data) {
         .style("font-size", "18px")
         .text("# of Total Daily Downloads");
 
-
   chart.selectAll(".bar")
       .data(data)
     .enter().append("rect")
@@ -86,6 +90,14 @@ d3.tsv("underscore.tsv", type, function(error, data) {
       .attr("y", function(d) { return y(d.downloads); })
       .attr("height", function(d) { return height - y(d.downloads); })
       .attr("width", 10);
+
+  chart.append('path')
+      ,attr({
+        
+      })
+      .attr('d', line(data))
+      .attr('fill-opacity', 0)
+      .attr('stroke', 'black')
 });
 
 function type(d) {
