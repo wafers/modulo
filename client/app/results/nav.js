@@ -5,7 +5,8 @@ angular.module('app')
   console.log("YO")
   $scope.submit = function(){
     console.log('in here')
-    $scope.results = Search.submit($scope.searchInput);
+    Search.setSearch($scope.searchInput)
+    // $scope.results = Search.submit($scope.searchInput);
     // Search.submit($scope.searchInput);
   }
 
