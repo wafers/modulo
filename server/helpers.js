@@ -119,7 +119,14 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
             allSearchData.push(fullModuleData);
             cbCount++;
             if(cbCount === names.length){
-              cb(null, allSearchData);
+              // Logic only runs if this is the last async callback from db.search
+              var returnArr = names.map(function(name){
+                // make the data be sorted once again b/c it comes back in random order
+                return allSearchData.filter(function(obj){
+                  return obj.name === name;
+                })[0]
+              })
+              cb(null, returnArr);
             }
           }
         })
