@@ -1,12 +1,12 @@
 <div class="input-group">
   <input type="text" class="form-control" placeholder="find packages" ng-model="searchInput">
   <span class="input-group-btn">
-	<button class="btn btn-default" type="button" ng-click="getResults()">
+	<button class="btn btn-default" type="button" ui-sref="app.results" ng-click="submit()">
 		<i class="material-icons">search</i>
 	</button>
   </span>
 </div>
-
+<!-- 
 <div class="list-group" style="position: relative" ng-cloak>
   <li class="list-group-item" ng-repeat="result in results" ng-click="toggle(result)">
     <h4 class="list-group-item-heading">{{result.name}}</h4>
@@ -19,10 +19,12 @@
       <div class="D">{{result.monthlyDownloadSum}} monthly downloads</div>
     </div>
 
-    <div class="show-div" ng-show="result.show">
+    <div class="-div" ng-show="result.show">
 
-      <a ui-sref="^.app.details">view details</a>
+     view details
     </div>
   </li>
 </div>
+
+<div class="details-div"></div> -->
 
