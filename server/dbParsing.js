@@ -119,13 +119,27 @@ var search = module.exports.search = function(moduleName, cb){
     })
 }
 
+// var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
+//   dbRemote.find({name: moduleName}, function(err, result){
+//     if(err) { console.log(err); cb(err, null); return; }
+//     var id = result[0].id;
+//     dbRemote.relationships(id, function(err, relationships){
+//       if(err) { console.log(err); cb(err, null); return; }
+//       cb(null, relationships);
+//     });
+//   });
+// }
+
 var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
-  dbRemote.find({name: moduleName}, function(err, result){
-    if(err) { console.log(err); cb(err, null); return; }
-    var id = result[0].id;
-    dbRemote.relationships(id, function(err, relationships){
+    var queryString = "MATCH (n { name: {name} })-[r:DEPENDS_ON]-(m) RETURN m.name, m.monthlyDownloadSum;"
+    dbRemote.query(queryString, {name: moduleName}, function(err, result){
       if(err) { console.log(err); cb(err, null); return; }
-      cb(null, relationships);
-    });
-  });
+
+      // change the data 
+      var result = result.map(function(obj){
+        return { name : obj['m.name'], monthlyDownloadSum : obj['m.monthlyDownloadSum'] };
+      });
+      cb(null, result);
+    })
 }
+
