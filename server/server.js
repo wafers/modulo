@@ -3,7 +3,6 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var searchHelpers = require('./helpers.js');
 var routes = require('./routes.js');
-// var dbParse = require('./dbParsing.js');
 
 var app = express();
 

@@ -100,13 +100,13 @@ var insertBatch = function(collection) {
 
 }
 
-helpers.getAllNames(function(nameArr) {
+// helpers.getAllNames(function(nameArr) {
     // insertBatch(nameArr);
     // dbInsert(nameArr.slice(150000, 160000))
-})
+// })
 
 // DB endpoint setup
-var search = module.exports = function(moduleName, cb){
+var search = module.exports.search = function(moduleName, cb){
     dbRemote.find({name: moduleName}, function(err, objs){
         if(err){
             console.log(err);
