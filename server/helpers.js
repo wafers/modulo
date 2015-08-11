@@ -135,6 +135,9 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
   });
 }
 
+var findRelationships = module.exports.findRelationships = db.fetchRelationships;
+
+
 // var detailedSearchResults = module.exports.detailedSearchResults = function(names, cb){
 //   var allSearchData = [];
 //   var cbCount = 0;

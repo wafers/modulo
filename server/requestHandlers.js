@@ -11,6 +11,14 @@ var search = module.exports.search = function(req, res){
   })
 }
 
+var relationships = module.exports.relationships = function(req, res){
+  var moduleName = req.body.data;
+  helpers.findRelationships(moduleName, function(err, relationships){
+    console.log(relationships);
+    res.send(relationships);
+  });
+}
+
 // var detailedSearch = module.exports.detailedSearch = function(req, res){
 //   var moduleNames = req.body.data; // should be an array
 //   helpers.detailedSearch(moduleNames, function(err, result){
