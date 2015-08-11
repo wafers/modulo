@@ -111,7 +111,10 @@ var search = module.exports.search = function(moduleName, cb){
         if(err){
             console.log(err);
             cb(err, null);  
-        } 
-        else cb(null, objs);
+        }
+        else {
+            // delete objs[0].downloads;
+            cb(null, objs[0]);
+        }
     })
 }
