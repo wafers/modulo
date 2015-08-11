@@ -84,7 +84,7 @@ function grapher(dataStore) {
   x.domain([data[0]['date'], dateFormat.parse(dateFormat(new Date(2015, 7, 7)))]);
   y.domain([0, d3.max(data, function(d) { return d.versionValue+2; })]);
   // Create main svg for drawing 
-  var svg = d3.select("body").append("svg")
+  var svg = d3.select(".versionVis").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -169,7 +169,7 @@ function circlePlotter(dataStore){
   x.domain([data[0]['date'], dateFormat.parse(dateFormat(new Date(2015, 7, 7)))]);
   y.domain([0, d3.max(data, function(d) { return d.versionValue+2; })]);
   // Create main svg for drawing 
-  var svg = d3.select("body").append("svg")
+  var svg = d3.select(".versionVis").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
