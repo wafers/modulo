@@ -166,6 +166,16 @@ var getAllNames = module.exports.getAllNames = function (cb){
   })
 }
 
+
+// moduleDataBuilder('lodash', function(err, module){
+//   var filePath = "./client/dlviz/" + module.name + ".tsv";
+//   console.log(module.downloads);
+//   fs.appendFileSync(filePath, "day" + "\t" + "downloads" + "\n");
+//   module.downloads.forEach(function(row){
+//     fs.appendFileSync(filePath, "" + row.day + "\t" + row.count + "\n");    
+//   });
+// });
+
 //EXAMPLE USE OF getAllNames and moduleDataBuilder:
 /*
 var helpers = require('./helpers.js');
