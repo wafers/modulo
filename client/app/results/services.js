@@ -1,40 +1,35 @@
 angular.module('app')
 
-.service('Search',['$http',function($http) {
-  var searchInput = null;
+.service('Search',['$http', '$window', function($http, $window) {
+  this.navInput = '';
   this.results = {
     searchResults: []
   }
-  this.navInput = '';
 
-  this.showResults = function(){
-    return this.results
+  this.showResults = function() {
+    return this.results;
   }
 
-  this.setSearch = function(val) {
+  this.submit = function(val) {
+    console.log(val)
     this.navInput = val;
-  }
-
-  this.submit = function(){
-    searchInput = this.navInput;
-    console.log(searchInput)
-    // this.results.searchResults = this.getResults(searchInput);
-    this.getResults(searchInput);
-    console.log(this.results)
+    console.log(this.navInput, 'this.submit in services')
+    this.results = this.getResults(this.navInput);
+    return this.results;
   }
 
   this.getResults = function() {
     console.log("test getResults")
     var context = this;
-    return $http.post('/search', {'data': searchInput}).
+    return $http.post('/search', {'data': this.navInput}).
       success(function(data, status, headers, config) {
-        console.log(data);
-        for (var key in data) {
-          data[key].lastUpdate = moment(data[key].lastUpdate).format('l');
-          data[key].length = data[key].dependents.length;
-        }
-        // this.results.searchResults = data;
-        context.results.searchResults =  data;
+        console.log(data, 'http request data');
+        // for (var key in data) {
+        //   data[key].lastUpdate = moment(data[key].lastUpdate).format('l');
+        //   data[key].length = data[key].dependents.length;
+        // }
+        context.results.searchResults = [];
+        context.results.searchResults = data;
       }).
       error(function(data, status, headers, config) {
         console.log('error');
