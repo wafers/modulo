@@ -116,7 +116,7 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
         db.search(moduleName, function(err, fullModuleData){
           if(err) {console.log(err); cb(err, null); }
           else{
-            allSearchData.push(fullModuleData);
+            if(fullModuleData) allSearchData.push(fullModuleData);
             cbCount++;
             if(cbCount === names.length){
               // Logic only runs if this is the last async callback from db.search
@@ -126,7 +126,7 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
                   return obj.name === name;
                 })[0]
               })
-              cb(null, returnArr);
+              cb(null, _.compact(returnArr));
             }
           }
         })
