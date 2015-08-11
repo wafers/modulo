@@ -7,6 +7,7 @@ var _ = require('underscore');
 var request = require('request');
 var cheerio = require('cheerio');  
 var npm = new Registry({});
+var db = require('./dbParsing.js');
 
 module.exports = {};
 
@@ -106,21 +107,51 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 var searchResults = module.exports.searchResults = function(searchInput, cb){  
   var finishedRuns = 0;
   npmSearchScraper(searchInput, function(err, npmSearchResults){
-    npmSearchResults.forEach(function(searchResult,i,a){
-      versionTracker(searchResult, function(err, searchResultWithVersion){
-        findMonthlyDownloads(searchResultWithVersion, function(err, searchWithVersionAndDownloadCount){
-          findDependents(searchWithVersionAndDownloadCount, function(err, finalSearchResult){
-            finishedRuns++;
-            if(finishedRuns === a.length){
-              console.log('READY TO SEND TO CLIENT');
-              cb(null, npmSearchResults);
+    if(err) { console.log(err); cb(err, null);}
+    else{
+      var allSearchData = [], cbCount = 0;
+      var names = npmSearchResults.map(function(row){ return row.name }); // map to namesArr
+
+      names.forEach(function(moduleName){
+        db.search(moduleName, function(err, fullModuleData){
+          if(err) {console.log(err); cb(err, null); }
+          else{
+            allSearchData.push(fullModuleData);
+            cbCount++;
+            if(cbCount === names.length){
+              // Logic only runs if this is the last async callback from db.search
+              var returnArr = names.map(function(name){
+                // make the data be sorted once again b/c it comes back in random order
+                return allSearchData.filter(function(obj){
+                  return obj.name === name;
+                })[0]
+              })
+              cb(null, returnArr);
             }
-          });
+          }
         })
-      });
-    });
+      })
+    }
   });
 }
+
+// var detailedSearchResults = module.exports.detailedSearchResults = function(names, cb){
+//   var allSearchData = [];
+//   var cbCount = 0;
+//   names.forEach(function(moduleName){
+//     db.search(moduleName, function(err, fullModuleData){
+//       if(err) {console.log(err); cb(err, null); }
+//       else{
+//         allSearchData.push(fullModuleData);
+//         cbCount++;
+//         if(cbCount === names.length){
+//           cb(null, allSearchData);
+//         }
+//       }
+//     })
+//   })
+// }
+
 // Used by the database for gathering detailed stats. Takes in a module name and sends back a stats object.
 var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, cb){
   var module = {name: moduleName};
@@ -165,6 +196,16 @@ var getAllNames = module.exports.getAllNames = function (cb){
   cb(names); 
   })
 }
+
+
+// moduleDataBuilder('lodash', function(err, module){
+//   var filePath = "./client/dlviz/" + module.name + ".tsv";
+//   console.log(module.downloads);
+//   fs.appendFileSync(filePath, "day" + "\t" + "downloads" + "\n");
+//   module.downloads.forEach(function(row){
+//     fs.appendFileSync(filePath, "" + row.day + "\t" + row.count + "\n");    
+//   });
+// });
 
 //EXAMPLE USE OF getAllNames and moduleDataBuilder:
 /*
