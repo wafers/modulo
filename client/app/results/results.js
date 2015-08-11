@@ -1,8 +1,7 @@
-angular.module('results', [])
+angular.module('app')
 
-.controller('ResultsController', function($scope, $http, $location, $stateParams, $rootScope){
-  $scope.searchInput = null;
-  $scope.results = [];
+.controller('ResultsController', ['Search', '$scope', '$http', function(Search, $scope, $http){
+  $scope.results = Search.results;
 
   $scope.toggle = function(result) {
     result.show = !result.show;
@@ -11,4 +10,4 @@ angular.module('results', [])
   $scope.openTab = function() {
     $scope.url = './app/results/details.html';
   }
-});
+}]);

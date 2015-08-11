@@ -1,17 +1,22 @@
-angular.module('service', [])
+angular.module('app')
 
-.service('Search', function($scope, $http, $location, $stateParams, $rootScope) {
+.service('Search',['$http',function($http) {
   var searchInput = null;
-  var results = [];
+  var results = []
+
+  this.showResults = function(){
+    return results
+  }
 
   this.submit = function(val){
     searchInput = val;
     console.log(searchInput)
-    results = getResults(searchInput);
+    results = this.getResults(searchInput);
     console.log(results)
   }
 
   this.getResults = function() {
+    console.log("test getResults")
     return $http.post('/search', {'data': searchInput}).
       success(function(data, status, headers, config) {
         console.log(data);
@@ -26,4 +31,4 @@ angular.module('service', [])
         console.log(data);
       });
   }
-})
+}])

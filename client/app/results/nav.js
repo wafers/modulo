@@ -1,11 +1,11 @@
-angular.module('nav', ['service'])
+angular.module('app')
 
-.controller('NavController', function($scope, $http) {
+.controller('NavController', ['Search' , '$scope', '$http', function(Search,$scope,$http) {
   $scope.searchInput = null;
-  // $scope.results = [];
   console.log("YO")
   $scope.submit = function(){
     console.log('in here')
+    $scope.results = Search.submit($scope.searchInput);
     // Search.submit($scope.searchInput);
   }
 
@@ -35,4 +35,4 @@ angular.module('nav', ['service'])
     $scope.url = './app/results/details.html';
   }
 
-});
+}]);
