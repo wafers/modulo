@@ -1,6 +1,5 @@
-<div class="list-group" style="position: relative" ng-cloak>
-  {{results.searchResults}}
-  <li class="list-group-item" ng-repeat="result in results.searchResults" ng-click="toggle(result)">
+<div class="list-group" style="position: relative" >
+  <li class="list-group-item" ng-repeat="result in results" ng-click="toggle(result)">
     <h4 class="list-group-item-heading">{{result.name}}</h4>
     <p class="list-group-item-text">{{result.description}}</p>
 
