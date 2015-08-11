@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <style>
 
-body {
+.versionVis {
   font: 10px sans-serif;
 }
 
@@ -42,6 +42,7 @@ body {
 
 </style>
 <body>
+  <div class='versionVis'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script>
@@ -124,7 +125,7 @@ function grapher(dataStore) {
   x.domain([data[0]['date'], dateFormat.parse(dateFormat(new Date(2015, 7, 7)))]);
   y.domain([0, d3.max(data, function(d) { return d.versionValue+2; })]);
   // Create main svg for drawing 
-  var svg = d3.select("body").append("svg")
+  var svg = d3.select(".versionVis").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -236,7 +237,7 @@ function circlePlotter(dataStore){
   y.domain([0, d3.max(data, function(d) { return d.versionValue+2; })]);
   
   // Create main svg for drawing 
-  var svg = d3.select("body").append("svg")
+  var svg = d3.select(".versionVis").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
