@@ -118,3 +118,14 @@ var search = module.exports.search = function(moduleName, cb){
         }
     })
 }
+
+var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
+  dbRemote.find({name: moduleName}, function(err, result){
+    if(err) { console.log(err); cb(err, null); return; }
+    var id = result[0].id;
+    dbRemote.relationships(id, function(err, relationships){
+      if(err) { console.log(err); cb(err, null); return; }
+      cb(null, relationships);
+    });
+  });
+}
