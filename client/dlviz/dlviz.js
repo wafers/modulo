@@ -28,22 +28,22 @@ var chart = d3.select(".chart")
 // load this tsv file from like a website
 d3.tsv("underscore.tsv", type, function(error, data) {
   data = data.filter(onlyWeekdays);
-  var movingAverages = createMovingAverage(data.map(function(e){return e.downloads}), 20);
+  addMovingAverage(data, 20);
+  // var movingAverages = addMovingAverage(data.map(function(e){return e.downloads}), 20);
 
-  function createMovingAverage(dataArr, period){ // passed in array of downloads
-    var movingAverage = [];
+  function addMovingAverage(dataArr, period){ // passed in array of downloads
     for(var i = 0; i < dataArr.length; i++){
       var currentPeriodMovingAverage;
-      if(i === 0) currentPeriodMovingAverage = dataArr[i];
-      else if(i < period - 1){ // if its below the period, special calculation
-        currentPeriodMovingAverage = (movingAverage[i-1] * i + dataArr[i]) / (i+1);
+      if(i === 0) currentPeriodMovingAverage = dataArr[i].downloads;
+      else if(i < period - 1){ // if its below the period, special calculation until we have enough data points
+        currentPeriodMovingAverage = (dataArr[i-1].movingAverage * i + dataArr[i].downloads) / (i+1);
       }else{
-        // the acutal moving average
-        currentPeriodMovingAverage = dataArr.slice(i-(period-1), i+1).reduce(function(total, current){ return total + current }, 0) / period;
+        currentPeriodMovingAverage = dataArr.slice(i-(period-1), i+1)
+            .map(function(e){ return e.downloads })
+            .reduce(function(total, current){ return total + current }, 0) / period;
       }
-      movingAverage.push(currentPeriodMovingAverage);
+      dataArr[i].movingAverage = currentPeriodMovingAverage;
     }
-    return movingAverage;
   }
 
   function onlyWeekend(row){
