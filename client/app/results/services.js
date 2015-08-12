@@ -30,6 +30,7 @@ angular.module('app')
         // }
         context.results.searchResults = [];
         context.results.searchResults = data;
+
       }).
       error(function(data, status, headers, config) {
         console.log('error');
