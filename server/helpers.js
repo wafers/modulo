@@ -7,10 +7,11 @@ var _ = require('underscore');
 var request = require('request');
 var cheerio = require('cheerio');  
 var npm = new Registry({});
-var db = require('./dbParsing.js');
+var db = require(__dirname + '/dbParsing.js');
 
-module.exports = {};
+// module.exports = {};
 
+console.log("loaded helpers")
 ///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
 var findDependents = module.exports.findDependents = function(module, cb){

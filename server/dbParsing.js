@@ -12,7 +12,8 @@ var dependencys = {}
 
 var dbInsert = function(collection) {
     var finished = 0;
-
+    console.log(__dirname + '/helpers.js')
+    console.log(helpers, "HELPERS")
     for (var y = 0; y < collection.length; y++) {
         helpers.moduleDataBuilder(collection[y], function(err, data) {
             if (err) {
@@ -137,6 +138,7 @@ var fetchRelationships = module.exports.fetchRelationships = function(moduleName
 var updateModules = module.exports.updateModules = function(){
     var databaseNodes = []
     dbRemote.queryRaw('MATCH (n) RETURN n.name;',function(err,node){
+        if(err) console.log(err)
         node.data.forEach(function(item){
             databaseNodes.push(item[0])
         })
