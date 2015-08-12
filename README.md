@@ -20,31 +20,35 @@
 
 ## Usage
 
-> Some usage instructions
+> Search for something.
 
 ## Requirements
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- Node 0.12.5
+- Express 4.13.3
+- Moment 2.10.6
+- Request 2.60.0
+- Body-parser 1.13.3
+- Seraph 0.13.2
+- Cheerio 0.19.0
+- Underscore 1.8.3
+- npm-registry 0.1.13
+- npm-download-counts 0.1.1
 
 ## Development
 
 ### Installing Dependencies
 
-From within the root directory:
+Assuming npm and bower are installed globally, from within the root directory:
 
 ```sh
-sudo npm install -g bower
 npm install
 bower install
 ```
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/wafers/modulo/issues)
 
 
 ## Contributing
