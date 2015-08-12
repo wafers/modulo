@@ -267,9 +267,9 @@ angular.module('app')
 .service('Sigma', ['$http', function($http){
   this.data = {};
 
-  this.getResults = function(module){
+  this.getResults = function(moduleName){
     var that = this;
-    $http.post('/relationships', {"data": module.name})
+    $http.post('/relationships', {"data": moduleName})
     .success(function(data){
       that.data = data;
     })
