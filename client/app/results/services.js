@@ -31,7 +31,7 @@ angular.module('app')
         console.log(data);
         for (var key in data) {
           data[key].lastUpdate = moment(data[key].lastUpdate).format('l');
-          data[key].length = data[key].dependents.length;
+          data[key].length = 2//data[key].dependents.length;
         }
         // this.results.searchResults = data;
         context.results.searchResults =  data;
