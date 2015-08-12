@@ -112,11 +112,11 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
       var allSearchData = [], cbCount = 0;
       var names = npmSearchResults.map(function(row){ return row.name }); // map to namesArr
 
-      names.forEach(function(moduleName){
+      names.forEach(function(moduleName){ // iterates through each moduleName and queries the database
         db.search(moduleName, function(err, fullModuleData){
           if(err) {console.log(err); cb(err, null); }
           else{
-            if(fullModuleData) allSearchData.push(fullModuleData);
+            if(fullModuleData) allSearchData.push(fullModuleData);     // ONLY if the data is defined do you push to allSearchData
             cbCount++;
             if(cbCount === names.length){
               // Logic only runs if this is the last async callback from db.search
@@ -203,6 +203,7 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
       // write module to errorQueue
     } else if (results[0] && results[0].description !== '' && results[0].starred) {
       module['description'] = results[0].description;
+      module['readme'] = results[0].readme;
       module['time'] = results[0].time;
       module['repository'] = results[0].repository;
       module['url'] = results[0]['homepage'].url;
