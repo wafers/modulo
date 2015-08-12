@@ -1,11 +1,11 @@
-var helpers = require('./helpers.js')
-var config = require('./config').db
+var helpers = require(__dirname + '/server/helpers.js')
+var config = (process.env.DATABASE_URL) ? process.env.DATABASE_URL :  require(__dirname + '/server/config').db;
 var fs = require('fs')
 
 var dbRemote = require("seraph")({
-    user: config.username,
-    pass: config.password,
-    server: config.dbURL
+    user: process.env.DATABASE_USER || config.username,
+    pass: process.env.DATABASE_PASS || config.password,
+    server: process.env.DATABASE_URL || config.dbURL
 });
 
 var dependencys = {}
@@ -121,17 +121,6 @@ var search = module.exports.search = function(moduleName, cb){
     })
 }
 
-// var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
-//   dbRemote.find({name: moduleName}, function(err, result){
-//     if(err) { console.log(err); cb(err, null); return; }
-//     var id = result[0].id;
-//     dbRemote.relationships(id, function(err, relationships){
-//       if(err) { console.log(err); cb(err, null); return; }
-//       cb(null, relationships);
-//     });
-//   });
-// }
-
 var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
     var queryString = "MATCH (n { name: {name} })-[r:DEPENDS_ON]-(m) RETURN m.name, m.monthlyDownloadSum;"
     dbRemote.query(queryString, {name: moduleName}, function(err, result){
@@ -145,3 +134,12 @@ var fetchRelationships = module.exports.fetchRelationships = function(moduleName
     })
 }
 
+var updateModules = module.exports.updateModules = function(){
+    var databaseNodes = []
+    dbRemote.queryRaw('MATCH (n) RETURN n.name;',function(err,node){
+        node.data.forEach(function(item){
+            databaseNodes.push(item[0])
+        })
+        dbInsert(databaseNodes)
+    })
+}
