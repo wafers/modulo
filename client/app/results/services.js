@@ -34,6 +34,14 @@ angular.module('app')
   }
 }])
 
+.service('ModulePass', function(){
+  this.module = {};
+
+  this.updateModule = function(module){
+    this.module = module;
+  }
+})
+
 .service('versionVis', function(){
   this.circleGraph = function(module){
     var dataStore = module.time;
@@ -255,6 +263,7 @@ angular.module('app')
         .on('mouseout', tip.hide)
   }
 })
+
 .service('Sigma', ['$http', function($http){
   this.data = {};
 
