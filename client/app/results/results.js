@@ -1,6 +1,6 @@
 angular.module('app')
 
-.controller('ResultsController', ['Search', 'ModulePass', '$scope', '$http', function(Search, ModulePass, $scope, $http) {
+.controller('ResultsController', ['Search', 'ModulePass', '$scope', '$http', '$rootScope', function(Search, ModulePass, $scope, $http, $rootScope) {
     $scope.searchInput = Search.navInput;
     
     $scope.$watch(function() {
@@ -15,4 +15,8 @@ angular.module('app')
         ModulePass.updateModule(this.result);
         result.show = !result.show;
     }
+
+    $rootScope.$on('$stateChangeSuccess', function() {
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    });
 }]);
