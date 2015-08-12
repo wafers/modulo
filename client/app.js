@@ -1,5 +1,9 @@
-angular.module('app', ['ui.router'])
- 
+angular.module('app', ['ui.router', 'angular-loading-bar'])
+
+.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+  cfpLoadingBarProvider.includeSpinner = false;
+}])
+
 .config(function($stateProvider, $urlRouterProvider) {
 
   $urlRouterProvider.otherwise('/');
