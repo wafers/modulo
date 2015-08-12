@@ -13,9 +13,7 @@ angular.module('app')
 
   $scope.$watch(function(){ return Sigma.data }, function(){
     $scope.results = Sigma.data;
-    // after the data comes back, call sigma 
-      //
-    console.log($scope.results, Sigma.data)
+    console.log('sigma data:', Sigma.data);
     s = new sigma({ 
             graph: $scope.results,
             container: 'graph-container',
