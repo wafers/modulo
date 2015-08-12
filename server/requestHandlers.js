@@ -14,7 +14,6 @@ var search = module.exports.search = function(req, res){
 var relationships = module.exports.relationships = function(req, res){
   var moduleName = req.body.data;
   helpers.findRelationships(moduleName, function(err, relationships){
-    console.log(relationships);
     res.send(relationships);
   });
 }
