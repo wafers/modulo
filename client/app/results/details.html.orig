@@ -1,0 +1,34 @@
+<div class="details-container">
+	<center><span class="graph-buttons">
+<<<<<<< HEAD
+		<button ng-click="circleGraph()">circles</button>
+		<button ng-click="barGraph()">bars</button>
+		<button ng-click="downloadGraph()">downloads</button>
+		<button ng-click="graphGraph()">graph</button>
+		<button ui-sref="app.results">back</button>
+=======
+	<button ng-click="circleGraph()">circles</button>
+	<button ng-click="barGraph()">bars</button>
+	<button ng-click="downloadGraph()">downloads</button>
+	<button ng-click="graphGraph()">graph</button>
+	<button ui-sref="app.results">back</button>
+>>>>>>> Implements a back button
+	</span></center>
+	<br>
+	  GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS!
+
+	<center>
+<<<<<<< HEAD
+		<div class='versionVis'></div>
+		<svg class="downloadVis"></svg>
+		<div class="graph-container"></div>
+	</center>
+</div>
+=======
+	<div class='versionVis'></div>
+	<svg class="downloadVis"></svg>
+	<div class="graph-container"></div>
+	</center>
+
+</div>
+>>>>>>> Implements a back button

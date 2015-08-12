@@ -1,9 +1,9 @@
 <div class="list-group" style="position: relative" >
   <li class="list-group-item" ng-repeat="result in results" ng-click="toggle(result)">
     <h4 class="list-group-item-heading">{{result.name}}</h4>
-    <p class="list-group-item-text">{{result.description}}</p>
-
-<!--     <div id="content">
+<!--     <p class="list-group-item-text">{{result.description}}</p>
+ -->
+    <!-- <div id="content">
       <div class="A">Last update {{result.lastUpdate}}</div>
       <div class="B"><i class="material-icons" id="star">star</i> {{result.stars}} on NPM</div>
       <div class="C">Used by {{result.length}} packages</div>
@@ -11,7 +11,7 @@
     </div> -->
 
     <div class="details-div" ng-show="result.show">
-      <a ui-sref="app.details">go to graphs</a>
+      <a ui-sref="app.details">view more</a>
     </div>
   </li>
 </div>
