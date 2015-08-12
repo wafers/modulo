@@ -102,3 +102,11 @@ body {
   margin: 0 auto;
   display: center;
 }
+
+.landing-feature-demo, .landing-bios {
+  background-color: #ddd;
+}
+
+.jumbotron {
+  margin-bottom: 0;
+}
