@@ -1,6 +1,6 @@
 angular.module('app')
 
-.service('Search',['$http', '$window', function($http, $window) {
+.service('Search',['$http', function($http) {
   this.navInput = '';
   this.results = {
     searchResults: []
@@ -28,7 +28,6 @@ angular.module('app')
           data[key].lastUpdate = moment(data[key].lastUpdate).format('l');
           data[key].length = 2//data[key].dependents.length;
         }
-        // this.results.searchResults = data;
         context.results.searchResults =  data;
       }).
       error(function(data, status, headers, config) {
