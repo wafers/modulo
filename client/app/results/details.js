@@ -27,7 +27,7 @@ angular.module('app')
   })
 
   $scope.graphGraph = function(){
-    Sigma.getResults($scope.module);
+    Sigma.getResults($scope.module.name);
   }
 
   $scope.downloadGraph = function(){
