@@ -23,14 +23,13 @@ angular.module('app')
     var context = this;
     return $http.post('/search', {'data': this.navInput}).
       success(function(data, status, headers, config) {
-        console.log(data, 'http request data');
-        // for (var key in data) {
-        //   data[key].lastUpdate = moment(data[key].lastUpdate).format('l');
-        //   data[key].length = data[key].dependents.length;
-        // }
-        context.results.searchResults = [];
-        context.results.searchResults = data;
-
+        console.log(data);
+        for (var key in data) {
+          data[key].lastUpdate = moment(data[key].lastUpdate).format('l');
+          data[key].length = 2//data[key].dependents.length;
+        }
+        // this.results.searchResults = data;
+        context.results.searchResults =  data;
       }).
       error(function(data, status, headers, config) {
         console.log('error');
