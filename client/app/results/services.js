@@ -260,3 +260,20 @@ angular.module('app')
         .on('mouseout', tip.hide)
   }
 })
+.service('Sigma', ['$http', function($http){
+  this.data = {};
+
+  this.getResults = function(){
+    var that = this;
+    $http.post('/relationships', {"data": "d3"})
+    .success(function(data){
+      console.log('sigma results', data)
+      that.data = data;
+    })
+    .error(function(data){
+      console.log(data);
+    })
+  }
+
+
+}])

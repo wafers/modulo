@@ -134,9 +134,61 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
     }
   });
 }
+// { SIGMA FORMAT------------------------------------------------
+//   "edges": [
+//     {
+//       "source": "473",
+//       "target": "313",
+//       "id": "6432"
+//     },
+//     ...
+//   ],
+//   "nodes": [
+//     {
+//       "id": "262",
+//       "label": "Sciences De La Terre",
+//       "x": 1412.2230224609,
+//       "y": -2.0559763908386,
+//       "size": 8.540210723877
+//       "color": "rgb(255,204,102)",
+//     },
+//     ...
+//   ]
+// }
 
-var findRelationships = module.exports.findRelationships = db.fetchRelationships;
+// [{
+//    "name" : moduleName,
+//    "monthlyDownloadSum" : number
+// },
+// ]
 
+
+var findRelationships = module.exports.findRelationships = function (moduleName, cb){
+  db.fetchRelationships(moduleName, function(err, relationships){
+    if(err) { console.log(err); cb(err, null); return; }
+    // format for SIGMA ---- ADD A UNIT CIRCLE FOR POSITIONING!
+    var edges = [], nodes = [];
+    var nodeId = 2, edgeId = 1; 
+    var x = 1, y = 1;
+    nodes.push(makeNode('1', moduleName, 0, 0, 10, "rgb(255,0,0)")); // make initial
+    relationships.forEach(function(row){
+      var newNode = makeNode(""+nodeId, row.name, x, y, 5, "rgb(255,123,102)")
+      var newEdge = makeEdge(""+nodeId, '1', ""+edgeId);
+      nodeId++; edgeId++; x++; y++;
+      nodes.push(newNode);
+      edges.push(newEdge);
+    });
+    cb(null, {edges: edges, nodes: nodes});
+  });
+
+  function makeNode(idStr, labelStr, x, y, size, colorStr){
+    return {id: idStr, label: labelStr, x: Math.random(), y: Math.random(), size: size, color: colorStr};
+  }
+
+  function makeEdge(sourceIdStr, targetIdStr, idStr){
+    return {source: sourceIdStr, target: targetIdStr, id: idStr}
+  }
+}
 
 // var detailedSearchResults = module.exports.detailedSearchResults = function(names, cb){
 //   var allSearchData = [];
