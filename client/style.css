@@ -66,3 +66,9 @@
 .show-div {
   height: 100px;
 }
+
+.graphs-container {
+  width: 80%;
+  padding-top: 20px;
+  margin: 0 auto;
+}
