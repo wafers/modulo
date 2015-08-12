@@ -16,12 +16,12 @@ angular.module('app')
     // after the data comes back, call sigma 
       //
     console.log($scope.results, Sigma.data)
-    debugger;
     s = new sigma({ 
             graph: $scope.results,
             container: 'graph-container',
             settings: {
-                defaultNodeColor: '#ec5148'
+              defaultNodeColor: '#ec5148',
+              defaultEdgeColor: 'rgb(255,255,255,0.3)'
             }
     });
   })

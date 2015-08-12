@@ -170,9 +170,9 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
     var edges = [], nodes = [];
     var nodeId = 2, edgeId = 1; 
     var x = 1, y = 1;
-    nodes.push(makeNode('1', moduleName, 0, 0, 10, "rgb(255,123,102)")); // make initial
+    nodes.push(makeNode('1', moduleName, 0, 0, 10, "rgb(255,0,0)")); // make initial
     relationships.forEach(function(row){
-      var newNode = makeNode(""+nodeId, row.name, x, y, 5, "rgb(0,0,0)")
+      var newNode = makeNode(""+nodeId, row.name, x, y, 5, "rgb(255,123,102)")
       var newEdge = makeEdge(""+nodeId, '1', ""+edgeId);
       nodeId++; edgeId++; x++; y++;
       nodes.push(newNode);
@@ -182,7 +182,7 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
   });
 
   function makeNode(idStr, labelStr, x, y, size, colorStr){
-    return {id: idStr, label: labelStr, x: x, y: y, size: size, color: colorStr};
+    return {id: idStr, label: labelStr, x: Math.random(), y: Math.random(), size: size, color: colorStr};
   }
 
   function makeEdge(sourceIdStr, targetIdStr, idStr){
