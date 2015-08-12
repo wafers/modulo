@@ -6,6 +6,7 @@ var routes = require('./routes.js');
 
 var app = express();
 
+app.use('/scripts', express.static(__dirname+'/../bower_components'));
 app.use(express.static(__dirname+'/../client'));
 app.use(bodyParser.json());
 routes(app);

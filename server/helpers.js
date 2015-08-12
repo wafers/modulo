@@ -190,23 +190,6 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
   }
 }
 
-// var detailedSearchResults = module.exports.detailedSearchResults = function(names, cb){
-//   var allSearchData = [];
-//   var cbCount = 0;
-//   names.forEach(function(moduleName){
-//     db.search(moduleName, function(err, fullModuleData){
-//       if(err) {console.log(err); cb(err, null); }
-//       else{
-//         allSearchData.push(fullModuleData);
-//         cbCount++;
-//         if(cbCount === names.length){
-//           cb(null, allSearchData);
-//         }
-//       }
-//     })
-//   })
-// }
-
 // Used by the database for gathering detailed stats. Takes in a module name and sends back a stats object.
 var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, cb){
   var module = {name: moduleName};
