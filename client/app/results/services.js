@@ -11,22 +11,19 @@ angular.module('app')
   }
 
   this.submit = function(val) {
-    console.log(val)
     this.navInput = val;
-    console.log(this.navInput, 'this.submit in services')
     this.results = this.getResults(this.navInput);
     return this.results;
   }
 
   this.getResults = function() {
-    console.log("test getResults")
     var context = this;
     return $http.post('/search', {'data': this.navInput}).
       success(function(data, status, headers, config) {
-        console.log(data);
-        for (var key in data) {
-          data[key].lastUpdate = moment(data[key].lastUpdate).format('l');
-          data[key].length = 2//data[key].dependents.length;
+        console.log('search results',data);
+        for (var i=0; i<data.length; i++) {
+          //data[i].lastUpdate = moment(data[i].time.modified).format('l');
+          //data[i].length = 2//data[key].dependents.length;
         }
         context.results.searchResults =  data;
       }).
@@ -36,6 +33,14 @@ angular.module('app')
       });
   }
 }])
+
+.service('ModulePass', function(){
+  this.module = {};
+
+  this.updateModule = function(module){
+    this.module = module;
+  }
+})
 
 .service('versionVis', function(){
   this.circleGraph = function(module){
@@ -160,7 +165,6 @@ angular.module('app')
     }
     for (var i=0; i<dataStoreArray.length; i++) {
       if (dataStoreArray[i].split('.')[2]-0>=0){ // remove alpha/beta testing versions
-        console.log(last, '->', dataStoreArray[i])
         var key = dataStoreArray[i];
         var prevKey = last;
         var versionObj = {};
@@ -259,14 +263,14 @@ angular.module('app')
         .on('mouseout', tip.hide)
   }
 })
+
 .service('Sigma', ['$http', function($http){
   this.data = {};
 
-  this.getResults = function(){
+  this.getResults = function(moduleName){
     var that = this;
-    $http.post('/relationships', {"data": "d3"})
+    $http.post('/relationships', {"data": moduleName})
     .success(function(data){
-      console.log('sigma results', data)
       that.data = data;
     })
     .error(function(data){
