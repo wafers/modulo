@@ -1,19 +1,18 @@
-<center><span class="graph-buttons">
-<div class="graphs-container">
-  GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS! GRAPHS!
-</div>
-<br/>{{module.name}}<br/>
-<button ng-click="circleGraph()">circles</button>
-<button ng-click="barGraph()">bars</button>
-<button ng-click="downloadGraph()">downloads</button>
-<button ng-click="graphGraph()">graph</button>
-<button ui-sref="app.results">back</button>
-</span></center>
-<br>
-<center>
-<div class='versionVis'></div>
-<svg class="downloadVis"></svg>
-<div id="graph-container"></div>
-</center>
-
+<div class="details-container">
+	<center>
+    	<h3>{{module.name}}</h3>
+		<span class="graph-buttons">
+			<button ng-click="circleGraph()">circles</button>
+			<button ng-click="barGraph()">bars</button>
+			<button ng-click="downloadGraph()">downloads</button>
+			<button ng-click="graphGraph()">graph</button>
+			<button ui-sref="app.results">back</button>
+	    </span>
+    </center>
+	<br>
+	<center>
+		<div class='versionVis'></div>
+		<svg class="downloadVis"></svg>
+		<div id="graph-container"></div>
+	</center>
 </div>

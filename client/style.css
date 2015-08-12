@@ -73,7 +73,7 @@
   margin: 0 auto;
 }
 
-.graph-container{
+#graph-container{
   position: absolute;
   width:80%;
   height:100%;
