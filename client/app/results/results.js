@@ -11,6 +11,7 @@ angular.module('app')
         // function() { return Search.showResults() };
         // $scope.results();
     $scope.toggle = function(result) {
+        console.log('clicked module:', this.result)
         result.show = !result.show;
     }
 }]);
