@@ -1,5 +1,5 @@
-var helpers = require(__dirname + '/server/helpers.js')
-var config = (process.env.DATABASE_URL) ? process.env.DATABASE_URL :  require(__dirname + '/server/config').db;
+var helpers = require(__dirname + '/helpers.js')
+var config = (process.env.DATABASE_URL) ? process.env.DATABASE_URL :  require(__dirname + '/config').db;
 var fs = require('fs')
 
 var dbRemote = require("seraph")({
