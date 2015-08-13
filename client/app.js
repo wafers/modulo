@@ -29,6 +29,11 @@ angular.module('app', ['ui.router', 'angular-loading-bar'])
 
  .state('app.details', {
     templateUrl: './app/results/details.html',
-    controller: 'DetailsController'
+    controller: 'DetailsController',
+    resolve: {
+      init: function(versionVis) {
+        versionVis.resetGraphCheck()
+      }
+    }
   })
 });
