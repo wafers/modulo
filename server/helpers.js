@@ -6,11 +6,15 @@ var moment = require('moment');
 var _ = require('underscore');
 var request = require('request');
 var cheerio = require('cheerio');  
-var npm = new Registry({});
-var db = require('./dbParsing.js');
+var npm = new Registry({
+  registry: "http://skimdb.npmjs.com/registry/",
+  retries: 3
+});
+var db = require(__dirname + '/dbParsing.js');
 
-module.exports = {};
+// module.exports = {};
 
+console.log("loaded helpers")
 ///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
 var findDependents = module.exports.findDependents = function(module, cb){
@@ -206,7 +210,7 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
       module['readme'] = results[0].readme;
       module['time'] = results[0].time;
       module['repository'] = results[0].repository;
-      module['url'] = results[0]['homepage'].url;
+      module['url'] = results[0]['homepage'].url || 'None Provided';
       module['keywords'] = results[0].keywords;
       module['starred'] = results[0].starred;
       findMonthlyDownloads(module, function(err, moduleWithDownloads){
@@ -229,51 +233,22 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
 
 // Can be used to read in the names of all NPM modules. Sends back an array of all module names.
 var getAllNames = module.exports.getAllNames = function (cb){
-  fs.readFile('./server/npm_module_names.txt', 'utf-8', function(err, results){
-  var names = JSON.parse(results);
-  console.log(names.length, 'modules found'); 
-  cb(names); 
+  request({
+    url:'https://skimdb.npmjs.com/registry/_all_docs',
+    json:true 
+  }, function(err,res){
+    if(err)console.log(err)
+    // var jsonResponse = res.body
+    var names = []
+    var idNames = res.body["rows"]
+    idNames.forEach(function(item){
+      names.push(item["id"])
+    })
+    console.log(names.length, 'modules found'); 
+    cb(names);
   })
 }
 
-// moduleDataBuilder('lodash', function(err, module){
-//   var filePath = "./client/dlviz/" + module.name + ".tsv";
-//   console.log(module.downloads);
-//   fs.appendFileSync(filePath, "day" + "\t" + "downloads" + "\n");
-//   module.downloads.forEach(function(row){
-//     fs.appendFileSync(filePath, "" + row.day + "\t" + row.count + "\n");    
-//   });
-// });
-
-//EXAMPLE USE OF getAllNames and moduleDataBuilder:
-/*
-var helpers = require('./helpers.js');
-
-var names = [];
-
-helpers.getAllNames(function(nameArray){
-  names = nameArray; // 'names' contains ALL npm module names
-  console.log(names.length) // => ~170k
-  namesubset = names.slice(0,1000) // To run only the first 1000 names
-  putIntoDB(namesubset);
-});
-
-function putIntoDB(nameArray) {
-  var finished = 0;
-  for (var i=0; i<nameArray.length; i++){
-    helpers.moduleDataBuilder(nameArray[i], function(err, res){
-      if (err) ...
-      else {
-        finished++;
-        save deps.
-        insert. 
-        if (finished === names.length)
-          insert relationships
-      }
-    })
-  }
+var updateMissingData = module.exports.updateMissingData = function(){
+  db.updateModules();
 }
-
-
-*/
-
