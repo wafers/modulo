@@ -3,7 +3,7 @@
 #d3d3d3 grey
 */
 .red {
-  color: #b83130; 
+  background-color: #b83130; 
 }
 
 .grey {
@@ -97,7 +97,7 @@
 }
 
 .landing-feature-demo, .landing-bios {
-  text-align: center;
+  /*text-align: center;*/
   background-color: #ddd;
 }
 
@@ -109,4 +109,24 @@
 .center-me {
   width: 75%;
   margin: auto;
+}
+
+.demo-gif {
+  /*padding-left: 25%;*/
+  /*padding-right: 25%;*/
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.demo-text{
+  padding-top:50px;
+}
+
+.glyphicon {
+  font-size: 25px;
+}
+
+.demo-img {
+  width: 450px;
+  height: 350px;
 }
