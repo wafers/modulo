@@ -141,8 +141,9 @@ body {
   padding-top:50px;
 }
 
-.glyphicon {
+.glyphicon-thumbs-up{
   font-size: 25px;
+  color: green;
 }
 
 .demo-img {
