@@ -1,23 +1,46 @@
+body {
+  font-family: arial, sans-serif;
+}
+
+.nav-container {
+  padding: 20px;
+  background-color: rgba(0,0,0,0.08);
+  border-bottom: 1px solid #d3d3d3;
+  margin: 0 auto;
+}
+
 .title {
-  padding-top: 10px;
   text-align: center;
+}
+.modulo-img {
+  padding-top: 10px;
+  /*padding-left: 20px;*/
+  width: 250px;
+  float: left;
+}
+
+.title > a {
+  color: white;
+  text-decoration: none;
+}
+
+.input-group {
+  float: none;
+  position: relative;
+  padding-top: 10px;
+  padding-left: 40px;
+  width: 600px;
+  height: auto;
+}
+
+.input-group .form-control {
+  height: 44px;
 }
 
 .list-group {
   width: 80%;
   padding-top: 20px;
   margin: 0 auto;
-}
-
-.input-group {
-  padding-top: 10px;
-  width: 500px;
-  height: auto;
-  margin: 0 auto;
-}
-
-.input-group .form-control {
-  height: 44px;
 }
 
 #star {
