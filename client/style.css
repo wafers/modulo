@@ -7,8 +7,20 @@ body {
   background-color: rgba(0,0,0,0.08);
   border-bottom: 1px solid #d3d3d3;
 }
+
 .search-container {
   width: 900px;
+}
+
+.red {
+  color: #b83130; 
+}
+
+.grey {
+  background-color: #d3d3d3;
+}
+
+.title {
   padding-top: 10px;
   margin: auto;
 }
@@ -104,9 +116,16 @@ body {
 }
 
 .landing-feature-demo, .landing-bios {
+  text-align: center;
   background-color: #ddd;
 }
 
 .jumbotron {
+  margin-top: 30px;
   margin-bottom: 0;
+  padding: 50px;
+}
+.center-me {
+  width: 75%;
+  margin: auto;
 }
