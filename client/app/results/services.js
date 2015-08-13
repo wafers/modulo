@@ -274,7 +274,7 @@ angular.module('app')
             // Position circle at correct y-position
             .attr("cy", function(d){return height - d.majorVersion*100})
             // Size and color of circle based on update 'importance'
-            .attr("r", function(d){return (d.majorVersion+1) > 0 ? (d.majorVersion+1) : 1})
+            .attr("r", function(d){return (d.majorVersion+1) > 0 ? (d.majorVersion+5) : 5})
             .attr("fill", function(d) {return '#'+colorScale(d.majorVersion)})
             .attr("opacity", 0.7)
             .on('mouseover', tip.show)
