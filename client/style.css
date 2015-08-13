@@ -170,13 +170,12 @@ h3 {
 }
 
 .glyphicon-red{
-  color: red;
+  color: #ff0200;
   font-size: 25px;
 }
 
 .demo-img {
-  width: 450px;
-  height: 350px;
+  width: 700px;
 }
 
 .landing-footer{
