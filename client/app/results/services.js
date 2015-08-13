@@ -22,8 +22,14 @@ angular.module('app')
       success(function(data, status, headers, config) {
         console.log('search results',data);
         for (var i=0; i<data.length; i++) {
-          //data[i].lastUpdate = moment(data[i].time.modified).format('l');
-          //data[i].length = 2//data[key].dependents.length;
+          if (data[i].downloads) data[i].downloads = JSON.parse(data[i].downloads);
+          if (data[i].time) {
+            data[i].time = JSON.parse(data[i].time);
+            data[i].lastUpdate = moment(data[i].time.modified).fromNow();
+          } else {
+            data[i].lastUpdate = moment().fromNow();
+          }
+
         }
         context.results.searchResults =  data;
       }).
