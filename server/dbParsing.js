@@ -12,8 +12,6 @@ var dependencys = {}
 
 var dbInsert = function(collection) {
     var finished = 0;
-    console.log(__dirname + '/helpers.js')
-    console.log(helpers, "HELPERS")
     for (var y = 0; y < collection.length; y++) {
         helpers.moduleDataBuilder(collection[y], function(err, data) {
             if (err) {
@@ -104,8 +102,7 @@ var insertBatch = function(collection) {
 }
 
 // helpers.getAllNames(function(nameArr) {
-    // insertBatch(nameArr);
-    // dbInsert(nameArr.slice(150000, 160000))
+//     // insertBatch(nameArr);
 // })
 
 // DB endpoint setup
@@ -145,3 +142,4 @@ var updateModules = module.exports.updateModules = function(){
         dbInsert(databaseNodes)
     })
 }
+
