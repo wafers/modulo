@@ -170,9 +170,9 @@ h3 {
   padding-top:50px;
 }
 
-.glyphicon-thumbs-up{
+.glyphicon-red{
+  color: red;
   font-size: 25px;
-  color: green;
 }
 
 .demo-img {
@@ -184,4 +184,14 @@ h3 {
   background-color: #CB3837;
   color: #fff;
   text-align: right;
+}
+
+.feature-card{
+  padding-top: 25px;
+  background-color: white;
+}
+
+.landing-advanced-features{
+  background-color: #eee;
+  padding-bottom: 25px;
 }
