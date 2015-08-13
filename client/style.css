@@ -25,6 +25,10 @@ h3 {
   font-family: Roboto-Light;
 }
 
+.center-me > h3 {
+  color: #b83130;
+}
+
 .nav-container {
   padding: 20px;
   background-color: rgba(0,0,0,0.08);
@@ -148,14 +152,9 @@ h3 {
   background-color: #ddd;
 }
 
-.jumbotron {
-  margin-top: 0px;
-  margin-bottom: 0;
-  padding: 50px;
-}
 .center-me {
-  width: 75%;
-  margin: auto;
+  margin: 0 auto;
+  width: 90%;
   text-align: center;
 }
 
