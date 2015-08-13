@@ -94,6 +94,10 @@ h3 {
   margin: 0 auto;
 }
 
+.list-group-item:hover {
+  cursor: pointer;
+}
+
 #star {
   font-size: 12px;
 }
@@ -129,20 +133,27 @@ h3 {
   -webkit-box-sixing: border-box;
   -moz-box-sizing: border-box; 
   box-sizing: border-box;
+  display: block;
 }
 
 .show-div {
   height: 100px;
 }
 
-.results-container {
-
-}
-
 .details-container {
   width: 95%;
   padding-top: 20px;
   margin: 0 auto;
+}
+.details-div {
+  padding: 20px;
+  width: 100%;
+  float: none;
+  display: block;
+}
+
+.score-update .score-star .score-dependent .score-download {
+  float: left;
 }
 
 #graph-container{
