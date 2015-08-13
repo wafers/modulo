@@ -1,11 +1,12 @@
 <div class="nav-container">
-	
-	<a ui-sref="app"><img src="/assets/logo.gif" class="modulo-img"></a>
+	<div class="search-container">
+		<a ui-sref="app"><img src="/assets/logo.gif" class="modulo-img"></a>
 
-	<form ng-submit="submit()" ng-controller="NavController" class="input-group">
-		<input type="text" class="form-control" placeholder="find packages" ng-model="searchInput">
-		<span class="input-group-btn">
-			<button type="submit" class="btn btn-default" type="button" ui-sref="app.results" ng-click="submit()"><i class="material-icons">search</i></button>
-		</span>
-	</form>
+		<form ng-submit="submit()" ng-controller="NavController" class="input-group">
+			<input type="text" class="form-control" placeholder="find packages" ng-model="searchInput">
+			<span class="input-group-btn">
+				<button type="submit" class="btn btn-default" type="button" ui-sref="app.results" ng-click="submit()"><i class="material-icons">search</i></button>
+			</span>
+		</form>
+  </div>
 </div>

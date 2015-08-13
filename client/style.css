@@ -6,28 +6,20 @@ body {
   padding: 20px;
   background-color: rgba(0,0,0,0.08);
   border-bottom: 1px solid #d3d3d3;
-  margin: 0 auto;
+}
+.search-container {
+  width: 900px;
+  padding-top: 10px;
+  margin: auto;
 }
 
-.title {
-  text-align: center;
-}
 .modulo-img {
-  padding-top: 10px;
-  /*padding-left: 20px;*/
-  width: 250px;
+  width: 230px;
   float: left;
 }
 
-.title > a {
-  color: white;
-  text-decoration: none;
-}
-
 .input-group {
-  float: none;
   position: relative;
-  padding-top: 10px;
   padding-left: 40px;
   width: 600px;
   height: auto;
@@ -88,6 +80,10 @@ body {
 
 .show-div {
   height: 100px;
+}
+
+.results-container {
+
 }
 
 .details-container {
