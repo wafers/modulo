@@ -145,15 +145,12 @@ h3 {
   padding-top: 20px;
   margin: 0 auto;
 }
+
 .details-div {
   padding: 20px;
   width: 100%;
   float: none;
   display: block;
-}
-
-.score-update .score-star .score-dependent .score-download {
-  float: left;
 }
 
 #graph-container{
