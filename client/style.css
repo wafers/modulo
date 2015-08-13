@@ -190,7 +190,20 @@ h3 {
   background-color: white;
 }
 
+.feature-card-img{
+  width: 100px;
+  background-color: white;
+}
+
 .landing-advanced-features{
   background-color: #eee;
   padding-bottom: 25px;
+}
+
+.feature-explanation{
+  font-size: 15px;
+}
+
+.font-red{
+  color: #B83130
 }
