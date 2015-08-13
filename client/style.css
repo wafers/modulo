@@ -1,5 +1,28 @@
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/roboto/Roboto-Regular.ttf);
+}
+
+@font-face {
+  font-family: Roboto-Thin;
+  src: url(./assets/roboto/Roboto-Thin.ttf);
+}
+
+@font-face {
+  font-family: Roboto-Light;
+  src: url(./assets/roboto/Roboto-Light.ttf);
+}
+
 body {
-  font-family: arial, sans-serif;
+  font-family: Roboto-Light;
+}
+
+h1 {
+  font-family: Roboto-Thin;
+}
+
+h3 {
+  font-family: Roboto-Light;
 }
 
 .nav-container {
@@ -10,6 +33,7 @@ body {
 
 .search-container {
   width: 900px;
+  margin: auto;
 }
 
 .red {
@@ -61,25 +85,25 @@ body {
 }
 
 #content .A {
-  width: 44%;
+  width: 50%;
   height: 40%;
   float: right;
 }
 
 #content .B {
-  width: 44%;
+  width: 50%;
   height: 40%;
   float: right;
 }
 
 #content .C {
-  width: 44%;
+  width: 50%;
   height: 40%;
   float: right;
 }
 
 #content .D {
-  width: 42%;
+  width: 50%;
   height: 40%;
   float: right;
 }
@@ -115,6 +139,10 @@ body {
   display: center;
 }
 
+.landing-explanation {
+  background-color: #fff;
+}
+
 .landing-feature-demo, .landing-bios {
   /*text-align: center;*/
   background-color: #ddd;
@@ -128,6 +156,7 @@ body {
 .center-me {
   width: 75%;
   margin: auto;
+  text-align: center;
 }
 
 .demo-gif {
@@ -153,4 +182,6 @@ body {
 
 .landing-footer{
   background-color: #CB3837;
+  color: #fff;
+  text-align: right;
 }
