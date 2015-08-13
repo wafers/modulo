@@ -1,6 +1,6 @@
 angular.module('app')
 
-.controller('DetailsController', ['DownloadVis', 'Sigma', 'versionVis','ModulePass', '$scope', function(DownloadVis, Sigma, versionVis, ModulePass, $scope){
+.controller('DetailsController', ['DownloadVis', 'Sigma', 'versionVis','ModulePass', '$scope', '$rootScope', function(DownloadVis, Sigma, versionVis, ModulePass, $scope, $rootScope){
   $scope.module = ModulePass.module;
 
   // Assigning module for demonstration purposes
@@ -32,6 +32,14 @@ angular.module('app')
             }
     });
   })
+  
+  $scope.$on('$viewContentLoaded', 
+    function(event){ $scope.clearSigma() })
+
+  $scope.clearSigma = function() {
+    Sigma.clearSigma();
+    $state.go('app.results');
+  }
 
   $scope.graphGraph = function(){
     Sigma.getResults($scope.module.name);

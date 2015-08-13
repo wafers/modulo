@@ -5,7 +5,7 @@ angular.module('app')
   this.results = {
     searchResults: []
   }
-
+  
   this.showResults = function() {
     return this.results;
   }
