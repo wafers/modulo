@@ -13,7 +13,7 @@ body {
 }
 
 .red {
-  color: #b83130; 
+  background-color: #b83130; 
 }
 
 .grey {
@@ -116,7 +116,7 @@ body {
 }
 
 .landing-feature-demo, .landing-bios {
-  text-align: center;
+  /*text-align: center;*/
   background-color: #ddd;
 }
 
@@ -128,4 +128,24 @@ body {
 .center-me {
   width: 75%;
   margin: auto;
+}
+
+.demo-gif {
+  /*padding-left: 25%;*/
+  /*padding-right: 25%;*/
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.demo-text{
+  padding-top:50px;
+}
+
+.glyphicon {
+  font-size: 25px;
+}
+
+.demo-img {
+  width: 450px;
+  height: 350px;
 }
