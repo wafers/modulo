@@ -5,7 +5,7 @@ angular.module('app')
   this.results = {
     searchResults: []
   }
-
+  
   this.showResults = function() {
     return this.results;
   }
@@ -98,7 +98,7 @@ angular.module('app')
           width = 1000 - margin.left - margin.right,
           height = 300 - margin.top - margin.bottom;
           buckets = 4;
-          colors = ['315B7E', '1699C5', '00CCFF'];
+          colors = ['d3d3d3', 'C68282', 'b83130'];
 
       var x = d3.time.scale() 
         .range([0, width]);
@@ -205,7 +205,7 @@ angular.module('app')
           width = 1000 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
           buckets = 4;
-          colors = ['000000', '315B7E', '1699C5', '00CCFF'];
+          colors = ['d3d3d3', 'CBA2A2', 'C16A69', 'b83130'];
 
       var x = d3.time.scale() 
         .range([0, width])
@@ -231,8 +231,8 @@ angular.module('app')
         .offset([-10, 0])
         .html(function(d) {
           var date = d.date.toString().substring(3,15);
-          var str = "<strong>Version:</strong> <span style='color:#00CCFF'>" + d.versionLabel + "</span>";
-          str += "</br><string>Date:</strong><span style='color:#00CCFF'> " + date + "</span>";
+          var str = "<strong>Version:</strong> <span class='tip-values'>" + d.versionLabel + "</span>";
+          str += "</br><string>Date:</strong><span class='tip-values'> " + date + "</span>";
           return str;
         })
       
@@ -323,7 +323,7 @@ angular.module('app')
           width = 1000 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
           buckets = 4;
-          colors = ['315B7E', '1699C5', '00CCFF'];
+          colors = ['d3d3d3', 'CBA2A2', 'C16A69', 'b83130'];
 
       var x = d3.time.scale() 
         .domain([dateFormat(new Date(2014, 0, 1)), dateFormat(new Date(2015, 7, 7))]) 
@@ -350,8 +350,8 @@ angular.module('app')
         .offset([-10, 0])
         .html(function(d) {
           var date = d.date.toString().substring(3,15);
-          var str = "<strong>Version:</strong> <span style='color:#00CCFF'>" + d.versionLabel + "</span>";
-          str += "</br><string>Date:</strong><span style='color:#00CCFF'> " + date + "</span>";
+          var str = "<strong>Version:</strong> <span style='color:#b83130'>" + d.versionLabel + "</span>";
+          str += "</br><string>Date:</strong><span style='color:#b83130'> " + date + "</span>";
           return str;
         })    
 
@@ -410,6 +410,14 @@ angular.module('app')
 .service('Sigma', ['$http', function($http){
   this.data = {};
 
+  this.clearSigma = function() {
+    // Clear out Sigma graph
+    var myNode = document.getElementById("graph-container");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+  }
+
   this.getResults = function(moduleName){
     var that = this;
     $http.post('/relationships', {"data": moduleName})
@@ -425,8 +433,8 @@ angular.module('app')
 .service('DownloadVis', function(){
   this.downloadGraph = function(moduleName){
     var dateFormat = d3.time.format("%Y-%m-%d");
-    var margin = {top: 20, right: 30, bottom: 30, left: 80},
-        width = 960 - margin.left - margin.right,
+    var margin = {top: 50, right: 50, bottom: 50, left: 50},
+        width = 1000 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
     var x = d3.time.scale()
