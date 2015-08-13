@@ -20,6 +20,7 @@ body {
 h1 {
   font-family: Roboto-Thin;
   margin: 0px;
+  font-size: 30px;
 }
 
 h3 {
@@ -75,8 +76,20 @@ h3 {
   padding-bottom: 0;
 }
 
+.module-title {
+  width: 25%;
+  display: inline-block;
+}
+
+.module-stats {
+  width: 70%;
+  display: inline-block;
+  text-align: right;
+  font-size: 50%;
+}
+
 .list-group {
-  width: 80%;
+  width: 85%;
   padding-top: 20px;
   margin: 0 auto;
 }
@@ -86,9 +99,8 @@ h3 {
 }
 
 #content {
-  width: 75%;
   float: left;
-  font-size: 11px;
+  font-size: 16px;
   padding: 2px;
   padding-top: 10px;
 }
@@ -99,17 +111,17 @@ h3 {
 }
 
 .star-count {
-  width: 22%;
+  width: 19%;
   float: right;
 }
 
 .dependent-number {
-  width: 23%;
+  width: 24%;
   float: right;
 }
 
 .monthly-downloads {
-  width: 25%;
+  width: 27%;
   float: right;
 }
 
