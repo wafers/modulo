@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "homepage": "https://github.com/wafers/modulo#readme",
   "dependencies": {
     "body-parser": "^1.13.3",
+    "bower": "^1.4.1",
     "cheerio": "^0.19.0",
     "express": "^4.13.3",
     "moment": "^2.10.6",
