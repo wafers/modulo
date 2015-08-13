@@ -20,6 +20,9 @@ angular.module('app')
 
   $scope.$watch(function(){ return Sigma.data }, function(){
     $scope.results = Sigma.data;
+
+    Sigma.clearSigma();
+
     s = new sigma({ 
             graph: $scope.results,
             container: 'graph-container',

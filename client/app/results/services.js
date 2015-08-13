@@ -410,6 +410,14 @@ angular.module('app')
 .service('Sigma', ['$http', function($http){
   this.data = {};
 
+  this.clearSigma = function() {
+    // Clear out Sigma graph
+    var myNode = document.getElementById("graph-container");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+  }
+
   this.getResults = function(moduleName){
     var that = this;
     $http.post('/relationships', {"data": moduleName})
