@@ -121,7 +121,7 @@ body {
 }
 
 .jumbotron {
-  margin-top: 30px;
+  margin-top: 0px;
   margin-bottom: 0;
   padding: 50px;
 }
@@ -149,4 +149,8 @@ body {
 .demo-img {
   width: 450px;
   height: 350px;
+}
+
+.landing-footer{
+  background-color: #CB3837;
 }
