@@ -1,3 +1,15 @@
+/*
+#b83130 red
+#d3d3d3 grey
+*/
+.red {
+  color: #b83130; 
+}
+
+.grey {
+  background-color: #d3d3d3;
+}
+
 .title {
   padding-top: 10px;
   text-align: center;
@@ -85,9 +97,16 @@
 }
 
 .landing-feature-demo, .landing-bios {
+  text-align: center;
   background-color: #ddd;
 }
 
 .jumbotron {
+  margin-top: 30px;
   margin-bottom: 0;
+  padding: 50px;
+}
+.center-me {
+  width: 75%;
+  margin: auto;
 }
