@@ -10,6 +10,10 @@ angular.module('app')
     versionVis.circleGraph($scope.module)
   }
 
+  $scope.lineGraph = function() {
+    versionVis.lineGraph($scope.module)
+  }
+
   $scope.barGraph = function() {
     versionVis.barGraph($scope.module)
   }
