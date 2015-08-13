@@ -159,6 +159,7 @@ h3 {
 }
 
 .demo-gif {
+  padding-right: 30px;
   /*padding-left: 25%;*/
   /*padding-right: 25%;*/
   margin-bottom: 30px;
@@ -201,8 +202,10 @@ h3 {
 
 .feature-explanation{
   font-size: 15px;
+  text-align: center;
 }
 
 .font-red{
-  color: #B83130
+  color: #B83130;
+  text-align: center;
 }
