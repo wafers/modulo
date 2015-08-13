@@ -19,6 +19,7 @@ body {
 
 h1 {
   font-family: Roboto-Thin;
+  margin: 0px;
 }
 
 h3 {
@@ -69,6 +70,11 @@ h3 {
   height: 44px;
 }
 
+.page-header {
+  margin: 0;
+  padding-bottom: 0;
+}
+
 .list-group {
   width: 80%;
   padding-top: 20px;
@@ -80,35 +86,30 @@ h3 {
 }
 
 #content {
-  width: 250px;
-  height: 30px;
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  font-size: 10px;
+  width: 75%;
+  float: left;
+  font-size: 11px;
+  padding: 2px;
+  padding-top: 10px;
 }
 
-#content .A {
-  width: 50%;
-  height: 40%;
+.last-update {
+  width: 30%;
   float: right;
 }
 
-#content .B {
-  width: 50%;
-  height: 40%;
+.star-count {
+  width: 22%;
   float: right;
 }
 
-#content .C {
-  width: 50%;
-  height: 40%;
+.dependent-number {
+  width: 23%;
   float: right;
 }
 
-#content .D {
-  width: 50%;
-  height: 40%;
+.monthly-downloads {
+  width: 25%;
   float: right;
 }
 
