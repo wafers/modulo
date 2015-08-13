@@ -25,7 +25,7 @@ angular.module('app')
             container: 'graph-container',
             settings: {
               defaultNodeColor: '#ec5148',
-              defaultEdgeColor: 'rgb(255,255,255,0.3)'
+              defaultEdgeColor: '#d3d3d3'
             }
     });
   })

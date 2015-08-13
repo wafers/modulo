@@ -5,7 +5,7 @@
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
+  stroke: #000000;
   shape-rendering: crispEdges;
 }
 
@@ -14,24 +14,29 @@
 
 .line {
   fill: none;
-  stroke: steelblue;
+  stroke: #b83130;
   stroke-width: 1.5px;
 }
 
 .circle {
-  stroke: white;
+  stroke: #FFFFFF;
+  opacity: 0.5;
   stroke-width: 1.5px;
 }
 
 .circle:hover, .bar:hover {
-  fill: brown;
+  fill: #C78A8A;
 }
 
 .d3-tip {
   line-height: 1;
   font-weight: bold;
   padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
+  background: rgba(211, 211, 211, 0.9);
+  color: #FFFFFF;
   border-radius: 2px;
+}
+
+.tip-values {
+  color: #b83130;
 }
