@@ -188,17 +188,10 @@ h3 {
 
 .feature-card{
   padding-top: 25px;
-  background-color: #edd;
+  background-color: white;
 }
 
-/*.card-left{
-  margin-left: 30px;
-}
-
-.card-right{
-  margin-right: 30px;  
-}
-*/
 .landing-advanced-features{
   background-color: #eee;
+  padding-bottom: 25px;
 }
