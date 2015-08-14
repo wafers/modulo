@@ -78,8 +78,7 @@ span {
 .list-group-item:hover {
   cursor: pointer;
   color: #4c1313;
-  border-color: #4c1313;
-  border-bottom: 1px solid #4c1313;
+  border-color: #8fafa2;
   margin-bottom: 1px;
 }
 
@@ -164,6 +163,11 @@ span {
   width: 100%;
   float: none;
   display: block;
+}
+
+.detail-link {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 #graph-container{
