@@ -99,10 +99,7 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
           });
         }
 
-
         this.results = results;
-
-        console.log('First result:',this.results[0])
 
         cb(null, this.results);
     }.bind(this));
@@ -116,28 +113,32 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
   npmSearchScraper(searchInput, function(err, npmSearchResults){
     if(err) { console.log(err); cb(err, null);}
     else{
-      var allSearchData = [], cbCount = 0;
-      var names = npmSearchResults.map(function(row){ return row.name }); // map to namesArr
+      if (npmSearchResults === 'No results found') {
+        cb(null, npmSearchResults);
+      } else {
+        var allSearchData = [], cbCount = 0;
+        var names = npmSearchResults.map(function(row){ return row.name }); // map to namesArr
 
-      names.forEach(function(moduleName){ // iterates through each moduleName and queries the database
-        db.search(moduleName, function(err, fullModuleData){
-          if(err) {console.log(err); cb(err, null); }
-          else{
-            if(fullModuleData) allSearchData.push(fullModuleData);     // ONLY if the data is defined do you push to allSearchData
-            cbCount++;
-            if(cbCount === names.length){
-              // Logic only runs if this is the last async callback from db.search
-              var returnArr = names.map(function(name){
-                // make the data be sorted once again b/c it comes back in random order
-                return allSearchData.filter(function(obj){
-                  return obj.name === name;
-                })[0]
-              })
-              cb(null, _.compact(returnArr));
+        names.forEach(function(moduleName){ // iterates through each moduleName and queries the database
+          db.search(moduleName, function(err, fullModuleData){
+            if(err) {console.log(err); cb(err, null); }
+            else{
+              if(fullModuleData) allSearchData.push(fullModuleData);     // ONLY if the data is defined do you push to allSearchData
+              cbCount++;
+              if(cbCount === names.length){
+                // Logic only runs if this is the last async callback from db.search
+                var returnArr = names.map(function(name){
+                  // make the data be sorted once again b/c it comes back in random order
+                  return allSearchData.filter(function(obj){
+                    return obj.name === name;
+                  })[0]
+                })
+                cb(null, _.compact(returnArr));
+              }
             }
-          }
+          })
         })
-      })
+      }
     }
   });
 }
