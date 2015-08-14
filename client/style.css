@@ -1,3 +1,4 @@
+/* GLOBAL HTML */
 @font-face {
   font-family: Roboto;
   src: url(./assets/roboto/Roboto-Regular.ttf);
@@ -11,6 +12,11 @@
 @font-face {
   font-family: Roboto-Light;
   src: url(./assets/roboto/Roboto-Light.ttf);
+}
+
+@font-face {
+  font-family: Roboto-Black;
+  src: url(./assets/roboto/Roboto-Black.ttf);
 }
 
 body {
@@ -27,16 +33,10 @@ h3 {
   font-family: Roboto-Light;
 }
 
-span {
-  font-family: Roboto-Thin;
-  font-size: 40px;
-  color: #fff;
-}
-
 /* NAV */
 .nav-container {
   padding: 20px;
-  background-color: #4c1313;
+  background-image: linear-gradient(#4c1313, #7F1F1F);
   border-bottom: 1px solid #5e3333;
 }
 
@@ -47,7 +47,10 @@ span {
 
 .title {
   float: left;
+  color: #fff;
+  font-family: Roboto-Thin;
   font-size: 40px;
+  text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
 }
 
 .input-group {
@@ -182,14 +185,23 @@ span {
 }
 
 /* LANDING */
+.landing-header {
+  font-size: 40px;
+  font-family: Roboto-Thin;
+}
+
 .landing-explanation, .landing-npm-demo, .landing-advanced-features, .landing-tech-stack {
   background-color: #fff;
-  padding: 30px;
+  padding: 40px;
 }
 
 .landing-feature-demo, .landing-demo-gif, .landing-advanced-features, .landing-bios {
   background-color: #eee;
-  padding: 30px;
+  padding: 40px;
+}
+
+.landing-bios {
+/*  background-image: linear-gradient(#ddd, #4c1313); */
 }
 
 .center-me > h3 {
@@ -207,7 +219,6 @@ span {
 .maroon {
   color: #4c1313;
 }
-
 
 .center-me {
   margin: 0 auto;
@@ -240,32 +251,74 @@ span {
   text-align: right;
 }
 
-.feature-card{
-  padding-top: 25px;
-}
-
+/* LANDING > advanced-features */
 .feature-card-img{
   width: 150px;
+  margin: 15px;
 }
 
 .feature-explanation{
   font-size: 15px;
-  text-align: center;
 }
 
-.font-red{
-  color: #B83130;
-  text-align: center;
+/* LANDING > tech */
+
+.tech-logo {
+  height: 130px;
+  padding-top: 20px;
+}
+
+/* LANDING > bios */
+
+div.panel {
+  background-color: #eee;
+  border:none;
+  box-shadow: none;
+  margin: -20px;
 }
 
 div.img-div{
-    height:200px;
-    width:200px;
-    overflow:hidden;
-    border-radius:50%;
+  background-color: #8fafa2;
+  height:220px;
+  width:220px;
+  overflow:hidden;
+  border-radius:50%;
+  border:10px solid #8fafa2;
+  box-shadow: 5px 5px 2px #888;
+}
+
+.github-div {
+  margin-top: -12px;
+  margin-left: -15px;
+}
+
+.github {
+  width: 45px;
+}
+
+.github-username {
+  color: #8fafa2;
+  font-size: 18px;
+  font-family: Roboto-Light;
+}
+
+span.teamrole {
+  color: #4c1313;
+  font-family: Roboto-Thin;
 }
 
 .img-div img{
   -webkit-transform:translate(-50%);
   margin-left:100px;
+}
+
+/* LANDING > footer */
+.landing-footer {
+  background-image: linear-gradient(#7F1F1F, #4c1313);
+  padding: 5px;
+  padding-right: 15px;
+}
+
+a[href^="mailto:"] { 
+  color: #8fafa2;
 }
