@@ -64,7 +64,7 @@ var relationshipInsert = function(collection) {
             console.log("\t |")
             console.log("\t |-> Relationship With", collection[key][i])
 
-            dbRemote.queryRaw("MATCH (n { name : '" + collection[key][i] + "'  }),(m { name: '" + key + "' }) CREATE (n)-[:DEPENDS_ON]->(m)",
+            dbRemote.queryRaw("MATCH (n { name : '" + collection[key][i] + "'  }),(m { name: '" + key + "' }) CREATE UNIQUE (n)-[:DEPENDS_ON]->(m)",
                 function(err, result) {
                     if (err) console.log(err);
                     console.log(result)
@@ -137,7 +137,18 @@ var fetchRelationships = module.exports.fetchRelationships = function(moduleName
 
 var updateModules = module.exports.updateModules = function(){
     var databaseNodes = []
-    dbRemote.queryRaw('MATCH (n) RETURN n.name;',function(err,node){
+    dbRemote.queryRaw('MATCH (n) RETURN n.name LIMIT 1000;',function(err,node){
+        if(err) console.log(err)
+        node.data.forEach(function(item){
+            databaseNodes.push(item[0])
+        })
+        dbInsert(databaseNodes)
+    })
+}
+
+var updateMissingDataModules = module.exports.updateMissingDataModules = function(){
+    var databaseNodes = []
+    dbRemote.queryRaw('MATCH (n) WHERE n.description IS NULL RETURN n.name LIMIT 1000;',function(err,node){
         if(err) console.log(err)
         node.data.forEach(function(item){
             databaseNodes.push(item[0])
