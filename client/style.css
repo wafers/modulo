@@ -27,44 +27,33 @@ h3 {
   font-family: Roboto-Light;
 }
 
-.center-me > h3 {
-  color: #b83130;
+span {
+  font-family: Roboto-Thin;
+  font-size: 40px;
+  color: #fff;
 }
 
+/* NAV */
 .nav-container {
   padding: 20px;
-  background-color: rgba(0,0,0,0.08);
-  border-bottom: 1px solid #d3d3d3;
+  background-color: #4c1313;
+  border-bottom: 1px solid #5e3333;
 }
 
 .search-container {
   width: 900px;
-  margin: auto;
-}
-
-.red {
-  background-color: #b83130; 
-}
-
-.grey {
-  background-color: #d3d3d3;
+  margin: 0 auto;
 }
 
 .title {
-  padding-top: 10px;
-  margin: auto;
-}
-
-.modulo-img {
-  width: 230px;
   float: left;
+  font-size: 40px;
 }
 
 .input-group {
   position: relative;
   padding-left: 40px;
   width: 600px;
-  height: auto;
 }
 
 .input-group .form-control {
@@ -88,6 +77,8 @@ h3 {
   font-size: 50%;
 }
 
+=======
+/* RESULTS */
 .list-group {
   width: 85%;
   padding-top: 20px;
@@ -164,14 +155,31 @@ h3 {
   display: center;
 }
 
-.landing-explanation {
+/* LANDING */
+.landing-explanation, .landing-npm-demo, .landing-advanced-features, .landing-tech-stack {
   background-color: #fff;
 }
 
-.landing-feature-demo, .landing-bios {
-  /*text-align: center;*/
-  background-color: #ddd;
+.landing-feature-demo, .landing-demo-gif, .landing-advanced-features, .landing-bios {
+  background-color: #eee;
 }
+
+.center-me > h3 {
+  color: #4c1313;
+}
+
+.center-me > h1 {
+  color: #8fafa2;
+}
+
+.mint {
+  color: #8fafa2;
+}
+
+.maroon {
+  color: #4c1313;
+}
+
 
 .center-me {
   margin: 0 auto;
@@ -179,10 +187,8 @@ h3 {
   text-align: center;
 }
 
-.demo-gif {
+.landing-demo-gif {
   padding-right: 30px;
-  /*padding-left: 25%;*/
-  /*padding-right: 25%;*/
   margin-bottom: 30px;
   margin-top: 30px;
 }
@@ -197,28 +203,21 @@ h3 {
 }
 
 .demo-img {
-  width: 90%;
+  width: 100%;
 }
 
 .landing-footer{
-  background-color: #CB3837;
+  background-color: #4c1313;
   color: #fff;
   text-align: right;
 }
 
 .feature-card{
   padding-top: 25px;
-  background-color: white;
 }
 
 .feature-card-img{
-  width: 100px;
-  background-color: white;
-}
-
-.landing-advanced-features{
-  background-color: #eee;
-  padding-bottom: 25px;
+  width: 150px;
 }
 
 .feature-explanation{
