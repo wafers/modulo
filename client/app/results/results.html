@@ -6,10 +6,10 @@
         <h1>
           <div class="module-title">{{result.name}}</div>
           <small class="module-stats clearfix">
-            <div class="last-update">Last update {{result.lastUpdate}}</div>
-            <div class="star-count"><i class="material-icons" id="star">star</i> {{result.starred}} on NPM</div>
-            <div class="dependent-number">Used by {{result.dependentsSize}} packages</div>
-            <div class="monthly-downloads">{{result.monthlyDownloadSum}} monthly downloads</div>
+            <div class="last-update">Update Rank: 98</div>
+            <div class="star-count">Star Rank: 76</div>
+            <div class="dependent-number">Dependents Rank: 87</div>
+            <div class="monthly-downloads">Download Rank: 65</div>
           </small>
         </h1>
       </div>
@@ -17,11 +17,11 @@
       <br>
 
       <div class="details-div" ng-show="result.show">
-        <div class="col-md-3">Update Rank: 98</div>
-        <div class="col-md-3">Star Rank: 76</div>
-        <div class="col-md-3">Dependents Rank: 87</div>
-        <div class="col-md-3">Download Rank: 65</div>
-        <a ui-sref="app.details">view more</a>
+        <div class="col-md-3">Download Rank: 65 <br> {{result.monthlyDownloadSum}} monthly downloads</div>
+        <div class="col-md-3">Dependents Rank: 87 <br> Used by {{result.dependentsSize}} packages</div>
+        <div class="col-md-3">Star Rank: 76 <br> <i class="material-icons" id="star">star</i> {{result.starred}} on NPM</div>
+        <div class="col-md-3">Update Rank: 98 <br> Last update {{result.lastUpdate}}</div>
+        <a class="col-md-3 detail-link" ui-sref="app.details">view more</a>
       </div>
     </li>
   </div>
