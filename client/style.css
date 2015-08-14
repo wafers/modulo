@@ -19,6 +19,8 @@ body {
 
 h1 {
   font-family: Roboto-Thin;
+  margin: 0px;
+  font-size: 30px;
 }
 
 h3 {
@@ -69,10 +71,31 @@ h3 {
   height: 44px;
 }
 
+.page-header {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.module-title {
+  width: 25%;
+  display: inline-block;
+}
+
+.module-stats {
+  width: 70%;
+  display: inline-block;
+  text-align: right;
+  font-size: 50%;
+}
+
 .list-group {
-  width: 80%;
+  width: 85%;
   padding-top: 20px;
   margin: 0 auto;
+}
+
+.list-group-item:hover {
+  cursor: pointer;
 }
 
 #star {
@@ -80,35 +103,29 @@ h3 {
 }
 
 #content {
-  width: 250px;
-  height: 30px;
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  font-size: 10px;
+  float: left;
+  font-size: 16px;
+  padding: 2px;
+  padding-top: 10px;
 }
 
-#content .A {
-  width: 50%;
-  height: 40%;
+.last-update {
+  width: 30%;
   float: right;
 }
 
-#content .B {
-  width: 50%;
-  height: 40%;
+.star-count {
+  width: 19%;
   float: right;
 }
 
-#content .C {
-  width: 50%;
-  height: 40%;
+.dependent-number {
+  width: 24%;
   float: right;
 }
 
-#content .D {
-  width: 50%;
-  height: 40%;
+.monthly-downloads {
+  width: 27%;
   float: right;
 }
 
@@ -116,20 +133,24 @@ h3 {
   -webkit-box-sixing: border-box;
   -moz-box-sizing: border-box; 
   box-sizing: border-box;
+  display: block;
 }
 
 .show-div {
   height: 100px;
 }
 
-.results-container {
-
-}
-
 .details-container {
   width: 95%;
   padding-top: 20px;
   margin: 0 auto;
+}
+
+.details-div {
+  padding: 20px;
+  width: 100%;
+  float: none;
+  display: block;
 }
 
 #graph-container{

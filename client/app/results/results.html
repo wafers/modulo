@@ -1,17 +1,26 @@
 <div class="results-container">
   <div class="list-group" style="position: relative" >
-    <li class="list-group-item" ng-repeat="result in results" ng-click="toggle(result)">
-      <h4 class="list-group-item-heading">{{result.name}}</h4>
-      <p class="list-group-item-text">{{result.description}}</p>
+    <li class="list-group-item clearfix" ng-repeat="result in results" ng-click="toggle(result)">
 
-      <div id="content">
-        <div class="A">Last update {{result.lastUpdate}}</div>
-        <div class="B"><i class="material-icons" id="star">star</i> {{result.starred}} on NPM</div>
-        <div class="C">Used by {{result.dependentsSize}} packages</div>
-        <div class="D">{{result.monthlyDownloadSum}} monthly downloads</div>
+      <div class="page-header">
+        <h1>
+          <div class="module-title">{{result.name}}</div>
+          <small class="module-stats clearfix">
+            <div class="last-update">Last update {{result.lastUpdate}}</div>
+            <div class="star-count"><i class="material-icons" id="star">star</i> {{result.starred}} on NPM</div>
+            <div class="dependent-number">Used by {{result.dependentsSize}} packages</div>
+            <div class="monthly-downloads">{{result.monthlyDownloadSum}} monthly downloads</div>
+          </small>
+        </h1>
       </div>
+      <div id="content">{{result.description}}</div>
+      <br>
 
       <div class="details-div" ng-show="result.show">
+        <div class="col-md-3">Update Rank: 98</div>
+        <div class="col-md-3">Star Rank: 76</div>
+        <div class="col-md-3">Dependents Rank: 87</div>
+        <div class="col-md-3">Download Rank: 65</div>
         <a ui-sref="app.details">view more</a>
       </div>
     </li>
