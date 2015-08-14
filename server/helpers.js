@@ -12,9 +12,6 @@ var npm = new Registry({
 });
 var db = require(__dirname + '/dbParsing.js');
 
-// module.exports = {};
-
-console.log("loaded helpers")
 ///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
 var findDependents = module.exports.findDependents = function(module, cb){
@@ -36,19 +33,21 @@ var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module
 
   downloadCount(module.name, start, end, function(err, downloadData) {
     if(err){
-      console.log('ERRRRRRR', module.name, err)
-      module.downloads = 0;
+      console.log('findMonthlyDownloads ERROR:', module.name, err)
+      module.downloads = [{ day: '2015-01-01', count: 0 }];
+      module.monthlyDownloadSum = 0;
       cb(err,module);
     }else{
       if(downloadData === undefined){
-        module.downloads = 0;
+        module.downloads = [{ day: '2015-01-01', count: 0 }];
+        module.monthlyDownloadSum = 0;
         cb(null, module);
       }
       module.downloads = downloadData; // Daily download numbers
       module.monthlyDownloadSum = downloadSum(downloadData); // Total downloads for the past month
       function downloadSum(downloadData) {
         var days = Object.keys(downloadData);
-        if (days.length > 0) {
+        if (days && days.length > 0) {
           var lastMonth = days.slice(-30);
           var sum = 0;
           for (var i=0; i<lastMonth.length; i++) {
@@ -88,16 +87,19 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 
         var $ = cheerio.load(body);
         var results = [];
-
-        $('.package-details').each(function () {
-            results.push({
-                name: $(this).find('.name').text(),
-                description: $(this).find('.description').text(),
-                version: $(this).find('.version').text().match(/\d+\.\d+\.\d+/)[0],
-                url: 'https://www.npmjs.com/package/' + $(this).find('.name').text(),
-                stars: $(this).find('.stats').find('.stars').text()-0,
-            });
-        });
+        if (!$('.package-details')['0']) {
+          results = 'No results found';
+        } else {
+          $('.package-details').each(function () {
+              results.push({
+                  name: $(this).find('.name').text() || 'No name found',
+                  description: $(this).find('.description').text() || 'No description found',
+                  version: $(this).find('.version').text().match(/\d+\.\d+\.\d+/)[0] || 'No version found',
+                  url: 'https://www.npmjs.com/package/' + $(this).find('.name').text() || 'No url found',
+                  stars: $(this).find('.stats').find('.stars').text()-0 || 'No stars found',
+              });
+          });
+        }
 
         this.results = results;
 
@@ -111,30 +113,34 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 var searchResults = module.exports.searchResults = function(searchInput, cb){  
   var finishedRuns = 0;
   npmSearchScraper(searchInput, function(err, npmSearchResults){
-    if(err) { console.log(err); cb(err, null);}
+    if(err) { console.log('npmSearchScraper ERROR:',err); cb(err, null);}
     else{
-      var allSearchData = [], cbCount = 0;
-      var names = npmSearchResults.map(function(row){ return row.name }); // map to namesArr
+      if (npmSearchResults === 'No results found') {
+        cb(null, npmSearchResults);
+      } else {
+        var allSearchData = [], cbCount = 0;
+        var names = npmSearchResults.map(function(row){ return row.name }); // map to namesArr
 
-      names.forEach(function(moduleName){ // iterates through each moduleName and queries the database
-        db.search(moduleName, function(err, fullModuleData){
-          if(err) {console.log(err); cb(err, null); }
-          else{
-            if(fullModuleData) allSearchData.push(fullModuleData);     // ONLY if the data is defined do you push to allSearchData
-            cbCount++;
-            if(cbCount === names.length){
-              // Logic only runs if this is the last async callback from db.search
-              var returnArr = names.map(function(name){
-                // make the data be sorted once again b/c it comes back in random order
-                return allSearchData.filter(function(obj){
-                  return obj.name === name;
-                })[0]
-              })
-              cb(null, _.compact(returnArr));
+        names.forEach(function(moduleName){ // iterates through each moduleName and queries the database
+          db.search(moduleName, function(err, fullModuleData){
+            if(err) {console.log(err); cb(err, null); }
+            else{
+              if(fullModuleData) allSearchData.push(fullModuleData);     // ONLY if the data is defined do you push to allSearchData
+              cbCount++;
+              if(cbCount === names.length){
+                // Logic only runs if this is the last async callback from db.search
+                var returnArr = names.map(function(name){
+                  // make the data be sorted once again b/c it comes back in random order
+                  return allSearchData.filter(function(obj){
+                    return obj.name === name;
+                  })[0]
+                })
+                cb(null, _.compact(returnArr));
+              }
             }
-          }
+          })
         })
-      })
+      }
     }
   });
 }
@@ -201,31 +207,34 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
   npm.packages.get(moduleName, function(err, results){
 
     if(err){
-      console.log('Something went wrong. Will try',moduleName,'again later.')
-      console.log('ERRRRR', err);
+      console.log('moduleDataBuilder : npm.packages.get ERROR', err);
       cb(err, module);
       // write module to errorQueue
-    } else if (results[0] && results[0].description !== '' && results[0].starred) {
-      module['description'] = results[0].description;
-      module['readme'] = results[0].readme;
-      module['time'] = results[0].time;
-      module['repository'] = results[0].repository;
-      module['url'] = results[0]['homepage'].url || 'None Provided';
-      module['keywords'] = results[0].keywords;
-      module['starred'] = results[0].starred;
+    } else if (results[0] && (results[0].description !== '' || results[0].starred || results[0].time)) {
+      module['description'] = results[0].description || 'None Provided';
+      module['readme'] = results[0].readme || 'None Provided';
+      module['time'] = results[0].time || 'None Provided';
+      module['repository'] = results[0].repository || 'None Provided';
+      module['url'] = results[0]['homepage'].url || 'None Provided'
+      module['keywords'] = results[0].keywords || 'None Provided';
+      module['starred'] = results[0].starred || 'None Provided';
       findMonthlyDownloads(module, function(err, moduleWithDownloads){
         findDependents(module, function(err, finalData){
           if (finalData.dependents && finalData.downloads){
             console.log('Success!', moduleName, 'going back to DB now.')
             cb(null, finalData);
           } else {
-            console.log('Something went wrong. Will try',moduleName,'again later.')
+            console.log('Something went wrong in findDependents. Will try',moduleName,'again later.')
+            console.log('dependents', finalData.dependents, 'downloads', finalData.downloads)
             // write module to errorQueue
           }
         })
       })      
     } else {
-      console.log('Something went wrong. Will try',moduleName,'again later.')
+      console.log('Something went wrong in moduleDataBuilder. Will try',moduleName,'again later.')
+      console.log('results[0] check:', results[0])
+      console.log('results[0].description check:', results[0].description)
+      console.log('results[0].starred check:', results[0].starred)
       // write module to errorQueue
     }
   });
