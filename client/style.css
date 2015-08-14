@@ -77,7 +77,6 @@ span {
   font-size: 50%;
 }
 
-=======
 /* RESULTS */
 .list-group {
   width: 85%;
@@ -158,10 +157,12 @@ span {
 /* LANDING */
 .landing-explanation, .landing-npm-demo, .landing-advanced-features, .landing-tech-stack {
   background-color: #fff;
+  padding: 30px;
 }
 
 .landing-feature-demo, .landing-demo-gif, .landing-advanced-features, .landing-bios {
   background-color: #eee;
+  padding: 30px;
 }
 
 .center-me > h3 {
@@ -228,4 +229,16 @@ span {
 .font-red{
   color: #B83130;
   text-align: center;
+}
+
+div.img-div{
+    height:200px;
+    width:200px;
+    overflow:hidden;
+    border-radius:50%;
+}
+
+.img-div img{
+  -webkit-transform:translate(-50%);
+  margin-left:100px;
 }
