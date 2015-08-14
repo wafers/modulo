@@ -12,9 +12,6 @@ var npm = new Registry({
 });
 var db = require(__dirname + '/dbParsing.js');
 
-// module.exports = {};
-
-console.log("loaded helpers")
 ///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
 var findDependents = module.exports.findDependents = function(module, cb){
@@ -88,18 +85,24 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 
         var $ = cheerio.load(body);
         var results = [];
+        if (!$('.package-details')['0']) {
+          results = 'No results found';
+        } else {
+          $('.package-details').each(function () {
+              results.push({
+                  name: $(this).find('.name').text() || 'No name found',
+                  description: $(this).find('.description').text() || 'No description found',
+                  version: $(this).find('.version').text().match(/\d+\.\d+\.\d+/)[0] || 'No version found',
+                  url: 'https://www.npmjs.com/package/' + $(this).find('.name').text() || 'No url found',
+                  stars: $(this).find('.stats').find('.stars').text()-0 || 'No stars found',
+              });
+          });
+        }
 
-        $('.package-details').each(function () {
-            results.push({
-                name: $(this).find('.name').text(),
-                description: $(this).find('.description').text(),
-                version: $(this).find('.version').text().match(/\d+\.\d+\.\d+/)[0],
-                url: 'https://www.npmjs.com/package/' + $(this).find('.name').text(),
-                stars: $(this).find('.stats').find('.stars').text()-0,
-            });
-        });
 
         this.results = results;
+
+        console.log('First result:',this.results[0])
 
         cb(null, this.results);
     }.bind(this));
