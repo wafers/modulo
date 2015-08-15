@@ -27,15 +27,15 @@ angular.module('app')
     if (module.lastUpdate === 'Unknown') {
       module.updateRank = 0;
     } else if (moment(module.time.modified) === this.highestValues.update) {
-      module.updateRank = 100;
+      module.updateRank = 50;
     } else {
       var now = moment();
-      var recent = moment(this.highestValues.updateNumber);
+      var recent = moment(this.highestValues.update);
       var year = moment().subtract(1,'year');
       var moduleDate = moment(module.time.modified);
       var rank = (50/(recent-year))*(moduleDate - now) + 50 - (50/(recent-year))*(recent-now)
       if (rank < 0 ) rank = 0;
-      console.log(module.name, rank)
+      module.updateRank = rank;
     };
 
     if (module.monthlyDownloadSum === 0) {
