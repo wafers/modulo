@@ -46,7 +46,10 @@ var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module
       module.downloads = downloadData; // Daily download numbers
       module.monthlyDownloadSum = downloadSum(downloadData); // Total downloads for the past month
       function downloadSum(downloadData) {
-        console.log(module.name)
+        if(typeof downloadData !== Object){
+          console.log(downloadData)
+          console.log(module.name)
+        }
         var days = Object.keys(downloadData);
         if (days && days.length > 0) {
           var lastMonth = days.slice(-30);
