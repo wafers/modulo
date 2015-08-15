@@ -1,8 +1,7 @@
 angular.module('app')
 
 .controller('ResultsController', ['Search', 'ModulePass', '$scope', '$http', '$rootScope', '$stateParams', function(Search, ModulePass, $scope, $http, $rootScope, $stateParams) {
-    // $scope.searchInput = Search.navInput;
-    $scope.searchInput = $stateParams.searchQuery;
+    $scope.searchInput = Search.navInput;
     
     $scope.$watch(function() {
             return Search.results.searchResults;

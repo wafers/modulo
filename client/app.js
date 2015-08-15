@@ -8,13 +8,15 @@ angular.module('app', ['ui.router', 'angular-loading-bar'])
   $stateProvider
   .state('app', {
     url: '/',
-    abstract: true,
+    templateUrl: './index.html',
     views: {
       'app.nav': {
+        abstract: true,
         templateUrl: './app/results/nav.html',
         controller: 'NavController'
       },
       '': {
+        abstract: true,
         templateUrl: './app/content.html'
       }
     }

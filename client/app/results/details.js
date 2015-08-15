@@ -1,8 +1,9 @@
 angular.module('app')
-
 .controller('DetailsController', ['DownloadVis', 'Sigma', 'versionVis','ModulePass', '$scope', '$rootScope', '$stateParams', function(DownloadVis, Sigma, versionVis, ModulePass, $scope, $rootScope, $stateParams){
   $scope.module = ModulePass.module;
-
+  if(!$scope.module){
+    // endpoint needs to be created for single search for the module data builder
+  }
 
   $scope.circleGraph = function() {
     versionVis.circleGraph($scope.module)
