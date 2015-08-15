@@ -144,6 +144,9 @@ var searchResults = module.exports.searchResults = function(searchInput, cb){
     }
   });
 }
+
+var detailedSearch = module.exports.detailedSearch = db.search;
+
 // { SIGMA FORMAT------------------------------------------------
 //   "edges": [
 //     {

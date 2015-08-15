@@ -18,14 +18,9 @@ var relationships = module.exports.relationships = function(req, res){
   });
 }
 
-// var detailedSearch = module.exports.detailedSearch = function(req, res){
-//   var moduleNames = req.body.data; // should be an array
-//   helpers.detailedSearch(moduleNames, function(err, result){
-//     if(err) { console.log(err) }
-//     else{
-//       console.log(result);
-//       console.log(result.length);
-//       res.json(result);
-//     }
-//   })
-// }
+var detailedSearch = module.exports.detailedSearch = function(req, res){
+  var moduleName = req.body.data;
+  helpers.detailedSearch(moduleName, function(err, results){
+    res.json(results);
+  });
+}

@@ -113,7 +113,6 @@ var search = module.exports.search = function(moduleName, cb){
             cb(err, null);  
         }
         else {
-            // delete objs[0].downloads;
             cb(null, objs[0]);
         }
     })
