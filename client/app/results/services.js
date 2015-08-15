@@ -52,7 +52,17 @@ angular.module('app')
   this.getModule = function(moduleName){
     var data = { data : moduleName };
     return $http.post('/detailedSearch', data)
-      .success(function(data){ that.module = data })
+      .success(function(data){
+        if (data === 'No results found') data = {name: 'No results found'};
+        if (data.downloads) data.downloads = JSON.parse(data.downloads);
+        if (data.time) {
+          data.time = JSON.parse(data.time);
+          data.lastUpdate = moment(data.time.modified).fromNow();
+        } else {
+          data.lastUpdate = moment().fromNow();
+        }
+       that.module = data;
+      })
       .error(function(data){ console.log('error', data) })
   }
 
