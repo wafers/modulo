@@ -6,7 +6,7 @@ angular.module('app')
     $scope.module = ModulePass.module
   });
 
-  if(Object.keys($scope.module).length === 0){
+  if(!$scope.module.name || $scope.module.name !== $stateParams.moduleName){
     // If module data for the page is empty, send a get request to the server
     ModulePass.getModule($stateParams.moduleName);
   }
