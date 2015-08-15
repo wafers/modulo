@@ -1,6 +1,6 @@
 angular.module('app')
 
-.controller('DetailsController', ['DownloadVis', 'Sigma', 'versionVis','ModulePass', '$scope', '$rootScope', function(DownloadVis, Sigma, versionVis, ModulePass, $scope, $rootScope){
+.controller('DetailsController', ['DownloadVis', 'Sigma', 'versionVis','ModulePass', '$scope', '$rootScope', '$stateParams', function(DownloadVis, Sigma, versionVis, ModulePass, $scope, $rootScope, $stateParams){
   $scope.module = ModulePass.module;
 
 
@@ -19,7 +19,7 @@ angular.module('app')
   $scope.$watch(function(){ return Sigma.data }, function(){
     $scope.results = Sigma.data;
 
-    Sigma.clearSigma();
+    // Sigma.clearSigma();
 
     s = new sigma({ 
             graph: $scope.results,
@@ -31,8 +31,8 @@ angular.module('app')
     });
   })
   
-  $scope.$on('$viewContentLoaded', 
-    function(event){ $scope.clearSigma() })
+  // $scope.$on('$viewContentLoaded', 
+    // function(event){ $scope.clearSigma() })
 
   // $scope.clearSigma = function() {
   //   Sigma.clearSigma();
