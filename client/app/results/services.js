@@ -31,6 +31,8 @@ angular.module('app')
             data[i].lastUpdate = moment().fromNow();
           }
 
+          if(!data[i].readme) data[i].readme = "No readme provided";
+          data[i].latestVersion = Object.keys(data[i].time).slice(-3)[0];
         }
         context.results.searchResults =  data;
       }).
@@ -61,7 +63,10 @@ angular.module('app')
         } else {
           data.lastUpdate = moment().fromNow();
         }
+        if(!data.readme) data.readme = "No readme provided";
+        data.latestVersion = Object.keys(data.time).slice(-3)[0];
        that.module = data;
+       console.log(data);
       })
       .error(function(data){ console.log('error', data) })
   }

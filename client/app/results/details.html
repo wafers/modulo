@@ -1,18 +1,33 @@
 <div class="container">
-<!-- 	<div class="row">
+	<div class="row">
 		<div class="col-md-6">
-			{{module.name}}
+			<!-- Module information here -->
+			<h3>{{module.name}} - <small>{{module.description}}</small></h3> 
+
+			<dl class="dl-horizontal">
+			  <dt>Monthly Downloads</dt>
+			  <dd>{{module.monthlyDownloadSum}}</dd>
+			  <dt>Last Update</dt>
+			  <dd>{{module.lastUpdate}}</dd>
+			  <dt>Latest Version</dt>
+			  <dd>{{module.latestVersion}}</dd>
+			  <dt>Starred</dt>
+			  <dd>{{module.starred}}</dd>
+			  <dt># of Dependents</dt>
+			  <dd>{{module.dependentsSize}}</dd>
+			  <dt>URL</dt>
+			  <dd><a href="{{module.url}}">{{module.url}}</a></dd>
+			</dl>
+
+			<p>{{module.readme}}</p>
 		</div>
 		<div class="col-md-6">
+			<!-- Graphs here -->
+			<div id="graph-container"></div>
 		</div>
 	</div>
-<div class="row">
-		<div class="col-md-6">
-		</div>
-		<div class="col-md-6">
-		</div>
-	</div> -->
-	<center>
+</div>
+<!-- 	<center>
     	<h3>{{module.name}}</h3>
 		<span class="graph-buttons">
 			<button ng-click="lineGraph()">lines</button>
@@ -28,5 +43,4 @@
 		<div class='versionVis'></div>
 		<svg class="downloadVis"></svg>
 		<div id="graph-container"></div>
-	</center>
-</div>
+	</center> -->
