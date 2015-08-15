@@ -1,5 +1,6 @@
 angular.module('app')
-.controller('DetailsController', ['DownloadVis', 'Sigma', 'versionVis','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(DownloadVis, Sigma, versionVis, ModulePass, $scope, $rootScope, $stateParams, Search){
+.controller('DetailsController', ['Sigma', 'Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(Sigma, Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
+  var width = document.getElementById('graph-container').offsetWidth;
   $scope.module = ModulePass.module;
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
@@ -12,17 +13,17 @@ angular.module('app')
 
   $scope.circleGraph = function() {
     $scope.clearGraph();
-    versionVis.circleGraph($scope.module)
+    Graph.circleGraph($scope.module, width)
   }
 
   $scope.lineGraph = function() {
     $scope.clearGraph();
-    versionVis.lineGraph($scope.module)
+    Graph.lineGraph($scope.module, width)
   }
 
   $scope.barGraph = function() {
     $scope.clearGraph();
-    versionVis.barGraph($scope.module)
+    Graph.barGraph($scope.module, width)
   }
 
   $scope.$watch(function(){ return Sigma.data }, function(){
@@ -45,8 +46,7 @@ angular.module('app')
 
   $scope.clearGraph = function() {
     Sigma.clearGraph();
-    versionVis.resetGraphCheck()
-    //   $state.go('app.results');
+    Graph.resetGraphCheck()
   }
 
   $scope.graphGraph = function(){
@@ -56,7 +56,7 @@ angular.module('app')
 
   $scope.downloadGraph = function(){
     $scope.clearGraph();
-    DownloadVis.downloadGraph();
+    Graph.downloadGraph('moduleName', width);
   }
 
   $scope.hasSearchResults = function(){

@@ -27,8 +27,6 @@ angular.module('app', ['ui.router', 'angular-loading-bar'])
   })
  .state('details', {
     url : '/details/:moduleName',
-    // templateUrl: './app/results/details.html',
-    // controller: 'DetailsController',
     views: { 
       'app.nav': {
         templateUrl: './app/results/nav.html',
@@ -40,8 +38,8 @@ angular.module('app', ['ui.router', 'angular-loading-bar'])
       }
     },
     resolve: {
-      init: function(versionVis) {
-        versionVis.resetGraphCheck()
+      init: function(Graph) {
+        Graph.resetGraphCheck()
       }
     }
   })

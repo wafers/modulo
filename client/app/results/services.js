@@ -74,7 +74,11 @@ angular.module('app')
 
 }])
 
-.service('versionVis', function(){
+.service('Graph', function(){
+  var margin = {top: 50, right: 10, bottom: 50, left: 80};
+  // var width = document.getElementById('graph-container').offsetWidth - margin.left - margin.right;
+  var height = 500 - margin.top - margin.bottom;
+
   this.barGraphed = false;
   this.circleGraphed = false;
   this.lineGraphed = false;
@@ -121,7 +125,7 @@ angular.module('app')
       data.shift()
 
       var margin = {top: 50, right: 50, bottom: 50, left: 50},
-          width = 1000 - margin.left - margin.right,
+          width = document.getElementById('graph-container').offsetWidth - margin.left - margin.right,
           height = 300 - margin.top - margin.bottom;
           buckets = 4;
           colors = ['d3d3d3', 'C68282', 'b83130'];
@@ -192,7 +196,8 @@ angular.module('app')
     this.circleGraphed = true;
   }
 
-  this.lineGraph = function(module){
+  this.lineGraph = function(module, width){
+    width = width - margin.left - margin.right;
     if (!this.lineGraphed){
       var dataStore = module.time;
       var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
@@ -227,11 +232,8 @@ angular.module('app')
       }
       // data.shift()
 
-      var margin = {top: 50, right: 50, bottom: 50, left: 50},
-          width = 1000 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
-          buckets = 4;
-          colors = ['d3d3d3', 'CBA2A2', 'C16A69', 'b83130'];
+      var buckets = 4;
+      var colors = ['d3d3d3', 'CBA2A2', 'C16A69', 'b83130'];
 
       var x = d3.time.scale() 
         .range([0, width])
@@ -431,37 +433,12 @@ angular.module('app')
   this.barGraphed = true;
   }
 
-})
-
-.service('Sigma', ['$http', function($http){
-  this.data = {};
-
-  this.clearGraph = function() {
-    // Clear out Sigma graph
-    var myNode = document.getElementById("graph-container");
-    while (myNode.firstChild) {
-        myNode.removeChild(myNode.firstChild);
-    }
-  }
-
-  this.getResults = function(moduleName){
-    var that = this;
-    $http.post('/relationships', {"data": moduleName})
-    .success(function(data){
-      that.data = data;
-    })
-    .error(function(data){
-      console.log(data);
-    })
-  }
-}])
-
-.service('DownloadVis', function(){
-  this.downloadGraph = function(moduleName){
+  this.downloadGraph = function(moduleName, width){
+    var width = width - margin.left - margin.right;
     var dateFormat = d3.time.format("%Y-%m-%d");
-    var margin = {top: 50, right: 50, bottom: 50, left: 50},
-        width = 1000 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+    // var margin = {top: 50, right: 50, bottom: 50, left: 50},
+    //     width = document.getElementById('graph-container').offsetWidth - margin.left - margin.right,
+    //     height = 500 - margin.top - margin.bottom;
 
     var x = d3.time.scale()
       .range([0, width]);
@@ -562,3 +539,26 @@ angular.module('app')
     }
   }
 })
+
+.service('Sigma', ['$http', function($http){
+  this.data = {};
+
+  this.clearGraph = function() {
+    // Clear out Sigma graph
+    var myNode = document.getElementById("graph-container");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+  }
+
+  this.getResults = function(moduleName){
+    var that = this;
+    $http.post('/relationships', {"data": moduleName})
+    .success(function(data){
+      that.data = data;
+    })
+    .error(function(data){
+      console.log(data);
+    })
+  }
+}])
