@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('DetailsController', ['DownloadVis', 'Sigma', 'versionVis','ModulePass', '$scope', '$rootScope', '$stateParams', function(DownloadVis, Sigma, versionVis, ModulePass, $scope, $rootScope, $stateParams){
+.controller('DetailsController', ['DownloadVis', 'Sigma', 'versionVis','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(DownloadVis, Sigma, versionVis, ModulePass, $scope, $rootScope, $stateParams, Search){
   $scope.module = ModulePass.module;
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
@@ -7,7 +7,6 @@ angular.module('app')
   });
 
   if(!$scope.module.name || $scope.module.name !== $stateParams.moduleName){
-    // If module data for the page is empty, send a get request to the server
     ModulePass.getModule($stateParams.moduleName);
   }
 
@@ -41,10 +40,10 @@ angular.module('app')
   // $scope.$on('$viewContentLoaded', 
     // function(event){ $scope.clearSigma() })
 
-  // $scope.clearSigma = function() {
-  //   Sigma.clearSigma();
+  $scope.clearSigma = function() {
+    Sigma.clearSigma();
   //   $state.go('app.results');
-  // }
+  }
 
   $scope.graphGraph = function(){
     Sigma.getResults($scope.module.name);
@@ -52,5 +51,9 @@ angular.module('app')
 
   $scope.downloadGraph = function(){
     DownloadVis.downloadGraph();
+  }
+
+  $scope.hasSearchResults = function(){
+    return Search.results.searchResults.length > 0;
   }
 }]);

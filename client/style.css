@@ -158,11 +158,16 @@ h3 {
   height: 100px;
 }
 
+/* DETAILS STYLING */
+
 /*.details-container {
   width: 95%;
   padding-top: 20px;
   margin: 0 auto;
 }*/
+.graph-type{
+  padding-top: 15px;
+}
 
 .details-div {
   padding: 20px;
@@ -177,9 +182,12 @@ h3 {
 }
 
 #graph-container{
-  position: absolute;
-  width:80%;
-  height:100%;
+  /*position: absolute;*/
+  width:100%;
+  height: 500px;
+  margin-bottom: 30px;
+  background-color: #ccc;
+  border: 1px solid grey;
 }
 
 .graph-buttons {

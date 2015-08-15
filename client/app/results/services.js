@@ -27,12 +27,12 @@ angular.module('app')
           if (data[i].time) {
             data[i].time = JSON.parse(data[i].time);
             data[i].lastUpdate = moment(data[i].time.modified).fromNow();
+            data[i].latestVersion = Object.keys(data[i].time).slice(-3)[0];
           } else {
             data[i].lastUpdate = moment().fromNow();
           }
 
           if(!data[i].readme) data[i].readme = "No readme provided";
-          data[i].latestVersion = Object.keys(data[i].time).slice(-3)[0];
         }
         context.results.searchResults =  data;
       }).
@@ -60,11 +60,11 @@ angular.module('app')
         if (data.time) {
           data.time = JSON.parse(data.time);
           data.lastUpdate = moment(data.time.modified).fromNow();
+          data.latestVersion = Object.keys(data.time).slice(-3)[0];
         } else {
           data.lastUpdate = moment().fromNow();
         }
         if(!data.readme) data.readme = "No readme provided";
-        data.latestVersion = Object.keys(data.time).slice(-3)[0];
        that.module = data;
        console.log(data);
       })
