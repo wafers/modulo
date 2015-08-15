@@ -263,7 +263,7 @@ angular.module('app')
         })
       
       // Create main svg for drawing 
-      var svg = d3.select(".versionVis").append("svg")
+      var svg = d3.select("#graph-container").append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -436,7 +436,7 @@ angular.module('app')
 .service('Sigma', ['$http', function($http){
   this.data = {};
 
-  this.clearSigma = function() {
+  this.clearGraph = function() {
     // Clear out Sigma graph
     var myNode = document.getElementById("graph-container");
     while (myNode.firstChild) {
@@ -477,7 +477,7 @@ angular.module('app')
         .scale(y)
         .orient("left");
 
-    var chart = d3.select(".downloadVis")
+    var chart = d3.select("#graph-container").append('svg')
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")

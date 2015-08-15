@@ -11,14 +11,17 @@ angular.module('app')
   }
 
   $scope.circleGraph = function() {
+    $scope.clearGraph();
     versionVis.circleGraph($scope.module)
   }
 
   $scope.lineGraph = function() {
+    $scope.clearGraph();
     versionVis.lineGraph($scope.module)
   }
 
   $scope.barGraph = function() {
+    $scope.clearGraph();
     versionVis.barGraph($scope.module)
   }
 
@@ -40,20 +43,24 @@ angular.module('app')
   // $scope.$on('$viewContentLoaded', 
     // function(event){ $scope.clearSigma() })
 
-  $scope.clearSigma = function() {
-    Sigma.clearSigma();
-  //   $state.go('app.results');
+  $scope.clearGraph = function() {
+    Sigma.clearGraph();
+    versionVis.resetGraphCheck()
+    //   $state.go('app.results');
   }
 
   $scope.graphGraph = function(){
+    $scope.clearGraph();
     Sigma.getResults($scope.module.name);
   }
 
   $scope.downloadGraph = function(){
+    $scope.clearGraph();
     DownloadVis.downloadGraph();
   }
 
   $scope.hasSearchResults = function(){
     return Search.results.searchResults.length > 0;
   }
+
 }]);
