@@ -1,27 +1,10 @@
 <div class="container">
+	<div class="row text-center details-module-name">
+			<h1><strong><a href="{{module.url}}">{{module.name}}</a></strong> - <small>{{module.description}}</small></h1> 
+	</div>
+
 	<div class="row">
-		<div class="col-md-6">
-			<!-- Module information here -->
-			<h3>{{module.name}} - <small>{{module.description}}</small></h3> 
-
-			<dl class="dl-horizontal">
-			  <dt>Monthly Downloads</dt>
-			  <dd>{{module.monthlyDownloadSum}}</dd>
-			  <dt>Last Update</dt>
-			  <dd>{{module.lastUpdate}}</dd>
-			  <dt>Latest Version</dt>
-			  <dd>{{module.latestVersion}}</dd>
-			  <dt>Starred</dt>
-			  <dd>{{module.starred}}</dd>
-			  <dt># of Dependents</dt>
-			  <dd>{{module.dependentsSize}}</dd>
-			  <dt>URL</dt>
-			  <dd><a href="{{module.url}}">{{module.url}}</a></dd>
-			</dl>
-
-			<p>{{module.readme}}</p>
-		</div>
-		<div class="col-md-6">
+		<div class="col-md-9">
 			<!-- Graphs here -->
 			<div class="btn-group graph-type">
 				<button type="button" class="btn btn-default" ng-click="downloadGraph()">Downloads</button>
@@ -32,22 +15,25 @@
 			</div>
 			<div id="graph-container"></div>
 		</div>
+
+		<div class="col-md-3">
+			<!-- Module information here -->
+			<dl class="dl-horizontal details-stats">
+			  <dt>Monthly Downloads</dt>
+			  <dd>{{module.monthlyDownloadSum}}</dd>
+			  <dt>Last Update</dt>
+			  <dd>{{module.lastUpdate}}</dd>
+			  <dt>Latest Version</dt>
+			  <dd>{{module.latestVersion}}</dd>
+			  <dt>Starred</dt>
+			  <dd>{{module.starred}}</dd>
+			  <dt># of Dependents</dt>
+			  <dd>{{module.dependentsSize}}</dd>
+			</dl>
+		</div>
+	</div>
+
+	<div class="row details-readme">
+		<h1><strong>Readme</strong></h1><p>{{module.readme}}</p>
 	</div>
 </div>
-<!-- 	<center>
-    	<h3>{{module.name}}</h3>
-		<span class="graph-buttons">
-			<button ng-click="lineGraph()">lines</button>
-			<button ng-click="circleGraph()">circles</button>
-			<button ng-click="barGraph()">bars</button>
-			<button ng-click="downloadGraph()">downloads</button>
-			<button ng-click="graphGraph()">graph</button>
-			<button><a href="/#/">back</a></button>
-	    </span>
-  </center>
-	<br>
-	<center>
-		<div class='versionVis'></div>
-		<svg class="downloadVis"></svg>
-		<div id="graph-container"></div>
-	</center> -->
