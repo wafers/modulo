@@ -1,32 +1,39 @@
 <div class="container">
-<!-- 	<div class="row">
-		<div class="col-md-6">
-			{{module.name}}
+	<div class="row text-center details-module-name">
+			<h1><strong><a href="{{module.url}}">{{module.name}}</a></strong> - <small>{{module.description}}</small></h1> 
+	</div>
+
+	<div class="row">
+		<div class="col-md-9">
+			<!-- Graphs here -->
+			<div class="btn-group graph-type">
+				<button type="button" class="btn btn-default" ng-click="downloadGraph()">Downloads</button>
+				<button type="button" class="btn btn-default" ng-click="lineGraph()">Version</button>
+				<button type="button" class="btn btn-default" ng-click="graphGraph()">Dependencies</button>
+				<button type="button" class="btn btn-default" ng-click="">Keywords</button>
+				<button type="button" class="btn btn-default" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
+			</div>
+			<div id="graph-container"></div>
 		</div>
-		<div class="col-md-6">
+
+		<div class="col-md-3">
+			<!-- Module information here -->
+			<dl class="dl-horizontal details-stats">
+			  <dt>Monthly Downloads</dt>
+			  <dd>{{module.monthlyDownloadSum}}</dd>
+			  <dt>Last Update</dt>
+			  <dd>{{module.lastUpdate}}</dd>
+			  <dt>Latest Version</dt>
+			  <dd>{{module.latestVersion}}</dd>
+			  <dt>Starred</dt>
+			  <dd>{{module.starred}}</dd>
+			  <dt># of Dependents</dt>
+			  <dd>{{module.dependentsSize}}</dd>
+			</dl>
 		</div>
 	</div>
-<div class="row">
-		<div class="col-md-6">
-		</div>
-		<div class="col-md-6">
-		</div>
-	</div> -->
-	<center>
-    	<h3>{{module.name}}</h3>
-		<span class="graph-buttons">
-			<button ng-click="lineGraph()">lines</button>
-			<button ng-click="circleGraph()">circles</button>
-			<button ng-click="barGraph()">bars</button>
-			<button ng-click="downloadGraph()">downloads</button>
-			<button ng-click="graphGraph()">graph</button>
-			<button><a href="/#/">back</a></button>
-	    </span>
-  </center>
-	<br>
-	<center>
-		<div class='versionVis'></div>
-		<svg class="downloadVis"></svg>
-		<div id="graph-container"></div>
-	</center>
+
+	<div class="row details-readme">
+		<h1><strong>Readme</strong></h1><p>{{module.readme}}</p>
+	</div>
 </div>
