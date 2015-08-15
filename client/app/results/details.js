@@ -1,8 +1,14 @@
 angular.module('app')
 .controller('DetailsController', ['DownloadVis', 'Sigma', 'versionVis','ModulePass', '$scope', '$rootScope', '$stateParams', function(DownloadVis, Sigma, versionVis, ModulePass, $scope, $rootScope, $stateParams){
   $scope.module = ModulePass.module;
-  if(!$scope.module){
-    // endpoint needs to be created for single search for the module data builder
+
+  $scope.$watch(function(){ return ModulePass.module }, function(){
+    $scope.module = ModulePass.module
+  });
+
+  if(Object.keys($scope.module).length === 0){
+    // If module data for the page is empty, send a get request to the server
+    ModulePass.getModule($stateParams.moduleName);
   }
 
   $scope.circleGraph = function() {

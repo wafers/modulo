@@ -41,13 +41,23 @@ angular.module('app')
   }
 }])
 
-.service('ModulePass', function(){
+.service('ModulePass', ['$http', function($http){
   this.module = {};
 
   this.updateModule = function(module){
     this.module = module;
   }
-})
+
+  var that = this;
+  this.getModule = function(moduleName){
+    var data = { data : moduleName };
+    return $http.post('/detailedSearch', data)
+      .success(function(data){ that.module = data })
+      .error(function(data){ console.log('error', data) })
+  }
+
+
+}])
 
 .service('versionVis', function(){
   this.barGraphed = false;
