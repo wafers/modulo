@@ -36,7 +36,7 @@ h3 {
 /* NAV */
 .nav-container {
   padding: 20px;
-  background-image: linear-gradient(#000, #4c1313);
+  background-image: linear-gradient(#3f1010, #4c1313);
   border-bottom: 1px solid #4c1313;
 }
 
@@ -65,6 +65,9 @@ h3 {
 
 
 /* RESULTS */
+.results-container {
+}
+
 .list-group {
   width: 100%;
   padding-top: 20px;
@@ -226,7 +229,7 @@ h3 {
 }
 
 div.landing-explanation {
-  background: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5) ), url('./assets/stock-mouse.jpg') no-repeat center;
+  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8) ), url('./assets/stock-mouse.jpg') no-repeat center;
   background-size:100% auto;
   height: 450px;
   margin-bottom: -30px;
@@ -242,7 +245,7 @@ div.landing-explanation {
 }
 
 .landing-npm-demo {
-  background: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5) ), url('./assets/stock-typing.jpg') no-repeat bottom;
+  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8) ), url('./assets/stock-mug.jpg') no-repeat bottom;
   background-size:100% auto;
 }
 
@@ -315,9 +318,13 @@ span.teamrole {
   margin-left:100px;
 }
 
+.img-team {
+  width: 220px;
+}
+
 /* LANDING > footer */
 .landing-footer {
-  background-image: linear-gradient(#4c1313, #000);
+  background-image: linear-gradient(#4c1313, #3f1010);
   padding: 5px;
   padding-right: 15px;
   color: #fff;
@@ -326,4 +333,11 @@ span.teamrole {
 
 a[href^="mailto:"] { 
   color: #8fafa2;
+}
+
+/* ANGULAR LOADING BAR (Overriding CSS) */
+#loading-bar .bar {
+  background: #8fafa2;
+  top: 86px;
+  height: 5px;
 }
