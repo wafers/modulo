@@ -1,49 +1,79 @@
 <div class="container" ng-init="init()">
-	<div class="row text-center details-module-name">
-			<h1><strong><a href="{{module.url}}">{{module.name}}</a></strong> - <small>{{module.description}}</small></h1> 
-	</div>
+  <div class="row text-center details-module-name">
+      <h1><strong><a href="{{module.url}}">{{module.name}}</a></strong> - <small>{{module.description}}</small></h1> 
+  </div>
 
-	<div class="row">
-		<div class="col-md-9">
-			<!-- Graphs here -->
-			<div class="btn-group graph-type">
-				<!-- <button type="button" class="btn btn-default" ng-click="drawGraph('downloads')">Downloads</button> -->
-				<div class="btn-group">
-				  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				    Downloads <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				    <li><a ng-click="drawGraph('downloads')">All Downloads</a></li>
-				    <li><a ng-click="drawGraph('downloads','weekdays')">Weekdays</a></li>
-				    <li><a ng-click="drawGraph('downloads', 'weekends')">Weekends</a></li>
-				  </ul>
-				</div>
-				<button type="button" class="btn btn-default" ng-click="drawGraph('version')">Version</button>
-				<button type="button" class="btn btn-default" ng-click="drawGraph('dependency')">Dependencies</button>
-				<button type="button" class="btn btn-default" ng-click="">Keywords</button>
-				<button type="button" class="btn btn-default" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
-			</div>
-			<div id="graph-container"></div>
-		</div>
+  <div class="row">
+    <div class="col-md-9">
+      <!-- Graphs here -->
+      <div class="btn-group graph-type">
+        <!-- <button type="button" class="btn btn-default" ng-click="drawGraph('downloads')">Downloads</button> -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Downloads <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a ng-click="drawGraph('downloads')">All Downloads</a></li>
+            <li><a ng-click="drawGraph('downloads','weekdays')">Weekdays</a></li>
+            <li><a ng-click="drawGraph('downloads', 'weekends')">Weekends</a></li>
+          </ul>
+        </div>
+        <button type="button" class="btn btn-default" ng-click="drawGraph('version')">Version</button>
+        <button type="button" class="btn btn-default" ng-click="drawGraph('dependency')">Dependencies</button>
+        <button type="button" class="btn btn-default" ng-click="">Keywords</button>
+        <button type="button" class="btn btn-default" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
+      </div>
+      <div id="graph-container"></div>
+    </div>
+    <div class="col-md-3">
+      <!-- Module information here -->
+      <dl class="dl-horizontal details-stats">
+        <dt>Monthly Downloads</dt>
+        <dd>{{module.monthlyDownloadSum}}</dd>
+        <dt>Last Update</dt>
+        <dd>{{module.lastUpdate}}</dd>
+        <dt>Latest Version</dt>
+        <dd>{{module.latestVersion}}</dd>
+        <dt>Starred</dt>
+        <dd>{{module.starred}}</dd>
+        <dt># of Dependents</dt>
+        <dd>{{module.dependentsSize}}</dd>
+      </dl>
+      <div class="details-description" ng-switch="selectedGraph">
+        <div ng-switch-when="downloads">
+          <h4>Monthly Downloads.</h4>
+          <dl class="dl-horizontal download-graph-params">
+            <dt>Bar Width</dt>
+            <dd><input type='number' min='1' max='10'></dd>
+            <dt>Moving Average Period</dt>
+            <dd><input type='number' min='10' max='500'></dd>
+            <dt>Start Date</dt>
+            <dd><input type='date'></dd>
+            <dt>End Date</dt>
+            <dd><input type='date'></dd>
+            <dt><button class="btn btn-success">Submit</button></dt>
+            <dd><button class="btn btn-default">Reset</button></dd>
+          </dl>
+        </div>
+        <div ng-switch-when="dependency">
+          <h4>Modules that list {{module.name}} as a dependency.</h4>
+        </div>
+        <div ng-switch-when="version">
+          <h4>Version release history.</h4>
+          <dl class="dl-horizontal download-graph-params">
+            <dt>Start Date</dt>
+            <dd><input type='date'></dd>
+            <dt>End Date</dt>
+            <dd><input type='date'></dd>
+            <dt><button class="btn btn-success">Submit</button></dt>
+            <dd><button class="btn btn-default">Reset</button></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
 
-		<div class="col-md-3">
-			<!-- Module information here -->
-			<dl class="dl-horizontal details-stats">
-			  <dt>Monthly Downloads</dt>
-			  <dd>{{module.monthlyDownloadSum}}</dd>
-			  <dt>Last Update</dt>
-			  <dd>{{module.lastUpdate}}</dd>
-			  <dt>Latest Version</dt>
-			  <dd>{{module.latestVersion}}</dd>
-			  <dt>Starred</dt>
-			  <dd>{{module.starred}}</dd>
-			  <dt># of Dependents</dt>
-			  <dd>{{module.dependentsSize}}</dd>
-			</dl>
-		</div>
-	</div>
-
-	<div class="row details-readme">
-		<h1><strong>Readme</strong></h1><p>{{module.readme}}</p>
-	</div>
+  <div class="row details-readme">
+    <h1><strong>Readme</strong></h1><p>{{module.readme}}</p>
+  </div>
 </div>
