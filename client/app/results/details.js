@@ -15,7 +15,7 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
 
   $scope.drawGraph = function(type, filter){
     Graph.clearGraph();
-    var width = document.getElementById('graph-container').offsetWidth;
+    var width = document.getElementById('graph-container').offsetWidth-25;
     if(type === 'version') Graph.lineGraph(this.module, width);
     else if(type === 'dependency') Graph.sigmaGraph(this.module.name);
     else if(type === 'downloads') Graph.downloadGraph(this.module.downloads, width, filter);

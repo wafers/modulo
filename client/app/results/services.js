@@ -206,7 +206,7 @@ angular.module('app')
     var colors = ['d3d3d3', 'CBA2A2', 'C16A69', 'b83130'];
 
     var x = d3.time.scale() 
-      .range([0, width])
+      .range([0, width-50])
       .domain([data[0]['date'], data.slice(-1)[0]['date']]);
     var y = d3.scale.linear()
       .range([height, 0])
