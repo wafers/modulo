@@ -36,11 +36,6 @@ angular.module('app', ['ui.router', 'angular-loading-bar'])
         templateUrl: './app/results/details.html',
         controller: 'DetailsController'
       }
-    },
-    resolve: {
-      init: function(Graph) {
-        Graph.resetGraphCheck()
-      }
     }
   })
   $urlRouterProvider.otherwise('/');

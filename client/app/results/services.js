@@ -135,327 +135,124 @@ angular.module('app')
 
 }])
 
-.service('Graph', function(){
+.service('Graph', ['$http', function($http){
   var margin = {top: 50, right: 10, bottom: 50, left: 80};
-  // var width = document.getElementById('graph-container').offsetWidth - margin.left - margin.right;
   var height = 500 - margin.top - margin.bottom;
 
-  this.barGraphed = false;
-  this.circleGraphed = false;
-  this.lineGraphed = false;
-
-  this.resetGraphCheck = function() {
-    console.log('Graph checks reset. Ready to draw.')
-    this.barGraphed = false;
-    this.circleGraphed = false;
-    this.lineGraphed = false;
+  // Clears out the entire graph container
+  this.clearGraph = function() {
+    var myNode = document.getElementById("graph-container");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+    console.log('Graph checks reset. Ready to draw');
   }
 
-  this.circleGraph = function(module){
-    if (!this.circleGraphed){
-      var dataStore = module.time;
-      var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
-      var updateCalculator = function(oldVersion, newVersion) {
-        newVersion = newVersion.split('.');
-        oldVersion = oldVersion.split('.');
-        var thisVersion = [(newVersion[0]-0)*50,(newVersion[1]-0)*5,(newVersion[2]*1-0)*0.5];
-        var lastVersion = [(oldVersion[0]-0)*50,(oldVersion[1]-0)*5,(oldVersion[2]*1-0)*0.5];
-        var thisTotal = thisVersion[0]+thisVersion[1]+thisVersion[2];
-        var lastTotal = lastVersion[0]+lastVersion[1]+lastVersion[2];
-        var versionDiff = thisTotal - lastTotal;
-        
-        return versionDiff > 0 ? versionDiff : 1;
-      }
-      var data = [];
-      var dataStoreArray = Object.keys(dataStore);
-      var last = '0.0.0'
-      for (var i=0; i<dataStoreArray.length; i++) {
-        if (dataStoreArray[i].split('.')[2]-0>=0){ // remove alpha/beta testing versions
-          var key = dataStoreArray[i];
-          var prevKey = last;
-          var versionObj = {};
-          if (key !== 'modified' && key !== 'created') {
-            versionObj['versionLabel'] = key;
-            versionObj['date'] = dateFormat.parse(dataStore[key]);
-            versionObj['versionValue'] = updateCalculator(prevKey, key);
-            data.push(versionObj);
-            last = versionObj['versionLabel'];
-          }      
-        }
-      }
-      data.shift()
-
-      var margin = {top: 50, right: 50, bottom: 50, left: 50},
-          width = document.getElementById('graph-container').offsetWidth - margin.left - margin.right,
-          height = 300 - margin.top - margin.bottom;
-          buckets = 4;
-          colors = ['d3d3d3', 'C68282', 'b83130'];
-
-      var x = d3.time.scale() 
-        .range([0, width]);
-      var y = d3.scale.linear()
-          .range([height, 0]);
-      var colorScale = d3.scale.quantile()
-       .domain([0, buckets - 1, d3.max(data, function (d) { return d.versionValue; })])
-       .range(colors);
-
-      var xAxis = d3.svg.axis()
-          .scale(x)
-          .orient("bottom");
-      var yAxis = d3.svg.axis()
-          .scale(y)
-          .orient("left")
-          .ticks(10)
-
-      var tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .offset([-10, 0])
-        .html(function(d) {
-          var date = d.date.toString().substring(3,15);
-          var str = "<strong>Version:</strong> <span style='color:#00CCFF'>" + d.versionLabel + "</span>";
-          str += "</br><string>Date:</strong><span style='color:#00CCFF'> " + date + "</span>";
-          return str;
-        })
-
-      x.domain([data[0]['date'], data.slice(-1)[0]['date']]);
-      y.domain([0, d3.max(data, function(d) { return d.versionValue+2; })]);
-      
-      // Create main svg for drawing 
-      var svg = d3.select(".versionVis").append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      svg.call(tip);
-      // Create x-axis
-      svg.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(xAxis)
-          // Rotate text labels
-          .selectAll('text')
-            .attr('x', 0)
-            .attr('dx', 15)
-            .attr('transform', 'rotate(30)')
-      
-      // Load in data and create circles for each
-      svg.selectAll(".circle")
-          .data(data)
-          .enter().append("circle")
-            .attr("class", "circle")
-            // Position circle at correct x position
-            .attr("cx", function(d) {return x(d.date)})
-            // Position circle at correct y-position
-            .attr("cy", function(d){return height-(d.versionValue+2)*2.5})
-            // Size and color of circle based on update 'importance'
-            .attr("r", function(d){return (d.versionValue+1)*2.5 > 0 ? (d.versionValue+1)*2.5 : 1})
-            .attr("fill", function(d) {return '#'+colorScale(d.versionValue)})
-            .attr("opacity", 0.7)
-            .on('mouseover', tip.show)
-            .on('mouseout', tip.hide)
-    }
-    this.circleGraphed = true;
+  // Sigma graph drawing
+  this.sigmaGraph = function(moduleName){
+    $http.post('/relationships', {"data": moduleName})
+    .success(function(data){
+      // populate sigma here
+      s = new sigma({ 
+              graph: data,
+              container: 'graph-container',
+              settings: {
+                defaultNodeColor: '#ec5148',
+                defaultEdgeColor: '#d3d3d3'
+              }
+      });
+    })
+    .error(function(data){
+      console.log(data);
+    })
   }
 
   this.lineGraph = function(module, width){
     width = width - margin.left - margin.right;
-    if (!this.lineGraphed){
-      var dataStore = module.time;
-      var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
-      var updateCalculator = function(oldVersion, newVersion) {
-        newVersion = newVersion.split('.');
-        oldVersion = oldVersion.split('.');
-        var thisVersion = [(newVersion[0]-0)*50,(newVersion[1]-0)*5,(newVersion[2]*1-0)*0.5];
-        var lastVersion = [(oldVersion[0]-0)*50,(oldVersion[1]-0)*5,(oldVersion[2]*1-0)*0.5];
-        var thisTotal = thisVersion[0]+thisVersion[1]+thisVersion[2];
-        var lastTotal = lastVersion[0]+lastVersion[1]+lastVersion[2];
-        var versionDiff = thisTotal - lastTotal;
-        
-        return versionDiff > 0 ? versionDiff : 1;
-      }
-      var data = [];
-      var dataStoreArray = Object.keys(dataStore);
-      var last = '0.0.0'
-      for (var i=0; i<dataStoreArray.length; i++) {
-        if (dataStoreArray[i].split('.')[2]-0>=0){ // remove alpha/beta testing versions
-          var key = dataStoreArray[i];
-          var prevKey = last;
-          var versionObj = {};
-          if (key !== 'modified' && key !== 'created') {
-            versionObj['versionLabel'] = key;
-            versionObj['date'] = dateFormat.parse(dataStore[key]);
-            versionObj['versionValue'] = updateCalculator(prevKey, key);
-            versionObj['majorVersion'] = key.split('.')[0]
-            data.push(versionObj);
-            last = versionObj['versionLabel'];
-          }      
-        }
-      }
-      // data.shift()
 
-      var buckets = 4;
-      var colors = ['d3d3d3', 'CBA2A2', 'C16A69', 'b83130'];
-
-      var x = d3.time.scale() 
-        .range([0, width])
-        .domain([data[0]['date'], data.slice(-1)[0]['date']]);
-      var y = d3.scale.linear()
-        .range([height, 0])
-        .domain([0, d3.max(data, function(d) { return height/100 })]);
-      var colorScale = d3.scale.quantile()
-       .domain([0, buckets - 1, d3.max(data, function (d) { return d.majorVersion; })])
-       .range(colors);
-
-
-      var xAxis = d3.svg.axis()
-          .scale(x)
-          .orient("bottom");
-      var yAxis = d3.svg.axis()
-          .scale(y)
-          .orient("left")
-          .ticks(5)
-
-      var tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .offset([-10, 0])
-        .html(function(d) {
-          var date = d.date.toString().substring(3,15);
-          var str = "<strong>Version:</strong> <span class='tip-values'>" + d.versionLabel + "</span>";
-          str += "</br><string>Date:</strong><span class='tip-values'> " + date + "</span>";
-          return str;
-        })
+    var dataStore = module.time;
+    var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
+    var updateCalculator = function(oldVersion, newVersion) {
+      newVersion = newVersion.split('.');
+      oldVersion = oldVersion.split('.');
+      var thisVersion = [(newVersion[0]-0)*50,(newVersion[1]-0)*5,(newVersion[2]*1-0)*0.5];
+      var lastVersion = [(oldVersion[0]-0)*50,(oldVersion[1]-0)*5,(oldVersion[2]*1-0)*0.5];
+      var thisTotal = thisVersion[0]+thisVersion[1]+thisVersion[2];
+      var lastTotal = lastVersion[0]+lastVersion[1]+lastVersion[2];
+      var versionDiff = thisTotal - lastTotal;
       
-      // Create main svg for drawing 
-      var svg = d3.select("#graph-container").append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      svg.call(tip);
-      // Create y-axis and label
-      svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-          .attr("transform", "rotate(-90)")
-          .attr("y", -30)
-          .attr("dy", ".71em")
-          .style("text-anchor", "end")
-          .text("Production Version");
-      // Create x-axis
-      svg.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(xAxis)
-          // Rotate text labels
-          .selectAll('text')
-            .attr('x', 0)
-            .attr('dx', 15)
-            .attr('transform', 'rotate(30)')
-      
-      // Load in data and create circles for each
-      svg.selectAll(".circle")
-          .data(data)
-          .enter().append("circle")
-            .attr("class", "circle")
-            // Position circle at correct x position
-            .attr("cx", function(d) {return x(d.date)})
-            // Position circle at correct y-position
-            .attr("cy", function(d){return height - d.majorVersion*100})
-            // Size and color of circle based on update 'importance'
-            .attr("r", function(d){return (d.majorVersion+1) > 0 ? (d.majorVersion+5) : 5})
-            .attr("fill", function(d) {return '#'+colorScale(d.majorVersion)})
-            .attr("opacity", 0.7)
-            .on('mouseover', tip.show)
-            .on('mouseout', tip.hide)
+      return versionDiff > 0 ? versionDiff : 1;
     }
-    this.lineGraphed = true;
-  }
-
-  this.barGraph = function(module){
-    console.log('Has this graph already been drawn?', this.barGraphed)
-    if (!this.barGraphed){
-
-      var dataStore = module.time;
-      var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
-      var data = [];
-      var dataStoreArray = Object.keys(dataStore);
-      var last = '0.0.0'
-      var updateCalculator = function(oldVersion, newVersion) {
-        newVersion = newVersion.split('.');
-        oldVersion = oldVersion.split('.');
-        var thisVersion = [(newVersion[0]-0)*50,(newVersion[1]-0)*5,(newVersion[2]*1-0)*0.5];
-        var lastVersion = [(oldVersion[0]-0)*50,(oldVersion[1]-0)*5,(oldVersion[2]*1-0)*0.5];
-        var thisTotal = thisVersion[0]+thisVersion[1]+thisVersion[2];
-        var lastTotal = lastVersion[0]+lastVersion[1]+lastVersion[2];
-        var versionDiff = thisTotal - lastTotal;
-        
-        return versionDiff > 0 ? versionDiff : 1;
+    var data = [];
+    var dataStoreArray = Object.keys(dataStore);
+    var last = '0.0.0'
+    for (var i=0; i<dataStoreArray.length; i++) {
+      if (dataStoreArray[i].split('.')[2]-0>=0){ // remove alpha/beta testing versions
+        var key = dataStoreArray[i];
+        var prevKey = last;
+        var versionObj = {};
+        if (key !== 'modified' && key !== 'created') {
+          versionObj['versionLabel'] = key;
+          versionObj['date'] = dateFormat.parse(dataStore[key]);
+          versionObj['versionValue'] = updateCalculator(prevKey, key);
+          versionObj['majorVersion'] = key.split('.')[0]
+          data.push(versionObj);
+          last = versionObj['versionLabel'];
+        }      
       }
-      for (var i=0; i<dataStoreArray.length; i++) {
-        if (dataStoreArray[i].split('.')[2]-0>=0){ // remove alpha/beta testing versions
-          var key = dataStoreArray[i];
-          var prevKey = last;
-          var versionObj = {};
-          if (key !== 'modified' && key !== 'created') {
-            versionObj['versionLabel'] = key;
-            versionObj['date'] = dateFormat.parse(dataStore[key]);
-            versionObj['versionValue'] = updateCalculator(prevKey, key);
-            data.push(versionObj);
-            last = versionObj['versionLabel'];
-          }      
-        }
-      }
-      data.shift()
+    }
 
-      var margin = {top: 50, right: 50, bottom: 50, left: 50},
-          width = 1000 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
-          buckets = 4;
-          colors = ['d3d3d3', 'CBA2A2', 'C16A69', 'b83130'];
+    var buckets = 4;
+    var colors = ['d3d3d3', 'CBA2A2', 'C16A69', 'b83130'];
 
-      var x = d3.time.scale() 
-        .domain([dateFormat(new Date(2014, 0, 1)), dateFormat(new Date(2015, 7, 7))]) 
-        .range([0, width]);
+    var x = d3.time.scale() 
+      .range([0, width])
+      .domain([data[0]['date'], data.slice(-1)[0]['date']]);
+    var y = d3.scale.linear()
+      .range([height, 0])
+      .domain([0, d3.max(data, function(d) { return height/100 })]);
+    var colorScale = d3.scale.quantile()
+     .domain([0, buckets - 1, d3.max(data, function (d) { return d.majorVersion; })])
+     .range(colors);
 
-      var y = d3.scale.linear()
-        .range([height, 0]);
 
-      var colorScale = d3.scale.quantile()
-       .domain([0, buckets - 1, d3.max(data, function (d) { return d.versionValue; })])
-       .range(colors);    
-
-      var xAxis = d3.svg.axis()
+    var xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom");
-
-      var yAxis = d3.svg.axis()
+    var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left")
-        .ticks(10)
+        .ticks(5)
 
-      var tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .offset([-10, 0])
-        .html(function(d) {
-          var date = d.date.toString().substring(3,15);
-          var str = "<strong>Version:</strong> <span style='color:#b83130'>" + d.versionLabel + "</span>";
-          str += "</br><string>Date:</strong><span style='color:#b83130'> " + date + "</span>";
-          return str;
-        })    
-
-
-      x.domain([data[0]['date'], dateFormat.parse(dateFormat(new Date(2015, 7, 7)))]);
-      y.domain([0, d3.max(data, function(d) { return d.versionValue+2; })]);
-      // Create main svg for drawing 
-      var svg = d3.select(".versionVis").append("svg")
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {
+        var date = d.date.toString().substring(3,15);
+        var str = "<strong>Version:</strong> <span class='tip-values'>" + d.versionLabel + "</span>";
+        str += "</br><string>Date:</strong><span class='tip-values'> " + date + "</span>";
+        return str;
+      })
+    
+    // Create main svg for drawing 
+    var svg = d3.select("#graph-container").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      svg.call(tip);
-      // Create x-axis
-      svg.append("g")
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    svg.call(tip);
+    // Create y-axis and label
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -30)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Production Version");
+    // Create x-axis
+    svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
@@ -464,42 +261,28 @@ angular.module('app')
           .attr('x', 0)
           .attr('dx', 15)
           .attr('transform', 'rotate(30)')
-      // Create y-axis and label
-      svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-          .attr("transform", "rotate(-90)")
-          .attr("y", -30)
-          .attr("dy", ".71em")
-          .style("text-anchor", "end")
-          .text("Version Update");
-      // Load in data and create bars for each
-      svg.selectAll(".bar")
+    
+    // Load in data and create circles for each
+    svg.selectAll(".circle")
         .data(data)
-        .enter().append("rect")
-          .attr("class", "bar")
-          // Position bar at correct x position
-          .attr("x", function(d) {return x(d.date)})
-          .attr("width", 5)
-          // Position top of bar at correct y-position
-          .attr("y", function(d) {return y(d.versionValue) || 1})
-          // Draw bar down to the bottom
-          .attr("height", function(d) { return height - y(d.versionValue); })
-          .attr("fill", function(d) {return '#'+colorScale(d.versionValue)})
-          .attr('opacity', 0.7)
+        .enter().append("circle")
+          .attr("class", "circle")
+          // Position circle at correct x position
+          .attr("cx", function(d) {return x(d.date)})
+          // Position circle at correct y-position
+          .attr("cy", function(d){return height - d.majorVersion*100})
+          // Size and color of circle based on update 'importance'
+          .attr("r", function(d){return (d.majorVersion+1) > 0 ? (d.majorVersion+5) : 5})
+          .attr("fill", function(d) {return '#'+colorScale(d.majorVersion)})
+          .attr("opacity", 0.7)
           .on('mouseover', tip.show)
           .on('mouseout', tip.hide)
-      }
-  this.barGraphed = true;
   }
 
+  // Render the download graph
   this.downloadGraph = function(moduleName, width){
-    var width = width - margin.left - margin.right;
+    width = width - margin.left - margin.right;
     var dateFormat = d3.time.format("%Y-%m-%d");
-    // var margin = {top: 50, right: 50, bottom: 50, left: 50},
-    //     width = document.getElementById('graph-container').offsetWidth - margin.left - margin.right,
-    //     height = 500 - margin.top - margin.bottom;
 
     var x = d3.time.scale()
       .range([0, width]);
@@ -599,27 +382,5 @@ angular.module('app')
       return d;
     }
   }
-})
-
-.service('Sigma', ['$http', function($http){
-  this.data = {};
-
-  this.clearGraph = function() {
-    // Clear out Sigma graph
-    var myNode = document.getElementById("graph-container");
-    while (myNode.firstChild) {
-        myNode.removeChild(myNode.firstChild);
-    }
-  }
-
-  this.getResults = function(moduleName){
-    var that = this;
-    $http.post('/relationships', {"data": moduleName})
-    .success(function(data){
-      that.data = data;
-    })
-    .error(function(data){
-      console.log(data);
-    })
-  }
 }])
+

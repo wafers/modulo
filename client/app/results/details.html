@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-init="init()">
 	<div class="row text-center details-module-name">
 			<h1><strong><a href="{{module.url}}">{{module.name}}</a></strong> - <small>{{module.description}}</small></h1> 
 	</div>
@@ -7,9 +7,9 @@
 		<div class="col-md-9">
 			<!-- Graphs here -->
 			<div class="btn-group graph-type">
-				<button type="button" class="btn btn-default" ng-click="downloadGraph()">Downloads</button>
-				<button type="button" class="btn btn-default" ng-click="lineGraph()">Version</button>
-				<button type="button" class="btn btn-default" ng-click="graphGraph()">Dependencies</button>
+				<button type="button" class="btn btn-default" ng-click="drawGraph('downloads')">Downloads</button>
+				<button type="button" class="btn btn-default" ng-click="drawGraph('version')">Version</button>
+				<button type="button" class="btn btn-default" ng-click="drawGraph('dependency')">Dependencies</button>
 				<button type="button" class="btn btn-default" ng-click="">Keywords</button>
 				<button type="button" class="btn btn-default" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
 			</div>
