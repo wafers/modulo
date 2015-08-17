@@ -29,7 +29,7 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
   }
 
   $scope.copy = function(event){
-    console.log(event);
+    console.log(event.target);
   }
 
   // Clear the graph when leaving the details page

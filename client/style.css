@@ -168,6 +168,10 @@ h3 {
 
 #install-link {
   text-align: right;
+  cursor: pointer;
+}
+#install-link:hover{
+  color: #337AB7;
 }
 
 .graph-type{
