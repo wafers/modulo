@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('DetailsController', ['Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(, Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
+.controller('DetailsController', ['Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
   var width = document.getElementById('graph-container').offsetWidth;
   $scope.module = ModulePass.module;
 
@@ -11,7 +11,7 @@ angular.module('app')
     ModulePass.getModule($stateParams.moduleName);
   }
 
-  // $scope.$watch(function(){ return Sigma.data }, function(){
+  // $scope.$watch(function(){ return Graph.data }, function(){
   //   $scope.results = Sigma.data;
 
   //   // Sigma.clearSigma();
@@ -30,22 +30,22 @@ angular.module('app')
     // function(event){ $scope.clearSigma() })
 
   $scope.lineGraph = function() {
-    $scope.clearGraph();
+    Graph.clearGraph();
     Graph.lineGraph($scope.module, width)
   }
 
   $scope.clearGraph = function() {
-    Sigma.clearGraph();
+    Graph.clearGraph();
     Graph.resetGraphCheck()
   }
 
   $scope.graphGraph = function(){
-    $scope.clearGraph();
-    Sigma.getResults($scope.module.name);
+    Graph.clearGraph();
+    Graph.sigmaGraph($scope.module.name);
   }
 
   $scope.downloadGraph = function(){
-    $scope.clearGraph();
+    Graph.clearGraph();
     Graph.downloadGraph('moduleName', width);
   }
 
@@ -53,4 +53,7 @@ angular.module('app')
     return Search.results.searchResults.length > 0;
   }
 
+  $scope.$on("$destroy", function(){
+    Graph.clearGraph();
+  });
 }]);

@@ -158,7 +158,7 @@ angular.module('app')
     }
   }
 
-  this.sigmaGraph = function(){
+  this.sigmaGraph = function(moduleName){
     $http.post('/relationships', {"data": moduleName})
     .success(function(data){
       // that.data = data;
