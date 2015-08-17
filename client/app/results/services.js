@@ -137,7 +137,6 @@ angular.module('app')
 
 .service('Graph', ['$http', function($http){
   var margin = {top: 50, right: 10, bottom: 50, left: 80};
-  // var width = document.getElementById('graph-container').offsetWidth - margin.left - margin.right;
   var height = 500 - margin.top - margin.bottom;
 
   // Clears out the entire graph container
@@ -282,11 +281,8 @@ angular.module('app')
 
   // Render the download graph
   this.downloadGraph = function(moduleName, width){
-    var width = width - margin.left - margin.right;
+    width = width - margin.left - margin.right;
     var dateFormat = d3.time.format("%Y-%m-%d");
-    // var margin = {top: 50, right: 50, bottom: 50, left: 50},
-    //     width = document.getElementById('graph-container').offsetWidth - margin.left - margin.right,
-    //     height = 500 - margin.top - margin.bottom;
 
     var x = d3.time.scale()
       .range([0, width]);

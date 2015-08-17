@@ -4,7 +4,7 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
   $scope.module = ModulePass.module;
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
-    $scope.module = ModulePass.module
+    $scope.module = ModulePass.module;
   });
 
   // Send a GET request to the database if there is no module data
