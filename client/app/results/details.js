@@ -30,4 +30,10 @@ angular.module('app')
 
   // Clear the graph when leaving the details page
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
+
+  // Reset the graph on 
+  $scope.init = function(){
+    Graph.clearGraph();
+    Graph.resetGraphCheck();
+  }
 }]);
