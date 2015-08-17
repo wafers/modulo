@@ -360,6 +360,5 @@ a[href^="mailto:"] {
 /* ANGULAR LOADING BAR (Overriding CSS) */
 #loading-bar .bar {
   background: #8fafa2;
-  top: 86px;
   height: 5px;
 }
