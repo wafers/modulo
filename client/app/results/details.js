@@ -13,12 +13,12 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     ModulePass.getModule($stateParams.moduleName);
   }
 
-  $scope.drawGraph = function(type){
+  $scope.drawGraph = function(type, filter){
     Graph.clearGraph();
     var width = document.getElementById('graph-container').offsetWidth;
     if(type === 'version') Graph.lineGraph(this.module, width);
     else if(type === 'dependency') Graph.sigmaGraph(this.module.name);
-    else if(type === 'downloads') Graph.downloadGraph(this.module.downloads, width);
+    else if(type === 'downloads') Graph.downloadGraph(this.module.downloads, width, filter);
   }
 
   $scope.hasSearchResults = function(){

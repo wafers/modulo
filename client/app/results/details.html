@@ -13,9 +13,9 @@
 				    Downloads <span class="caret"></span>
 				  </button>
 				  <ul class="dropdown-menu">
-				    <li><a href="#" ng-click="downloadGraph()">All Downloads</a></li>
-				    <li><a href="#" ng-click="downloadGraph()">Weekdays</a></li>
-				    <li><a href="#" ng-click="downloadGraph()">Weekends</a></li>
+				    <li><a ng-click="drawGraph('downloads')">All Downloads</a></li>
+				    <li><a ng-click="drawGraph('downloads','weekdays')">Weekdays</a></li>
+				    <li><a ng-click="drawGraph('downloads', 'weekends')">Weekends</a></li>
 				  </ul>
 				</div>
 				<button type="button" class="btn btn-default" ng-click="drawGraph('version')">Version</button>

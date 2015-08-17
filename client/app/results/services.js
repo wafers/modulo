@@ -280,7 +280,7 @@ angular.module('app')
   }
 
   // Render the download graph
-  this.downloadGraph = function(data, width, maPeriod){
+  this.downloadGraph = function(data, width, filter, maPeriod){
     if(!maPeriod) maPeriod = 100;
     width = width - margin.left - margin.right;
     var dateFormat = d3.time.format("%Y-%m-%d");
@@ -303,8 +303,10 @@ angular.module('app')
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // data = data.filter(onlyWeekdays);
-    addMovingAverage(data, maPeriod);
+    if(filter === 'weekdays') data = data.filter(onlyWeekdays);
+    else if(ftiler === 'weekends') data = data.filter(onlyWeekends);
+
+    addMovingAverage(data, maPeriod); // Defaults to a 100-daily moving average
 
     function addMovingAverage(dataArr, period){ // passed in array of downloads
       for(var i = 0; i < dataArr.length; i++){
@@ -321,7 +323,7 @@ angular.module('app')
       }
     }
 
-    function onlyWeekend(row){
+    function onlyWeekends(row){
       var date = moment(row.day);
       return date.day() === 6 || date.day() === 7 ? true : false;
     }
