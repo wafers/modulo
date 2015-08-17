@@ -257,23 +257,13 @@ div.landing-explanation {
   margin-bottom: -30px;
 }
 
-
+/* LANDING > feature-demo */
 .demo-text{
   padding-top:50px;
 }
 
 .demo-img {
   width: 100%;
-}
-
-.landing-npm-demo {
-  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8) ), url('./assets/stock-mug.jpg') no-repeat bottom;
-  background-size:100% auto;
-}
-
-.NPM {
-  padding-top: 20%;
-  padding-bottom: 200px;
 }
 
 /* LANDING > advanced-features */
@@ -284,6 +274,16 @@ div.landing-explanation {
 
 .feature-explanation{
   font-size: 15px;
+}
+
+/* LANDING > NPM */
+.landing-npm-demo {
+  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8) ), url('./assets/stock-mug.jpg') no-repeat bottom;
+  background-size:100% auto;
+}
+
+.npm-gif {
+  border:10px solid #8fafa2;
 }
 
 /* LANDING > tech */
