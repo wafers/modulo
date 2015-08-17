@@ -183,9 +183,10 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
     var edges = [], nodes = [];
     var nodeId = 2, edgeId = 1; 
     var x = 1, y = 1;
-    nodes.push(makeNode('1', moduleName, 0, 0, 10, "rgb(255,0,0)")); // make initial
+    nodes.push(makeNode('1', moduleName, 0, 0, 10, "#4c1313", 0)); // make initial
+    var totalNodeNum = relationships.length;
     relationships.forEach(function(row){
-      var newNode = makeNode(""+nodeId, row.name, x, y, 5, "rgb(255,123,102)")
+      var newNode = makeNode(""+nodeId, row.name, x, y, 5, "#4c1313", relationships.indexOf(row)+1, totalNodeNum)
       var newEdge = makeEdge(""+nodeId, '1', ""+edgeId);
       nodeId++; edgeId++; x++; y++;
       nodes.push(newNode);
@@ -194,12 +195,14 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
     cb(null, {edges: edges, nodes: nodes});
   });
 
-  function makeNode(idStr, labelStr, x, y, size, colorStr){
-    return {id: idStr, label: labelStr, x: Math.random(), y: Math.random(), size: size, color: colorStr};
+  function makeNode(idStr, labelStr, x, y, size, colorStr, nodeNum, totalNodeNum){
+    var xPos = Math.cos(Math.PI*2*nodeNum/(totalNodeNum))+Math.random()/10;
+    var yPos = Math.sin(Math.PI*2*nodeNum/totalNodeNum)+Math.random()/10;
+    return {id: idStr, label: labelStr, x: xPos, y: yPos, size: size, color: colorStr};
   }
 
   function makeEdge(sourceIdStr, targetIdStr, idStr){
-    return {source: sourceIdStr, target: targetIdStr, id: idStr}
+    return {source: sourceIdStr, target: targetIdStr, id: idStr, color: '#8fafa2'}
   }
 }
 
