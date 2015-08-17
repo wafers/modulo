@@ -17,7 +17,7 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     var width = document.getElementById('graph-container').offsetWidth;
     if(type === 'version') Graph.lineGraph(this.module, width);
     else if(type === 'dependency') Graph.sigmaGraph(this.module.name);
-    else if(type === 'downloads') Graph.downloadGraph('moduleName', width);
+    else if(type === 'downloads') Graph.downloadGraph(this.module, width);
   }
 
   $scope.hasSearchResults = function(){

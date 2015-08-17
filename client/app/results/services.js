@@ -280,7 +280,7 @@ angular.module('app')
   }
 
   // Render the download graph
-  this.downloadGraph = function(moduleName, width){
+  this.downloadGraph = function(module, width){
     width = width - margin.left - margin.right;
     var dateFormat = d3.time.format("%Y-%m-%d");
 
