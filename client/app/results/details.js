@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('DetailsController', ['Sigma', 'Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(Sigma, Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
+.controller('DetailsController', ['Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(, Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
   var width = document.getElementById('graph-container').offsetWidth;
   $scope.module = ModulePass.module;
 
@@ -11,21 +11,20 @@ angular.module('app')
     ModulePass.getModule($stateParams.moduleName);
   }
 
+  // $scope.$watch(function(){ return Sigma.data }, function(){
+  //   $scope.results = Sigma.data;
 
-  $scope.$watch(function(){ return Sigma.data }, function(){
-    $scope.results = Sigma.data;
+  //   // Sigma.clearSigma();
 
-    // Sigma.clearSigma();
-
-    s = new sigma({ 
-            graph: $scope.results,
-            container: 'graph-container',
-            settings: {
-              defaultNodeColor: '#ec5148',
-              defaultEdgeColor: '#d3d3d3'
-            }
-    });
-  })
+  //   s = new sigma({ 
+  //           graph: $scope.results,
+  //           container: 'graph-container',
+  //           settings: {
+  //             defaultNodeColor: '#ec5148',
+  //             defaultEdgeColor: '#d3d3d3'
+  //           }
+  //   });
+  // })
   
   // $scope.$on('$viewContentLoaded', 
     // function(event){ $scope.clearSigma() })
@@ -34,7 +33,7 @@ angular.module('app')
     $scope.clearGraph();
     Graph.lineGraph($scope.module, width)
   }
-  
+
   $scope.clearGraph = function() {
     Sigma.clearGraph();
     Graph.resetGraphCheck()

@@ -141,8 +141,7 @@ angular.module('app')
   var height = 500 - margin.top - margin.bottom;
 
   this.lineGraphed = false;
-
-
+  // this.sigmaData = {};
 
   this.resetGraphCheck = function() {
     console.log('Graph checks reset. Ready to draw.')
@@ -160,18 +159,22 @@ angular.module('app')
   }
 
   this.sigmaGraph = function(){
-    this.data = {};
-
-    this.getResults = function(moduleName){
-      var that = this;
-      $http.post('/relationships', {"data": moduleName})
-      .success(function(data){
-        that.data = data;
-      })
-      .error(function(data){
-        console.log(data);
-      })
-    }
+    $http.post('/relationships', {"data": moduleName})
+    .success(function(data){
+      // that.data = data;
+      // populate sigma here
+      s = new sigma({ 
+              graph: data,
+              container: 'graph-container',
+              settings: {
+                defaultNodeColor: '#ec5148',
+                defaultEdgeColor: '#d3d3d3'
+              }
+      });
+    })
+    .error(function(data){
+      console.log(data);
+    })
   }
 
   this.lineGraph = function(module, width){
