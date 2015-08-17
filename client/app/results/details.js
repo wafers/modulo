@@ -1,12 +1,12 @@
 angular.module('app')
-.controller('DetailsController', ['Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
-  
+.controller('DetailsController', ['Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){  
   $scope.module = ModulePass.module;
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
     $scope.module = ModulePass.module
   });
 
+  // Send a GET request to the database if there is no module data
   if(!$scope.module.name || $scope.module.name !== $stateParams.moduleName){
     ModulePass.getModule($stateParams.moduleName);
   }
@@ -28,7 +28,6 @@ angular.module('app')
     return Search.results.searchResults.length > 0;
   }
 
-  $scope.$on("$destroy", function(){
-    Graph.clearGraph();
-  });
+  // Clear the graph when leaving the details page
+  $scope.$on("$destroy", function(){ Graph.clearGraph() });
 }]);
