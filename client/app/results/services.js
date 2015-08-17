@@ -304,7 +304,7 @@ angular.module('app')
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     if(filter === 'weekdays') data = data.filter(onlyWeekdays);
-    else if(ftiler === 'weekends') data = data.filter(onlyWeekends);
+    else if(filter === 'weekends') data = data.filter(onlyWeekends);
 
     addMovingAverage(data, maPeriod); // Defaults to a 100-daily moving average
 
@@ -366,7 +366,7 @@ angular.module('app')
         .attr("x", function(d) { return x(dateFormat.parse(d.day)); })
         .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return height - y(d.count); })
-        .attr("width", 10)
+        .attr("width", 5)
         .attr('fill', 'steelblue')
 
     chart.append('path')
