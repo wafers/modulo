@@ -1,5 +1,6 @@
 angular.module('app')
-.controller('DetailsController', ['Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){  
+.controller('DetailsController', ['Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', 
+function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){  
   $scope.module = ModulePass.module;
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
@@ -11,13 +12,8 @@ angular.module('app')
     ModulePass.getModule($stateParams.moduleName);
   }
 
-  $scope.clearGraph = function() {
-    Graph.clearGraph();
-    Graph.resetGraphCheck()
-  }
-
   $scope.drawGraph = function(type){
-    this.clearGraph();
+    Graph.clearGraph();
     var width = document.getElementById('graph-container').offsetWidth;
     if(type === 'version') Graph.lineGraph(this.module, width);
     else if(type === 'dependency') Graph.sigmaGraph(this.module.name);
@@ -32,8 +28,5 @@ angular.module('app')
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
 
   // Reset the graph on 
-  $scope.init = function(){
-    Graph.clearGraph();
-    Graph.resetGraphCheck();
-  }
+  $scope.init = Graph.clearGraph();
 }]);

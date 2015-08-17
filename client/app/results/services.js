@@ -141,12 +141,6 @@ angular.module('app')
   var height = 500 - margin.top - margin.bottom;
 
   this.lineGraphed = false;
-  // this.sigmaData = {};
-
-  this.resetGraphCheck = function() {
-    console.log('Graph checks reset. Ready to draw.')
-    this.lineGraphed = false;
-  }
 
   // Clears out the entire graph container
   this.clearGraph = function() {
@@ -154,9 +148,11 @@ angular.module('app')
     while (myNode.firstChild) {
         myNode.removeChild(myNode.firstChild);
     }
-    
+    this.lineGraphed = false;
+    console.log('Graph checks reset. Ready to draw');
   }
 
+  // Sigma graph drawing
   this.sigmaGraph = function(moduleName){
     $http.post('/relationships', {"data": moduleName})
     .success(function(data){
