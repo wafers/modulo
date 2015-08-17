@@ -28,5 +28,8 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
 
   // Reset the graph on 
-  $scope.init = Graph.clearGraph();
+  $scope.init = function(){
+    this.drawGraph('downloads');
+    Graph.clearGraph();
+  }
 }]);
