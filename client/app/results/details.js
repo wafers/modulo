@@ -28,6 +28,10 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     return Search.results.searchResults.length > 0;
   }
 
+  $scope.copy = function(event){
+    console.log(event);
+  }
+
   // Clear the graph when leaving the details page
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
   $scope.init = Graph.clearGraph();
