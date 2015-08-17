@@ -29,7 +29,7 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
 
   // Reset the graph on 
   $scope.init = function(){
-    this.drawGraph('downloads');
     Graph.clearGraph();
+    this.drawGraph('downloads');
   }
 }]);
