@@ -11,20 +11,6 @@ angular.module('app')
     ModulePass.getModule($stateParams.moduleName);
   }
 
-  $scope.circleGraph = function() {
-    $scope.clearGraph();
-    Graph.circleGraph($scope.module, width)
-  }
-
-  $scope.lineGraph = function() {
-    $scope.clearGraph();
-    Graph.lineGraph($scope.module, width)
-  }
-
-  $scope.barGraph = function() {
-    $scope.clearGraph();
-    Graph.barGraph($scope.module, width)
-  }
 
   $scope.$watch(function(){ return Sigma.data }, function(){
     $scope.results = Sigma.data;
@@ -44,6 +30,11 @@ angular.module('app')
   // $scope.$on('$viewContentLoaded', 
     // function(event){ $scope.clearSigma() })
 
+  $scope.lineGraph = function() {
+    $scope.clearGraph();
+    Graph.lineGraph($scope.module, width)
+  }
+  
   $scope.clearGraph = function() {
     Sigma.clearGraph();
     Graph.resetGraphCheck()
