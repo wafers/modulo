@@ -5,6 +5,7 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
     $scope.module = ModulePass.module;
+    if($scope.module.downloads) $scope.drawGraph('downloads');
   });
 
   // Send a GET request to the database if there is no module data
@@ -12,12 +13,12 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     ModulePass.getModule($stateParams.moduleName);
   }
 
-  $scope.drawGraph = function(type){
+  $scope.drawGraph = function(type, filter){
     Graph.clearGraph();
     var width = document.getElementById('graph-container').offsetWidth;
     if(type === 'version') Graph.lineGraph(this.module, width);
     else if(type === 'dependency') Graph.sigmaGraph(this.module.name);
-    else if(type === 'downloads') Graph.downloadGraph('moduleName', width);
+    else if(type === 'downloads') Graph.downloadGraph(this.module.downloads, width, filter);
   }
 
   $scope.hasSearchResults = function(){
@@ -26,7 +27,5 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
 
   // Clear the graph when leaving the details page
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
-
-  // Reset the graph on 
   $scope.init = Graph.clearGraph();
 }]);
