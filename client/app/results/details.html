@@ -40,6 +40,11 @@
 			  <dt># of Dependents</dt>
 			  <dd>{{module.dependentsSize}}</dd>
 			</dl>
+			<dl class="dl-horizontal details-description" ng-switch="selectedGraph">
+			  <dt ng-switch-when="downloads">Monthly Downloads.</dt>
+			  <dt ng-switch-when="dependency">Modules that list {{module.name}} as a dependency.</dt>
+			  <dt ng-switch-when="version">Version release history.</dt>
+			</dl>
 		</div>
 	</div>
 
