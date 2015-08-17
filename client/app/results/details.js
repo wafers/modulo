@@ -5,7 +5,7 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
     $scope.module = ModulePass.module;
-    $scope.drawGraph('downloads');
+    if($scope.module.downloads) $scope.drawGraph('downloads');
   });
 
   // Send a GET request to the database if there is no module data
@@ -27,4 +27,5 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
 
   // Clear the graph when leaving the details page
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
+  $scope.init = Graph.clearGraph();
 }]);
