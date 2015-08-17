@@ -7,9 +7,9 @@
 		<div class="col-md-9">
 			<!-- Graphs here -->
 			<div class="btn-group graph-type">
-				<button type="button" class="btn btn-default" ng-click="downloadGraph()">Downloads</button>
-				<button type="button" class="btn btn-default" ng-click="lineGraph()">Version</button>
-				<button type="button" class="btn btn-default" ng-click="graphGraph()">Dependencies</button>
+				<button type="button" class="btn btn-default" ng-click="drawGraph('downloads')">Downloads</button>
+				<button type="button" class="btn btn-default" ng-click="drawGraph('version')">Version</button>
+				<button type="button" class="btn btn-default" ng-click="drawGraph('dependency')">Dependencies</button>
 				<button type="button" class="btn btn-default" ng-click="">Keywords</button>
 				<button type="button" class="btn btn-default" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
 			</div>

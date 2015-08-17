@@ -145,8 +145,6 @@ angular.module('app')
 
   this.resetGraphCheck = function() {
     console.log('Graph checks reset. Ready to draw.')
-    this.barGraphed = false;
-    this.circleGraphed = false;
     this.lineGraphed = false;
   }
 
@@ -156,6 +154,7 @@ angular.module('app')
     while (myNode.firstChild) {
         myNode.removeChild(myNode.firstChild);
     }
+    
   }
 
   this.sigmaGraph = function(moduleName){

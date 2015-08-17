@@ -1,6 +1,6 @@
 angular.module('app')
 .controller('DetailsController', ['Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
-  var width = document.getElementById('graph-container').offsetWidth;
+  
   $scope.module = ModulePass.module;
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
@@ -11,42 +11,17 @@ angular.module('app')
     ModulePass.getModule($stateParams.moduleName);
   }
 
-  // $scope.$watch(function(){ return Graph.data }, function(){
-  //   $scope.results = Sigma.data;
-
-  //   // Sigma.clearSigma();
-
-  //   s = new sigma({ 
-  //           graph: $scope.results,
-  //           container: 'graph-container',
-  //           settings: {
-  //             defaultNodeColor: '#ec5148',
-  //             defaultEdgeColor: '#d3d3d3'
-  //           }
-  //   });
-  // })
-  
-  // $scope.$on('$viewContentLoaded', 
-    // function(event){ $scope.clearSigma() })
-
-  $scope.lineGraph = function() {
-    Graph.clearGraph();
-    Graph.lineGraph($scope.module, width)
-  }
-
   $scope.clearGraph = function() {
     Graph.clearGraph();
     Graph.resetGraphCheck()
   }
 
-  $scope.graphGraph = function(){
-    Graph.clearGraph();
-    Graph.sigmaGraph($scope.module.name);
-  }
-
-  $scope.downloadGraph = function(){
-    Graph.clearGraph();
-    Graph.downloadGraph('moduleName', width);
+  $scope.drawGraph = function(type){
+    this.clearGraph();
+    var width = document.getElementById('graph-container').offsetWidth;
+    if(type === 'version') Graph.lineGraph(this.module, width);
+    else if(type === 'dependency') Graph.sigmaGraph(this.module.name);
+    else if(type === 'downloads') Graph.downloadGraph('moduleName', width);
   }
 
   $scope.hasSearchResults = function(){
