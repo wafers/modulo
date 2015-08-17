@@ -5,6 +5,13 @@ angular.module('app')
   this.results = {
     searchResults: []
   }
+  this.highestValues = {
+    downloads: 0,
+    stars: 0,
+    dependents: 0,
+    update: moment('Jan 1 2000'),
+    updateNumber: 0
+  }
   
   this.showResults = function() {
     return this.results;
@@ -16,24 +23,78 @@ angular.module('app')
     return this.results;
   }
 
+  this.calculateRank = function(module) {
+    if (module.lastUpdate === 'Unknown') {
+      module.updateRank = 0;
+    } else if (moment(module.time.modified) === this.highestValues.update) {
+      module.updateRank = 50;
+    } else {
+      var now = moment();
+      var recent = moment(this.highestValues.update);
+      var year = moment().subtract(1,'year');
+      var moduleDate = moment(module.time.modified);
+      var dateRank = (50/(recent-year))*(moduleDate - now) + 50 - (50/(recent-year))*(recent-now)
+      if (dateRank < 0 ) dateRank = 0;
+      var numberRank = (50/this.highestValues.updateNumber) * Object.keys(module.time).length
+      module.updateRank = Math.floor(dateRank + numberRank);
+    };
+
+    if (module.monthlyDownloadSum === 0) {
+      module.downloadRank = 0;
+    } else {
+      module.downloadRank = Math.floor(100/this.highestValues.downloads*module.monthlyDownloadSum);
+    }
+
+    if (module.dependentsSize === 0) {
+      module.dependentRank = 0;
+    } else {
+      module.dependentRank = Math.floor(100/this.highestValues.dependents*module.dependentsSize);
+    }
+
+    if (module.starred === 0) {
+      module.starRank = 0;
+    } else {
+      module.starRank = Math.floor(100/this.highestValues.stars*module.starred);
+    }
+  }
+
   this.getResults = function() {
     var context = this;
     return $http.post('/search', {'data': this.navInput}).
       success(function(data, status, headers, config) {
         console.log('search results',data);
         if (data === 'No results found') data = [{name: 'No results found'}];
+        this.highestValues = {
+          downloads: 0,
+          stars: 0,
+          dependents: 0,
+          update: moment('Jan 1 2000'),
+          updateNumber: 0
+        }
+
         for (var i=0; i<data.length; i++) {
           if (data[i].downloads) data[i].downloads = JSON.parse(data[i].downloads);
           if (data[i].time) {
             data[i].time = JSON.parse(data[i].time);
             data[i].lastUpdate = moment(data[i].time.modified).fromNow();
             data[i].latestVersion = Object.keys(data[i].time).slice(-3)[0];
+            data[i].lastUpdate = moment(data[i].time.modified).format('MM DD YYYY');
+            if(moment(data[i].time.modified) > context.highestValues.update) context.highestValues.update = moment(data[i].time.modified);
+            if(data[i].monthlyDownloadSum > context.highestValues.downloads) context.highestValues.downloads = data[i].monthlyDownloadSum;
+            if(data[i].dependentsSize > context.highestValues.dependents) context.highestValues.dependents = data[i].dependentsSize;
+            if(data[i].starred > context.highestValues.stars) context.highestValues.stars = data[i].starred;
+            if(Object.keys(data[i].time).length > context.highestValues.updateNumber) context.highestValues.updateNumber = Object.keys(data[i].time).length;
           } else {
-            data[i].lastUpdate = moment().fromNow();
+            data[i].lastUpdate = 'Unknown';
           }
 
           if(!data[i].readme) data[i].readme = "No readme provided";
         }
+
+        for (var j=0; j<data.length; j++) {
+          context.calculateRank(data[j]);
+        }
+
         context.results.searchResults =  data;
       }).
       error(function(data, status, headers, config) {
