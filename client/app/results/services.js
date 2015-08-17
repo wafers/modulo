@@ -280,20 +280,19 @@ angular.module('app')
   }
 
   // Render the download graph
-  this.downloadGraph = function(module, width){
+  this.downloadGraph = function(data, width){
+    console.log(data); // has count as int and day as some time shit
     width = width - margin.left - margin.right;
     var dateFormat = d3.time.format("%Y-%m-%d");
 
     var x = d3.time.scale()
       .range([0, width]);
-
     var y = d3.scale.linear()
         .range([height, 0]);
 
     var xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom");
-
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left");
