@@ -33,27 +33,28 @@ angular.module('app')
       var recent = moment(this.highestValues.update);
       var year = moment().subtract(1,'year');
       var moduleDate = moment(module.time.modified);
-      var rank = (50/(recent-year))*(moduleDate - now) + 50 - (50/(recent-year))*(recent-now)
-      if (rank < 0 ) rank = 0;
-      module.updateRank = rank;
+      var dateRank = (50/(recent-year))*(moduleDate - now) + 50 - (50/(recent-year))*(recent-now)
+      if (dateRank < 0 ) dateRank = 0;
+      var numberRank = (50/this.highestValues.updateNumber) * Object.keys(module.time).length
+      module.updateRank = Math.floor(dateRank + numberRank);
     };
 
     if (module.monthlyDownloadSum === 0) {
       module.downloadRank = 0;
     } else {
-      module.downloadRank = Math.floor(Math.random()*100);
+      module.downloadRank = Math.floor(100/this.highestValues.downloads*module.monthlyDownloadSum);
     }
 
     if (module.dependentsSize === 0) {
       module.dependentRank = 0;
     } else {
-      module.dependentRank = Math.floor(Math.random()*100);
+      module.dependentRank = Math.floor(100/this.highestValues.dependents*module.dependentsSize);
     }
 
     if (module.starred === 0) {
       module.starRank = 0;
     } else {
-      module.starRank = Math.floor(Math.random()*100);
+      module.starRank = Math.floor(100/this.highestValues.stars*module.starred);
     }
   }
 
@@ -63,6 +64,14 @@ angular.module('app')
       success(function(data, status, headers, config) {
         console.log('search results',data);
         if (data === 'No results found') data = [{name: 'No results found'}];
+        this.highestValues = {
+          downloads: 0,
+          stars: 0,
+          dependents: 0,
+          update: moment('Jan 1 2000'),
+          updateNumber: 0
+        }
+
         for (var i=0; i<data.length; i++) {
           if (data[i].downloads) data[i].downloads = JSON.parse(data[i].downloads);
           if (data[i].time) {
