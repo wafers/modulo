@@ -6,8 +6,8 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
   $scope.form = {
     barWidth: 5,
     maPeriod: 100,
-    startDate: null,
-    endDate: null
+    startDate: moment().subtract(3, 'years').toDate(),
+    endDate: moment().toDate()
   }
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
