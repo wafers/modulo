@@ -380,4 +380,5 @@ a[href^="mailto:"] {
 
 .text-to-right{
   text-align: right;
+  float: right;
 }

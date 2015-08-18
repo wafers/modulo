@@ -56,9 +56,11 @@
               <dd><input name="start-date" type='date' ng-model="form.startDate"></dd>
               <dt>End Date</dt>
               <dd><input name="end-date" type='date' ng-model="form.endDate"></dd>
-              <dt><button type="reset" class="btn btn-default">Reset</button></dt>
-              <dd><button type="submit" class="btn btn-success">Submit</button></dd>
             </dl>
+            <div class="btn-group text-to-right">
+              <button type="reset" class="btn btn-default">Reset</button>
+              <button type="submit" class="btn btn-success">Submit</button>
+            </div>
           </div></form>
         </div>
         <div ng-switch-when="dependency">
