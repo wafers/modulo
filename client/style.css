@@ -33,6 +33,10 @@ h3 {
   font-family: Roboto-Light;
 }
 
+.full-width{
+  width: 100%;
+}
+
 /* NAV */
 .nav-container {
   padding: 20px;
