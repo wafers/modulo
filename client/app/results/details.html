@@ -46,18 +46,20 @@
       <div class="details-description" ng-switch="selectedGraph">
         <div ng-switch-when="downloads">
           <h4>Monthly Downloads.</h4>
-          <dl class="dl-horizontal download-graph-params">
-            <dt>Bar Width</dt>
-            <dd><input type='number' min='1' max='10'></dd>
-            <dt>Moving Average Period</dt>
-            <dd><input type='number' min='10' max='500'></dd>
-            <dt>Start Date</dt>
-            <dd><input type='date'></dd>
-            <dt>End Date</dt>
-            <dd><input type='date'></dd>
-            <dt><button class="btn btn-success">Submit</button></dt>
-            <dd><button class="btn btn-default">Reset</button></dd>
-          </dl>
+          <form><div class="form-group">
+            <dl class="dl-horizontal download-graph-params">
+              <dt>Bar Width</dt>
+              <dd><input type='number' name="bar-width" min='1' max='10'></dd>
+              <dt>Moving Average Period</dt>
+              <dd><input type='number' name="ma-period" min='10' max='500'></dd>
+              <dt>Start Date</dt>
+              <dd><input name="start-date" type='date'></dd>
+              <dt>End Date</dt>
+              <dd><input name="end-date" type='date'></dd>
+              <dt><button type="submit" class="btn btn-success">Submit</button></dt>
+              <dd><button type="reset" class="btn btn-default">Reset</button></dd>
+            </dl>
+          </div></form>
         </div>
         <div ng-switch-when="dependency">
           <h4>Modules that list {{module.name}} as a dependency.</h4>
