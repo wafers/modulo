@@ -3,6 +3,13 @@ angular.module('app')
 function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){  
   $scope.module = ModulePass.module;
   $scope.selectedGraph = 'downloads'
+  $scope.dlForm = {
+    barWidth: 5,
+    maPeriod: 100,
+    startDate: moment().subtract(3, 'years').toDate(),
+    endDate: moment().toDate(),
+    filter: 'all'
+  }
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
     $scope.module = ModulePass.module;
@@ -14,14 +21,19 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     ModulePass.getModule($stateParams.moduleName);
   }
 
-  $scope.drawGraph = function(type, filter){
+  $scope.drawGraph = function(type){
     Graph.clearGraph();
     this.selectedGraph = type;
-    console.log('Selected the',this.selectedGraph,'graph')
+    // console.log('Selected the',this.selectedGraph,'graph')
     var width = document.getElementById('graph-container').offsetWidth-25;
+
     if(type === 'version') Graph.lineGraph(this.module, width);
     else if(type === 'dependency') Graph.sigmaGraph(this.module.name);
-    else if(type === 'downloads') Graph.downloadGraph(this.module.downloads, width, filter);
+    else if(type === 'downloads'){
+      var options = this.dlForm;
+      options['width'] = width;
+      Graph.downloadGraph(this.module.downloads, options);
+    }
   }
 
   $scope.hasSearchResults = function(){
@@ -31,6 +43,8 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
   $scope.copy = function(){
     var client = new ZeroClipboard( document.getElementById('install-link') );
   }
+
+  $scope.resetFilterForm = function(){};
 
   // Clear the graph when leaving the details page
   $scope.$on("$destroy", function(){ Graph.clearGraph() });

@@ -368,3 +368,17 @@ a[href^="mailto:"] {
   background: #8fafa2;
   height: 5px;
 }
+
+/* High priority over-ride classes */
+.full-width{
+  width: 100%;
+}
+
+.text-to-left{
+  text-align: left;
+}
+
+.text-to-right{
+  text-align: right;
+  float: right;
+}
