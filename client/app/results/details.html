@@ -46,22 +46,83 @@
       <div class="details-description" ng-switch="selectedGraph">
         <div ng-switch-when="downloads">
           <h4>Monthly Downloads.</h4>
-          <form ng-submit="drawGraph('downloads')"><div class="form-group">
-            <dl class="dl-horizontal download-graph-params">
-              <dt>Bar Width</dt>
-              <dd><input class="full-width" type='number' name="bar-width" min='1' max='10' ng-model="dlForm.barWidth"></dd>
-              <dt>Moving Average Period</dt>
-              <dd><input class="full-width" type='number' name="ma-period" min='10' max='500' ng-model="dlForm.maPeriod"></dd>
-              <dt>Start Date</dt>
-              <dd><input name="start-date" type='date' ng-model="dlForm.startDate"></dd>
-              <dt>End Date</dt>
-              <dd><input name="end-date" type='date' ng-model="dlForm.endDate"></dd>
-            </dl>
-            <div class="btn-group text-to-right">
-              <button type="reset" ng-click="resetFilterForm()" class="btn btn-default">Reset</button>
-              <button type="submit" class="btn btn-success">Submit</button>
+          <form ng-submit="drawGraph('downloads')" class="form-horizontal">
+            <!-- Bar Width --> 
+            <div class="form-group">
+              <label for="bar-width" class="col-md-4 control-label">Bar Width</label>
+              <div class="col-md-8">
+                <input type="number" class="form-control" id="bar-width" min='1' max='10' ng-model="dlForm.barWidth">
+              </div>
             </div>
-          </div></form>
+            
+            <!-- Ma Period --> 
+            <div class="form-group">
+              <label for="ma-period" class="col-md-4 control-label">MA Period</label>
+              <div class="col-md-8">
+                <input type="number" class="form-control" id="ma-period" min='10' max='500' ng-model="dlForm.maPeriod">
+              </div>
+            </div>
+
+            <!-- Date Range controls -->
+            <div class="form-group">
+              <label for="start-date" class="col-md-4 control-label">Start Date</label>
+              <div class="col-md-8">
+                <input type="date" class="form-control" id="start-date" ng-model="dlForm.startDate">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="end-date" class="col-md-4 control-label">End Date</label>
+              <div class="col-md-8">
+                <input type="date" class="form-control" id="end-date" ng-model="dlForm.endDate">
+              </div>
+            </div>
+
+            <!-- All, weekend, weekday filter -->
+            <div class="radio">
+              <label>
+                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                Option one is this and that&mdash;be sure to include why it's great
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                Option two can be something else and selecting it will deselect option one
+              </label>
+            </div>
+            <div class="radio disabled">
+              <label>
+                <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
+                Option three is disabled
+              </label>
+            </div>
+
+            <!-- Submit button -->
+            <div class="form-group">
+              <div class="col-md-offset-7 col-md-5">
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div>
+          </form>
+
+          <!-- <form ng-submit="drawGraph('downloads')">
+            <div class="form-group">
+              <dl class="dl-horizontal download-graph-params">
+                <dt>Bar Width</dt>
+                <dd><input class="full-width" type='number' name="bar-width" min='1' max='10' ng-model="dlForm.barWidth"></dd>
+                <dt>Moving Average Period</dt>
+                <dd><input class="full-width" type='number' name="ma-period" min='10' max='500' ng-model="dlForm.maPeriod"></dd>
+                <dt>Start Date</dt>
+                <dd><input name="start-date" type='date' ng-model="dlForm.startDate"></dd>
+                <dt>End Date</dt>
+                <dd><input name="end-date" type='date' ng-model="dlForm.endDate"></dd>
+              </dl>
+              <div class="btn-group text-to-right">
+                <button type="reset" ng-click="resetFilterForm()" class="btn btn-default">Reset</button>
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div>
+          </form> -->
         </div>
         <div ng-switch-when="dependency">
           <h4>Modules that list {{module.name}} as a dependency.</h4>
