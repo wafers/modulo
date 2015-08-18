@@ -33,10 +33,6 @@ h3 {
   font-family: Roboto-Light;
 }
 
-.full-width{
-  width: 100%;
-}
-
 /* NAV */
 .nav-container {
   padding: 20px;
@@ -371,4 +367,17 @@ a[href^="mailto:"] {
 #loading-bar .bar {
   background: #8fafa2;
   height: 5px;
+}
+
+/* High priority over-ride classes */
+.full-width{
+  width: 100%;
+}
+
+.text-to-left{
+  text-align: left;
+}
+
+.text-to-right{
+  text-align: right;
 }
