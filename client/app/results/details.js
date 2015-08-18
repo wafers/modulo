@@ -38,6 +38,8 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     var client = new ZeroClipboard( document.getElementById('install-link') );
   }
 
+  $scope.resetFilterForm = function(){};
+
   // Clear the graph when leaving the details page
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
   $scope.init = function(){

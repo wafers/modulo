@@ -46,7 +46,7 @@
       <div class="details-description" ng-switch="selectedGraph">
         <div ng-switch-when="downloads">
           <h4>Monthly Downloads.</h4>
-          <form ng-submit="submit()"><div class="form-group">
+          <form ng-submit="submitFilterForm()"><div class="form-group">
             <dl class="dl-horizontal download-graph-params">
               <dt>Bar Width</dt>
               <dd><input class="full-width" type='number' name="bar-width" min='1' max='10' ng-model="form.barWidth"></dd>
@@ -58,7 +58,7 @@
               <dd><input name="end-date" type='date' ng-model="form.endDate"></dd>
             </dl>
             <div class="btn-group text-to-right">
-              <button type="reset" class="btn btn-default">Reset</button>
+              <button type="reset" ng-click="resetFilterForm()" class="btn btn-default">Reset</button>
               <button type="submit" class="btn btn-success">Submit</button>
             </div>
           </div></form>
