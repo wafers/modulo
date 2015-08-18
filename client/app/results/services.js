@@ -310,6 +310,7 @@ angular.module('app')
     if(options.filter === 'weekdays') data = data.filter(onlyWeekdays);
     else if(options.filter === 'weekends') data = data.filter(onlyWeekends);
     data = data.filter(withinDateRange);
+    if(data.length === 0) return;
     addMovingAverage(data, options.maPeriod); // Defaults to a 100-daily moving average
 
     // Data filtering helper functions

@@ -54,7 +54,7 @@
                 <input type="number" class="form-control" id="bar-width" min='1' max='10' ng-model="dlForm.barWidth">
               </div>
             </div>
-            
+
             <!-- Ma Period --> 
             <div class="form-group">
               <label for="ma-period" class="col-md-4 control-label">MA Period</label>
@@ -78,25 +78,27 @@
             </div>
 
             <!-- All, weekend, weekday filter -->
-            <div class="radio">
-              <label>
-                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                Option one is this and that&mdash;be sure to include why it's great
-              </label>
+            <div class="radio-buttons">
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-model="dlForm.filter" name="optionsRadios" id="optionsRadios1" value="all">
+                  All
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-model="dlForm.filter" name="optionsRadios" id="optionsRadios2" value="weekdays">
+                  Weekdays
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-model="dlForm.filter" name="optionsRadios" id="optionsRadios3" value="weekends">
+                  Weekends
+                </label>
+              </div>
             </div>
-            <div class="radio">
-              <label>
-                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                Option two can be something else and selecting it will deselect option one
-              </label>
-            </div>
-            <div class="radio disabled">
-              <label>
-                <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
-                Option three is disabled
-              </label>
-            </div>
-
+    
             <!-- Submit button -->
             <div class="form-group">
               <div class="col-md-offset-7 col-md-5">

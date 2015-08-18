@@ -8,7 +8,9 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     maPeriod: 100,
     startDate: moment().subtract(3, 'years').toDate(),
     endDate: moment().toDate(),
+    filter: 'all'
   }
+  window.dlForm = $scope.dlForm;
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
     $scope.module = ModulePass.module;
@@ -20,7 +22,7 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     ModulePass.getModule($stateParams.moduleName);
   }
 
-  $scope.drawGraph = function(type, filter){
+  $scope.drawGraph = function(type){
     Graph.clearGraph();
     this.selectedGraph = type;
     // console.log('Selected the',this.selectedGraph,'graph')
@@ -30,7 +32,6 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     else if(type === 'downloads'){
       var options = this.dlForm;
       options['width'] = width;
-      options['filter'] = filter;
       Graph.downloadGraph(this.module.downloads, options);
     }
   }
