@@ -10,7 +10,6 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     endDate: moment().toDate(),
     filter: 'all'
   }
-  window.dlForm = $scope.dlForm;
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
     $scope.module = ModulePass.module;
