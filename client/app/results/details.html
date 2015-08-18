@@ -7,17 +7,7 @@
     <div class="col-md-9">
       <!-- Graphs here -->
       <div class="btn-group graph-type">
-        <!-- <button type="button" class="btn btn-default" ng-click="drawGraph('downloads')">Downloads</button> -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Downloads <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a ng-click="drawGraph('downloads')">All Downloads</a></li>
-            <li><a ng-click="drawGraph('downloads','weekdays')">Weekdays</a></li>
-            <li><a ng-click="drawGraph('downloads', 'weekends')">Weekends</a></li>
-          </ul>
-        </div>
+        <button type="button" class="btn btn-default" ng-click="drawGraph('downloads')">Downloads</button> 
         <button type="button" class="btn btn-default" ng-click="drawGraph('version')">Version</button>
         <button type="button" class="btn btn-default" ng-click="drawGraph('dependency')">Dependents</button>
         <button type="button" class="btn btn-default" ng-click="">Keywords</button>
