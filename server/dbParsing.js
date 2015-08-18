@@ -125,12 +125,13 @@ var fetchRelationships = module.exports.fetchRelationships = function(moduleName
       if(err) { console.log(err); cb(err, null); return; }
 
       // change the data 
-      if (result) {
-        var result = result.map(function(obj){
+      if (!Array.isArray(result)) {
+        result = [result];
+      }
+      var result = result.map(function(obj){
         return { name : obj['m.name'], monthlyDownloadSum : obj['m.monthlyDownloadSum'] };
-        });
-        cb(null, result);
-      }  
+      });
+      cb(null, result);
     })
 }
 
