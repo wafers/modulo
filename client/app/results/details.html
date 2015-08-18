@@ -49,13 +49,13 @@
           <form ng-submit="submit()"><div class="form-group">
             <dl class="dl-horizontal download-graph-params">
               <dt>Bar Width</dt>
-              <dd><input class="full-width" type='number' name="bar-width" min='1' max='10'></dd>
+              <dd><input class="full-width" type='number' name="bar-width" min='1' max='10' ng-model="form.barWidth"></dd>
               <dt>Moving Average Period</dt>
-              <dd><input class="full-width" type='number' name="ma-period" min='10' max='500'></dd>
+              <dd><input class="full-width" type='number' name="ma-period" min='10' max='500' ng-model="form.maPeriod"></dd>
               <dt>Start Date</dt>
-              <dd><input name="start-date" type='date'></dd>
+              <dd><input name="start-date" type='date' ng-model="form.startDate"></dd>
               <dt>End Date</dt>
-              <dd><input name="end-date" type='date'></dd>
+              <dd><input name="end-date" type='date' ng-model="form.endDate"></dd>
               <dt><button type="reset" class="btn btn-default">Reset</button></dt>
               <dd><button type="submit" class="btn btn-success">Submit</button></dd>
             </dl>
