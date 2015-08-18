@@ -3,6 +3,12 @@ angular.module('app')
 function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){  
   $scope.module = ModulePass.module;
   $scope.selectedGraph = 'downloads'
+  $scope.form = {
+    barWidth: 5,
+    maPeriod: 100,
+    startDate: null,
+    endDate: null
+  }
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
     $scope.module = ModulePass.module;
