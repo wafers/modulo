@@ -281,7 +281,6 @@ angular.module('app')
   }
 
   // Render the download graph
-  // this.downloadGraph = function(data, width, filter, maPeriod){
   this.downloadGraph = function(data, options){
     var width = options.width - margin.left - margin.right;
     var dateFormat = d3.time.format("%Y-%m-%d");

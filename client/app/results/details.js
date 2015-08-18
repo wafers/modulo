@@ -26,6 +26,7 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     this.selectedGraph = type;
     // console.log('Selected the',this.selectedGraph,'graph')
     var width = document.getElementById('graph-container').offsetWidth-25;
+
     if(type === 'version') Graph.lineGraph(this.module, width);
     else if(type === 'dependency') Graph.sigmaGraph(this.module.name);
     else if(type === 'downloads'){
