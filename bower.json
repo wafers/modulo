@@ -19,6 +19,7 @@
     "bootstrap": "~3.3.5",
     "jquery": "~2.1.4",
     "components-font-awesome": "~4.4.0",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "zeroclipboard": "~2.2.0"
   }
 }
