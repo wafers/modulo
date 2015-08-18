@@ -120,7 +120,7 @@ var search = module.exports.search = function(moduleName, cb){
 }
 
 var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
-    var queryString = "MATCH (n { name: {name} })-[r:DEPENDS_ON]-(m) RETURN m.name, m.monthlyDownloadSum;"
+    var queryString = "MATCH (n { name: {name} })<-[r:DEPENDS_ON]-(m) RETURN m.name, m.monthlyDownloadSum;"
     dbRemote.query(queryString, {name: moduleName}, function(err, result){
       if(err) { console.log(err); cb(err, null); return; }
 
