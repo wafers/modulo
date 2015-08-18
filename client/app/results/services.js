@@ -381,12 +381,11 @@ angular.module('app')
         .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return height - y(d.count); })
         .attr("width", options.barWidth)
-        .attr('fill', 'steelblue')
 
     chart.append('path')
+        .attr("class", "moving-average")
         .attr('d', line(data))
         .attr('fill-opacity', 0)
-        .attr('stroke', 'black')
     // });
 
     function type(d) {

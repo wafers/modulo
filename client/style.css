@@ -215,6 +215,16 @@ h3 {
   display: center;
 }
 
+.bar {
+  fill: #4c1313;
+  opacity: 0.75;  
+}
+
+.moving-average {
+  stroke: #8fafa2;
+  stroke-width: 2;
+}
+
 /* LANDING */
 .fluid-container {
   background-color: #eee;
