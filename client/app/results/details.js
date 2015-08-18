@@ -3,11 +3,11 @@ angular.module('app')
 function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){  
   $scope.module = ModulePass.module;
   $scope.selectedGraph = 'downloads'
-  $scope.form = {
+  $scope.dlForm = {
     barWidth: 5,
     maPeriod: 100,
     startDate: moment().subtract(3, 'years').toDate(),
-    endDate: moment().toDate()
+    endDate: moment().toDate(),
   }
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
@@ -23,11 +23,16 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
   $scope.drawGraph = function(type, filter){
     Graph.clearGraph();
     this.selectedGraph = type;
-    console.log('Selected the',this.selectedGraph,'graph')
+    // console.log('Selected the',this.selectedGraph,'graph')
     var width = document.getElementById('graph-container').offsetWidth-25;
     if(type === 'version') Graph.lineGraph(this.module, width);
     else if(type === 'dependency') Graph.sigmaGraph(this.module.name);
-    else if(type === 'downloads') Graph.downloadGraph(this.module.downloads, width, filter);
+    else if(type === 'downloads'){
+      var options = this.dlForm;
+      options['width'] = width;
+      options['filter'] = filter;
+      Graph.downloadGraph(this.module.downloads, options);
+    }
   }
 
   $scope.hasSearchResults = function(){

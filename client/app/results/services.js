@@ -281,9 +281,9 @@ angular.module('app')
   }
 
   // Render the download graph
-  this.downloadGraph = function(data, width, filter, maPeriod){
-    if(!maPeriod) maPeriod = 100;
-    width = width - margin.left - margin.right;
+  // this.downloadGraph = function(data, width, filter, maPeriod){
+  this.downloadGraph = function(data, options){
+    var width = options.width - margin.left - margin.right;
     var dateFormat = d3.time.format("%Y-%m-%d");
 
     var x = d3.time.scale()
@@ -304,10 +304,21 @@ angular.module('app')
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    if(filter === 'weekdays') data = data.filter(onlyWeekdays);
-    else if(filter === 'weekends') data = data.filter(onlyWeekends);
+    // DATA FILTERING 
+    // - Weekend/Weekday
+    // - Date-range
+    if(options.filter === 'weekdays') data = data.filter(onlyWeekdays);
+    else if(options.filter === 'weekends') data = data.filter(onlyWeekends);
+    data = data.filter(withinDateRange);
+    addMovingAverage(data, options.maPeriod); // Defaults to a 100-daily moving average
 
-    addMovingAverage(data, maPeriod); // Defaults to a 100-daily moving average
+    // Data filtering helper functions
+
+    function withinDateRange(row){
+      if(moment(row.day).isBefore(options.startDate)) return false;
+      if(moment(row.day).isAfter(options.endDate)) return false;
+      return true;
+    }
 
     function addMovingAverage(dataArr, period){ // passed in array of downloads
       for(var i = 0; i < dataArr.length; i++){
@@ -334,6 +345,8 @@ angular.module('app')
       var date = moment(row.day);
       return weekday.indexOf(date.day()) >= 0 ? true : false;
     }
+
+    // D3 Chart drawing
 
     x.domain([dateFormat.parse(data[0].day), dateFormat.parse(data[data.length-1].day)])
     y.domain([0, d3.max(data, function(d) { return d.count; })]);
@@ -367,7 +380,7 @@ angular.module('app')
         .attr("x", function(d) { return x(dateFormat.parse(d.day)); })
         .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return height - y(d.count); })
-        .attr("width", 5)
+        .attr("width", options.barWidth)
         .attr('fill', 'steelblue')
 
     chart.append('path')
