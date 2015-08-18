@@ -165,6 +165,12 @@ h3 {
   padding-top: 20px;
   margin: 0 auto;
 }*/
+
+#install-link {
+  text-align: right;
+  cursor: pointer;
+}
+
 .graph-type{
   padding-top: 5px;
   padding-bottom: 5px;

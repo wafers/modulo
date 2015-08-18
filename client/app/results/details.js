@@ -28,7 +28,17 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     return Search.results.searchResults.length > 0;
   }
 
+  $scope.copy = function(){
+    var client = new ZeroClipboard( document.getElementById('install-link') );
+  }
+
   // Clear the graph when leaving the details page
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
-  $scope.init = Graph.clearGraph();
+  $scope.init = function(){
+    ZeroClipboard.config( { swfPath: "/scripts/zeroclipboard/dist/ZeroClipboard.swf" } );
+    // Need to refactor this sometime to get it to work better
+    var client = new ZeroClipboard( document.getElementById('install-link') );
+    var client = new ZeroClipboard( document.getElementById('install-link') );
+    Graph.clearGraph();
+  } 
 }]);
