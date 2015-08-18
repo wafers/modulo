@@ -42,22 +42,27 @@ var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module
         module.downloads = [{ day: '2015-01-01', count: 0 }];
         module.monthlyDownloadSum = 0;
         cb(null, module);
-      }
-      module.downloads = downloadData; // Daily download numbers
-      module.monthlyDownloadSum = downloadSum(downloadData); // Total downloads for the past month
-      function downloadSum(downloadData) {
-        var days = Object.keys(downloadData);
-        if (days && days.length > 0) {
-          var lastMonth = days.slice(-30);
-          var sum = 0;
-          for (var i=0; i<lastMonth.length; i++) {
-            sum += downloadData[lastMonth[i]]['count'];
+      }else{
+          module.downloads = downloadData; // Daily download numbers
+          module.monthlyDownloadSum = downloadSum(downloadData); // Total downloads for the past month
+          function downloadSum(downloadData) {
+            if(typeof downloadData !== "Object"){
+              console.log(downloadData)
+              console.log(module.name)  
+            }
+            var days = Object.keys(downloadData);
+            if (days && days.length > 0) {
+              var lastMonth = days.slice(-30);
+              var sum = 0;
+              for (var i=0; i<lastMonth.length; i++) {
+                sum += downloadData[lastMonth[i]]['count'];
+              }
+              return sum;
+            }
           }
-          return sum;
+          cb(null, module);
         }
-      }
-      cb(null, module);
-    }
+      }   
   })
 }
 // Give me the version # and latest update
