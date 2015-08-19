@@ -103,14 +103,27 @@
         </div>
         <div ng-switch-when="version">
           <h4>Version release history.</h4>
-          <dl class="dl-horizontal download-graph-params">
-            <dt>Start Date</dt>
-            <dd><input type='date'></dd>
-            <dt>End Date</dt>
-            <dd><input type='date'></dd>
-            <dt><button class="btn btn-success">Submit</button></dt>
-            <dd><button class="btn btn-default">Reset</button></dd>
-          </dl>
+          <form ng-submit="drawGraph('downloads')" class="form-horizontal">
+            <!-- Date Range controls -->
+            <div class="form-group">
+              <label for="start-date" class="col-md-4 control-label">Start Date</label>
+              <div class="col-md-8">
+                <input type="date" class="form-control" id="start-date" ng-model="dlForm.startDate">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="end-date" class="col-md-4 control-label">End Date</label>
+              <div class="col-md-8">
+                <input type="date" class="form-control" id="end-date" ng-model="dlForm.endDate">
+              </div>
+            </div>
+            <!-- Submit button -->
+            <div class="form-group">
+              <div class="col-md-offset-7 col-md-5">
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
