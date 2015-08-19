@@ -195,18 +195,28 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
       return sum > row.monthlyDownloadSum ? sum : row.monthlyDownloadSum
     }, 0)
 
-    nodes.push(makeNode('1', moduleName, 0, 0, 15, "#4c1313", 0)); // make initial
+    // nodes.push(makeNode('1', moduleName, 0, 0, 15, "#4c1313", 0)); // make initial
+    nodes.push(makeNode('1', moduleName, 0, 0, 15, randomColorGenerator(), 0)); // make initial
     var totalNodeNum = relationships.length;
     relationships = _.shuffle(relationships)
     relationships.forEach(function(row){
-      var newNode = makeNode(""+nodeId, row.name, 0, 0, scaleNode(row.monthlyDownloadSum), "#4c1313", relationships.indexOf(row)+1, totalNodeNum, row.monthlyDownloadSum)
+      var newNode = makeNode(""+nodeId, row.name, 0, 0, scaleNode(row.monthlyDownloadSum), randomColorGenerator(), relationships.indexOf(row)+1, totalNodeNum, row.monthlyDownloadSum)
       var newEdge = makeEdge(""+nodeId, '1', ""+edgeId);
       nodeId++; edgeId++;
       nodes.push(newNode);
       if (newNode.size > 6) {edges.push(newEdge);}
     });
+
     cb(null, {edges: edges, nodes: nodes});
   });
+  
+  function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  }
+
+  function randomColorGenerator(){
+    return rgbToHex(Math.random()*255, Math.random()*255, Math.random()*255);
+  }
 
   function scaleNode(monthlyDownloadSum) {
     var size = monthlyDownloadSum > 0 ? 2 + 8 * (monthlyDownloadSum/largestDependent) : 1.5;
