@@ -27,8 +27,14 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     // console.log('Selected the',this.selectedGraph,'graph')
     var width = document.getElementById('graph-container').offsetWidth-25;
 
-    if(type === 'version') Graph.lineGraph(this.module, width);
-    else if(type === 'dependency') Graph.sigmaGraph(this.module.name);
+    if(type === 'version'){
+      var options _.pick(this.dlForm, 'startDate', 'endDate');
+      options['width'] = width;
+      Graph.lineGraph(this.module, options);
+    }
+    else if(type === 'dependency'){
+      Graph.sigmaGraph(this.module.name, );
+    }
     else if(type === 'downloads'){
       var options = this.dlForm;
       options['width'] = width;

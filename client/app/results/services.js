@@ -135,6 +135,7 @@ angular.module('app')
 
 }])
 
+// Graph service responsible for drawing the sigma, download, and version graphs
 .service('Graph', ['$http', function($http){
   var margin = {top: 50, right: 10, bottom: 50, left: 80};
   var height = 500 - margin.top - margin.bottom;
@@ -278,6 +279,12 @@ angular.module('app')
           .attr("opacity", 0.7)
           .on('mouseover', tip.show)
           .on('mouseout', tip.hide)
+          
+    function withinDateRange(row){
+      if(moment(row.day).isBefore(options.startDate)) return false;
+      if(moment(row.day).isAfter(options.endDate)) return false;
+      return true;
+    }
   }
 
   // Render the download graph
