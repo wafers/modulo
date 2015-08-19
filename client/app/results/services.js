@@ -203,12 +203,14 @@ angular.module('app')
         }      
       }
     }
-    console.log('data entry example', data[0]);
+
     // Date filtering
+    data = data.filter(withinDateRange);
+    if(data.length === 0) return; // edge to return if there is no data
+
     function withinDateRange(row){
-      if(moment(row.day).isBefore(options.startDate)) return false;
-      if(moment(row.day).isAfter(options.endDate)) return false;
-      return true;
+      var momentDate = moment(row.date);
+      return !(momentDate.isBefore(options.startDate) || momentDate.isAfter(options.endDate));
     }
 
     var buckets = 4;
