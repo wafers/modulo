@@ -18,11 +18,6 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
     $scope.readmeMarkdown = $showdown.makeHtml(ModulePass.module.readme)
   });
 
-  // Send a GET request to the database if there is no module data
-  if(_.isEmpty($scope.module)){
-    ModulePass.getModule($stateParams.moduleName);
-  }
-
   $scope.drawGraph = function(type){
     Graph.clearGraph();
     this.selectedGraph = type;
@@ -50,8 +45,6 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   $scope.copy = function(){
     var client = new ZeroClipboard( document.getElementById('install-link') );
   }
-
-  $scope.resetFilterForm = function(){};
 
   $scope.downloadCount = function(daysBack){
     if(_.isEmpty(this.module)) return "N/A";
@@ -82,5 +75,10 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
     var client = new ZeroClipboard( document.getElementById('install-link') );
     var client = new ZeroClipboard( document.getElementById('install-link') );
     Graph.clearGraph();
+
+    // Send a GET request to the database if there is no module data, or if it has the wrong module data
+    if(this.module.name !== $stateParams.moduleName || _.isEmpty(this.module)){
+      ModulePass.getModule($stateParams.moduleName);
+    }
   } 
 }]);
