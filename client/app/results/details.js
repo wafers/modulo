@@ -70,15 +70,16 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   // Clear the graph when leaving the details page
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
   $scope.init = function(){
+    // Send a GET request to the database if there is no module data, or if it has the wrong module data
+    if(this.module.name !== $stateParams.moduleName || _.isEmpty(this.module)){
+      ModulePass.getModule($stateParams.moduleName);
+    }
+    
     ZeroClipboard.config( { swfPath: "/scripts/zeroclipboard/dist/ZeroClipboard.swf" } );
     // Need to refactor this sometime to get it to work better
     var client = new ZeroClipboard( document.getElementById('install-link') );
     var client = new ZeroClipboard( document.getElementById('install-link') );
     Graph.clearGraph();
 
-    // Send a GET request to the database if there is no module data, or if it has the wrong module data
-    if(this.module.name !== $stateParams.moduleName || _.isEmpty(this.module)){
-      ModulePass.getModule($stateParams.moduleName);
-    }
   } 
 }]);
