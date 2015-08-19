@@ -215,7 +215,6 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
   }
 
   function randomColorGenerator(){
-    // return "rgb(" + Math.random()*255 + "," + Math.random()*255 + "," + Math.random()*255+")";
     return rgbToHex(Math.random()*255, Math.random()*255, Math.random()*255);
   }
 
