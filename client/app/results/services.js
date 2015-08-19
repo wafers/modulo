@@ -47,6 +47,11 @@ angular.module('app')
       module.dependentRank = Math.log10(module.dependentsSize)*25 > 100 ? 100 : Math.floor(Math.log10(module.dependentsSize)*25) ;
     }
 
+    module.completenessRank = 0;
+    if (module.readme !== 'No readme provided') module.completenessRank += 34;
+    if (module.url.length > 0) module.completenessRank += 33;
+    if (module.keywords.length > 0) module.completenessRank += 33;
+
     var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank)
     module.overallRank = Math.floor(rankSum/600 * 100)
 
