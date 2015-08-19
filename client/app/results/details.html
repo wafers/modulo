@@ -25,6 +25,12 @@
       <dl class="dl-horizontal details-stats">
         <dt>Monthly Downloads</dt>
         <dd>{{module.monthlyDownloadSum}}</dd>
+        <div ng-show="selectedGraph === 'downloads'">
+          <dt>Downloads Today</dt>
+          <dd>{{downloadCount(1)}}</dd>
+          <dt>Downlods Last Week</dt>
+          <dd>{{downloadCount(7)}}</dd>
+        </div>
         <dt>Last Update</dt>
         <dd>{{module.lastUpdate}}</dd>
         <dt>Latest Version</dt>

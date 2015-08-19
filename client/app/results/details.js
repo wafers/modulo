@@ -54,6 +54,14 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
 
   $scope.resetFilterForm = function(){};
 
+  $scope.downloadCount = function(daysBack){
+    var downloads = this.module.downloads.map(downloadCount);
+    return downloads.slice(-daysBack).reduce(sum);
+
+    function downloadCount(row){ return row.count }
+    function sum(t,c){ return t + c }
+  }
+
   // Clear the graph when leaving the details page
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
   $scope.init = function(){
