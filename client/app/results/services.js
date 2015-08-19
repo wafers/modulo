@@ -41,6 +41,12 @@ angular.module('app')
       module.starRank = module.starred > 100 ? 100 : module.starred;
     }
 
+    if (!module.dependentsSize) {
+      module.dependentRank = 0;
+    } else {
+      module.dependentRank = Math.log10(module.dependentsSize)*25 > 100 ? 100 : Math.floor(Math.log10(module.dependentsSize)*25) ;
+    }
+
     var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank)
     module.overallRank = Math.floor(rankSum/600 * 100)
 
