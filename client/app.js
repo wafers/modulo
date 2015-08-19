@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'angular-loading-bar'])
+angular.module('app', ['ui.router', 'angular-loading-bar', 'ng-showdown'])
 
 .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
   cfpLoadingBarProvider.includeSpinner = false;

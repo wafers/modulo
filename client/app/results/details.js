@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('DetailsController', ['Graph','ModulePass', '$scope', '$rootScope', '$stateParams', 'Search', 
-function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){  
+.controller('DetailsController', ['Graph','ModulePass', '$showdown', '$scope', '$rootScope', '$stateParams', 'Search', 
+function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search){  
   $scope.module = ModulePass.module;
   $scope.selectedGraph = 'downloads'
   $scope.dlForm = {
@@ -10,10 +10,12 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
     endDate: moment().toDate(),
     filter: 'all'
   }
+  $scope.readmeMarkdown = '';
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
     $scope.module = ModulePass.module;
     if($scope.module.downloads) $scope.drawGraph('downloads');
+    $scope.readmeMarkdown = $showdown.makeHtml(ModulePass.module.readme)
   });
 
   // Send a GET request to the database if there is no module data

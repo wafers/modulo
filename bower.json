@@ -20,6 +20,11 @@
     "jquery": "~2.1.4",
     "components-font-awesome": "~4.4.0",
     "underscore": "~1.8.3",
-    "zeroclipboard": "~2.2.0"
+    "zeroclipboard": "~2.2.0",
+    "ng-showdown": "~1.0.0",
+    "angular-sanitize": "~1.4.4"
+  },
+  "resolutions": {
+    "showdown": "1.x"
   }
 }
