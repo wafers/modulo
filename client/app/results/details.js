@@ -19,7 +19,7 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   });
 
   // Send a GET request to the database if there is no module data
-  if(!$scope.module.name || $scope.module.name !== $stateParams.moduleName){
+  if(_.isEmpty($scope.module)){
     ModulePass.getModule($stateParams.moduleName);
   }
 
@@ -54,6 +54,7 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   $scope.resetFilterForm = function(){};
 
   $scope.downloadCount = function(daysBack){
+    if(_.isEmpty(this.module)) return "N/A";
     var downloads = this.module.downloads.map(downloadCount);
     return downloads.slice(-daysBack).reduce(sum);
 
@@ -62,10 +63,11 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   }
 
   $scope.downloadPercentageChange = function(period){
+    if(_.isEmpty(this.module)) return "N/A";
     var currentPeriodTotal = this.downloadCount(period);
     var lastPeriodTotal = currentPeriodTotal - this.downloadCount(period+period);
     var percentChange = currentPeriodTotal / lastPeriodTotal;
-    
+
     if(percentChange > 0) this.isPositive = {color:'green'};
     else this.isPositive = {color:'red'};
 
