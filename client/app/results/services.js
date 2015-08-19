@@ -5,13 +5,6 @@ angular.module('app')
   this.results = {
     searchResults: []
   }
-  this.highestValues = {
-    downloads: 0,
-    stars: 0,
-    dependents: 0,
-    update: moment('Jan 1 2000'),
-    updateNumber: 0
-  }
   
   this.showResults = function() {
     return this.results;
@@ -25,37 +18,42 @@ angular.module('app')
 
   this.calculateRank = function(module) {
     if (module.lastUpdate === 'Unknown') {
-      module.updateRank = 0;
-    } else if (moment(module.time.modified) === this.highestValues.update) {
-      module.updateRank = 50;
+      module.dateRank = 0;
     } else {
       var now = moment();
-      var recent = moment(this.highestValues.update);
+      var recent = moment().subtract(1,'day');
       var year = moment().subtract(1,'year');
-      var moduleDate = moment(module.time.modified);
-      var dateRank = (50/(recent-year))*(moduleDate - now) + 50 - (50/(recent-year))*(recent-now)
-      if (dateRank < 0 ) dateRank = 0;
-      var numberRank = (50/this.highestValues.updateNumber) * Object.keys(module.time).length
-      module.updateRank = Math.floor(dateRank + numberRank);
+      var moduleDate = moment(module.time.modified); // dateRank criteria: score of 100 if updated in last day, score of 0 if updated >= 1 year ago. Linear scale between.
+      module.dateRank = Math.floor((100/(recent-year))*(moduleDate - now) + 100 - (100/(recent-year))*(recent-now))
+      if (module.dateRank < 0 ) module.dateRank = 0;
     };
-
-    if (module.monthlyDownloadSum === 0) {
+    module.versionNumberRank = Object.keys(module.time).length < 35 ? 3 * (Object.keys(module.time).length-2) : 100; // versionNumberRank gives 3pts per published update, max 100 pts.
+    
+    if (!module.monthlyDownloadSum) {
       module.downloadRank = 0;
-    } else {
-      module.downloadRank = Math.floor(100/this.highestValues.downloads*module.monthlyDownloadSum);
+    } else { // If there are downloads, min score is 40. Score moves up from there on log10 scale. Max score of 100 reached at 1million monthly downloads.
+      module.downloadRank = Math.log10(module.monthlyDownloadSum)*10+40 > 100 ? 100 : Math.floor(Math.log10(module.monthlyDownloadSum)*10+40);
     }
-
-    if (module.dependentsSize === 0) {
-      module.dependentRank = 0;
-    } else {
-      module.dependentRank = Math.floor(100/this.highestValues.dependents*module.dependentsSize);
-    }
-
-    if (module.starred === 0) {
+    
+    if (!module.starred) {
       module.starRank = 0;
     } else {
-      module.starRank = Math.floor(100/this.highestValues.stars*module.starred);
+      module.starRank = module.starred > 100 ? 100 : module.starred;
     }
+
+    if (!module.dependentsSize) {
+      module.dependentRank = 0;
+    } else {
+      module.dependentRank = Math.log10(module.dependentsSize)*25 > 100 ? 100 : Math.floor(Math.log10(module.dependentsSize)*25) ;
+    }
+
+    module.completenessRank = 0;
+    if (module.readme !== 'No readme provided') module.completenessRank += 34;
+    if (module.url && module.url.length > 0) module.completenessRank += 33;
+    if (module.keywords && module.keywords.length > 0) module.completenessRank += 33;
+
+    var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank)
+    module.overallRank = Math.floor(rankSum/600 * 100)
   }
 
   this.getResults = function() {
@@ -64,13 +62,6 @@ angular.module('app')
       success(function(data, status, headers, config) {
         console.log('search results',data);
         if (data === 'No results found') data = [{name: 'No results found'}];
-        this.highestValues = {
-          downloads: 0,
-          stars: 0,
-          dependents: 0,
-          update: moment('Jan 1 2000'),
-          updateNumber: 0
-        }
 
         for (var i=0; i<data.length; i++) {
           if (data[i].downloads) data[i].downloads = JSON.parse(data[i].downloads);
@@ -79,13 +70,9 @@ angular.module('app')
             data[i].lastUpdate = moment(data[i].time.modified).fromNow();
             data[i].latestVersion = Object.keys(data[i].time).slice(-3)[0];
             data[i].lastUpdate = moment(data[i].time.modified).format('MM DD YYYY');
-            if(moment(data[i].time.modified) > context.highestValues.update) context.highestValues.update = moment(data[i].time.modified);
-            if(data[i].monthlyDownloadSum > context.highestValues.downloads) context.highestValues.downloads = data[i].monthlyDownloadSum;
-            if(data[i].dependentsSize > context.highestValues.dependents) context.highestValues.dependents = data[i].dependentsSize;
-            if(data[i].starred > context.highestValues.stars) context.highestValues.stars = data[i].starred;
-            if(Object.keys(data[i].time).length > context.highestValues.updateNumber) context.highestValues.updateNumber = Object.keys(data[i].time).length;
           } else {
             data[i].lastUpdate = 'Unknown';
+            data[i].time = {}
           }
 
           if(!data[i].readme) data[i].readme = "No readme provided";
@@ -124,6 +111,7 @@ angular.module('app')
           data.latestVersion = Object.keys(data.time).slice(-3)[0];
         } else {
           data.lastUpdate = moment().fromNow();
+          data[i].time = {}
         }
         if(!data.readme) data.readme = "No readme provided";
        that.module = data;
