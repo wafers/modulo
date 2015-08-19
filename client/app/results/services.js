@@ -135,6 +135,7 @@ angular.module('app')
 
 }])
 
+// Graph service responsible for drawing the sigma, download, and version graphs
 .service('Graph', ['$http', function($http){
   var margin = {top: 50, right: 10, bottom: 50, left: 80};
   var height = 500 - margin.top - margin.bottom;
@@ -157,8 +158,6 @@ angular.module('app')
               graph: data,
               container: 'graph-container',
               settings: {
-                // defaultNodeColor: '#4c1313',
-                // defaultEdgeColor: '#d3d3d3',
                 borderSize: 1,
                 autoRescale: false,
                 labelThreshold: 6.1
@@ -170,8 +169,8 @@ angular.module('app')
     })
   }
 
-  this.lineGraph = function(module, width){
-    width = width - margin.left - margin.right;
+  this.lineGraph = function(module, options){
+    var width = options.width - margin.left - margin.right;
 
     var dataStore = module.time;
     var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
@@ -203,6 +202,15 @@ angular.module('app')
           last = versionObj['versionLabel'];
         }      
       }
+    }
+
+    // Date filtering
+    data = data.filter(withinDateRange);
+    if(data.length === 0) return; // edge to return if there is no data
+
+    function withinDateRange(row){
+      var momentDate = moment(row.date);
+      return !(momentDate.isBefore(options.startDate) || momentDate.isAfter(options.endDate));
     }
 
     var buckets = 4;
