@@ -29,7 +29,7 @@ angular.module('app')
     };
     module.versionNumberRank = Object.keys(module.time).length < 35 ? 3 * (Object.keys(module.time).length-2) : 100; // versionNumberRank gives 3pts per published update, max 100 pts.
     
-    if (!module.downloadRank) {
+    if (!module.monthlyDownloadSum) {
       module.downloadRank = 0;
     } else { // If there are downloads, min score is 40. Score moves up from there on log10 scale. Max score of 100 reached at 1million monthly downloads.
       module.downloadRank = Math.log10(module.monthlyDownloadSum)*10+40 > 100 ? 100 : Math.floor(Math.log10(module.monthlyDownloadSum)*10+40);
