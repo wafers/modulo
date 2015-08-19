@@ -49,12 +49,13 @@ angular.module('app')
 
     module.completenessRank = 0;
     if (module.readme !== 'No readme provided') module.completenessRank += 34;
-    if (module.url.length > 0) module.completenessRank += 33;
-    if (module.keywords.length > 0) module.completenessRank += 33;
+    if (module.url && module.url.length > 0) module.completenessRank += 33;
+    if (module.keywords && module.keywords.length > 0) module.completenessRank += 33;
 
     var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank)
     module.overallRank = Math.floor(rankSum/600 * 100)
-
+    
+    console.log(module)
   }
 
   this.getResults = function() {
@@ -73,6 +74,7 @@ angular.module('app')
             data[i].lastUpdate = moment(data[i].time.modified).format('MM DD YYYY');
           } else {
             data[i].lastUpdate = 'Unknown';
+            data[i].time = {}
           }
 
           if(!data[i].readme) data[i].readme = "No readme provided";
@@ -111,6 +113,7 @@ angular.module('app')
           data.latestVersion = Object.keys(data.time).slice(-3)[0];
         } else {
           data.lastUpdate = moment().fromNow();
+          data[i].time = {}
         }
         if(!data.readme) data.readme = "No readme provided";
        that.module = data;
