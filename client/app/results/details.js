@@ -33,7 +33,7 @@ function(Graph, ModulePass, $scope, $rootScope, $stateParams, Search){
       Graph.lineGraph(this.module, options);
     }
     else if(type === 'dependency'){
-      Graph.sigmaGraph(this.module.name, );
+      Graph.sigmaGraph(this.module.name);
     }
     else if(type === 'downloads'){
       var options = this.dlForm;

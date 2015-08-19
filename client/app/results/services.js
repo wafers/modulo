@@ -169,8 +169,8 @@ angular.module('app')
     })
   }
 
-  this.lineGraph = function(module, width){
-    width = width - margin.left - margin.right;
+  this.lineGraph = function(module, options){
+    var width = options.width - margin.left - margin.right;
 
     var dataStore = module.time;
     var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
@@ -202,6 +202,13 @@ angular.module('app')
           last = versionObj['versionLabel'];
         }      
       }
+    }
+    console.log('data entry example', data[0]);
+    // Date filtering
+    function withinDateRange(row){
+      if(moment(row.day).isBefore(options.startDate)) return false;
+      if(moment(row.day).isAfter(options.endDate)) return false;
+      return true;
     }
 
     var buckets = 4;
@@ -279,12 +286,6 @@ angular.module('app')
           .attr("opacity", 0.7)
           .on('mouseover', tip.show)
           .on('mouseout', tip.hide)
-          
-    function withinDateRange(row){
-      if(moment(row.day).isBefore(options.startDate)) return false;
-      if(moment(row.day).isAfter(options.endDate)) return false;
-      return true;
-    }
   }
 
   // Render the download graph
