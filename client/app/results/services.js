@@ -157,9 +157,11 @@ angular.module('app')
               graph: data,
               container: 'graph-container',
               settings: {
-                defaultNodeColor: '#4c1313',
-                defaultEdgeColor: '#d3d3d3',
-                borderSize: 1
+                // defaultNodeColor: '#4c1313',
+                // defaultEdgeColor: '#d3d3d3',
+                borderSize: 1,
+                autoRescale: false,
+                labelThreshold: 6.1
               }
       });
     })
