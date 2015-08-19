@@ -182,27 +182,43 @@ var detailedSearch = module.exports.detailedSearch = db.search;
 
 
 var findRelationships = module.exports.findRelationships = function (moduleName, cb){
+  var largestDependent = 0;
+
   db.fetchRelationships(moduleName, function(err, relationships){
     if(err) { console.log(err); cb(err, null); return; }
     // format for SIGMA ---- ADD A UNIT CIRCLE FOR POSITIONING!
     var edges = [], nodes = [];
     var nodeId = 2, edgeId = 1; 
-    var x = 1, y = 1;
-    nodes.push(makeNode('1', moduleName, 0, 0, 10, "#4c1313", 0)); // make initial
+
+    largestDependent = relationships.reduce(function(sum, row){
+      row.monthlyDownloadSum = row.monthlyDownloadSum || 0;
+      return sum > row.monthlyDownloadSum ? sum : row.monthlyDownloadSum
+    }, 0)
+
+    nodes.push(makeNode('1', moduleName, 0, 0, 15, "#4c1313", 0)); // make initial
     var totalNodeNum = relationships.length;
+    relationships = _.shuffle(relationships)
     relationships.forEach(function(row){
-      var newNode = makeNode(""+nodeId, row.name, x, y, 5, "#4c1313", relationships.indexOf(row)+1, totalNodeNum)
+      var newNode = makeNode(""+nodeId, row.name, 0, 0, scaleNode(row.monthlyDownloadSum), "#4c1313", relationships.indexOf(row)+1, totalNodeNum, row.monthlyDownloadSum)
       var newEdge = makeEdge(""+nodeId, '1', ""+edgeId);
-      nodeId++; edgeId++; x++; y++;
+      nodeId++; edgeId++;
       nodes.push(newNode);
-      edges.push(newEdge);
+      if (newNode.size > 6) {edges.push(newEdge);}
     });
     cb(null, {edges: edges, nodes: nodes});
   });
 
-  function makeNode(idStr, labelStr, x, y, size, colorStr, nodeNum, totalNodeNum){
-    var xPos = Math.cos(Math.PI*2*nodeNum/(totalNodeNum))+Math.random()/10;
-    var yPos = Math.sin(Math.PI*2*nodeNum/totalNodeNum)+Math.random()/10;
+  function scaleNode(monthlyDownloadSum) {
+    var size = monthlyDownloadSum > 0 ? 2 + 8 * (monthlyDownloadSum/largestDependent) : 1.5;
+    return size;
+  }
+
+  function makeNode(idStr, labelStr, x, y, size, colorStr, nodeNum, totalNodeNum, monthlyDownloadSum){
+    var radius = scaleNode(monthlyDownloadSum)> 6 ? 100 : 200;
+    var cosine = Math.cos(Math.PI*2*nodeNum/(totalNodeNum));
+    var sine = Math.sin(Math.PI*2*nodeNum/totalNodeNum);
+    var xPos = (radius+Math.random()*100)*cosine;
+    var yPos = sine < 0 ? (radius+Math.random()*100)*sine : (radius+Math.random()*100)*sine;
     return {id: idStr, label: labelStr, x: xPos, y: yPos, size: size, color: colorStr};
   }
 
