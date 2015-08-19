@@ -54,8 +54,6 @@ angular.module('app')
 
     var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank)
     module.overallRank = Math.floor(rankSum/600 * 100)
-    
-    console.log(module)
   }
 
   this.getResults = function() {
