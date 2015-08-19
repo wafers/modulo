@@ -26,7 +26,6 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   $scope.drawGraph = function(type){
     Graph.clearGraph();
     this.selectedGraph = type;
-    // console.log('Selected the',this.selectedGraph,'graph')
     var width = document.getElementById('graph-container').offsetWidth-25;
 
     if(type === 'version'){
@@ -60,6 +59,12 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
 
     function downloadCount(row){ return row.count }
     function sum(t,c){ return t + c }
+  }
+
+  $scope.downloadPercentageChange = function(period){
+    var currentPeriodTotal = this.downloadCount(period);
+    var lastPeriodTotal = currentPeriodTotal - this.downloadCount(period+period);
+    return (currentPeriodTotal / lastPeriodTotal).toFixed(2) + "%";
   }
 
   // Clear the graph when leaving the details page
