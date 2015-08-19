@@ -19,14 +19,13 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   });
 
   // Send a GET request to the database if there is no module data
-  if(!$scope.module.name || $scope.module.name !== $stateParams.moduleName){
+  if(_.isEmpty($scope.module)){
     ModulePass.getModule($stateParams.moduleName);
   }
 
   $scope.drawGraph = function(type){
     Graph.clearGraph();
     this.selectedGraph = type;
-    // console.log('Selected the',this.selectedGraph,'graph')
     var width = document.getElementById('graph-container').offsetWidth-25;
 
     if(type === 'version'){
@@ -53,6 +52,27 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   }
 
   $scope.resetFilterForm = function(){};
+
+  $scope.downloadCount = function(daysBack){
+    if(_.isEmpty(this.module)) return "N/A";
+    var downloads = this.module.downloads.map(downloadCount);
+    return downloads.slice(-daysBack).reduce(sum);
+
+    function downloadCount(row){ return row.count }
+    function sum(t,c){ return t + c }
+  }
+
+  $scope.downloadPercentageChange = function(period){
+    if(_.isEmpty(this.module)) return "N/A";
+    var currentPeriodTotal = this.downloadCount(period);
+    var lastPeriodTotal = this.downloadCount(period+period) - currentPeriodTotal;
+    var percentChange = currentPeriodTotal / lastPeriodTotal;
+
+    if(percentChange > 0) this.isPositive = {color:'green'};
+    else this.isPositive = {color:'red'};
+
+    return percentChange.toFixed(2) + "%";
+  }
 
   // Clear the graph when leaving the details page
   $scope.$on("$destroy", function(){ Graph.clearGraph() });
