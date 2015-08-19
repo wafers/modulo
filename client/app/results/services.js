@@ -34,6 +34,12 @@ angular.module('app')
     } else { // If there are downloads, min score is 40. Score moves up from there on log10 scale. Max score of 100 reached at 1million monthly downloads.
       module.downloadRank = Math.log10(module.monthlyDownloadSum)*10+40 > 100 ? 100 : Math.floor(Math.log10(module.monthlyDownloadSum)*10+40);
     }
+    
+    if (!module.starred) {
+      module.starRank = 0;
+    } else {
+      module.starRank = module.starred > 100 ? 100 : module.starred;
+    }
 
     var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank)
     module.overallRank = Math.floor(rankSum/600 * 100)
