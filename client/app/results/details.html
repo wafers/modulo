@@ -31,7 +31,7 @@
           <dt># DL Last 7 days</dt>
           <dd>{{downloadCount(7)}}</dd>
           <dt>DL Weekly % Change</dt>
-          <dd>{{downloadPercentageChange(7)}}</dd>
+          <dd ng-style="isPositive">{{downloadPercentageChange(7)}}</dd>
         </div>
         <dt>Last Update</dt>
         <dd>{{module.lastUpdate}}</dd>

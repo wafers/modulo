@@ -64,7 +64,12 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   $scope.downloadPercentageChange = function(period){
     var currentPeriodTotal = this.downloadCount(period);
     var lastPeriodTotal = currentPeriodTotal - this.downloadCount(period+period);
-    return (currentPeriodTotal / lastPeriodTotal).toFixed(2) + "%";
+    var percentChange = currentPeriodTotal / lastPeriodTotal;
+    
+    if(percentChange > 0) this.isPositive = {color:'green'};
+    else this.isPositive = {color:'red'};
+
+    return percentChange.toFixed(2) + "%";
   }
 
   // Clear the graph when leaving the details page
