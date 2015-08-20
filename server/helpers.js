@@ -130,6 +130,24 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 
 
 ///////////////// MAIN EXPORT FUNCTIONS /////////////////
+
+var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
+  var searchResults = [];
+
+  // query DB for module with name===keyword. Push found module to searchResults
+
+  // query DB for keywords with a relation to given keyword. Limit to 4 based on relation strength, giving 5 total keywords
+
+  // query DB for modules with relation to any of the 5 keywords.
+    // If module has overallRank >= 90 or relation to 2+ of the 5 keywords, push to searchResults
+
+  searchResults = searchResults.sort(function(moduleA, moduleB){ // Sort search results by overall module rank.
+    return moduleB.overallRank - moduleA.overallRank;
+  })
+
+  cb(null, searchResults.slice(0,15)); // Send back only top 15 search results based on overall module rank.
+}
+
 // Used by server for finding npmjs search results. Takes in a search term and sends back an array of modules.
 var searchResults = module.exports.searchResults = function(searchInput, cb){  
   var finishedRuns = 0;
