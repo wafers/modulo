@@ -2,7 +2,10 @@ angular.module('app')
 
 .controller('ResultsController', ['Search', 'ModulePass', '$scope', '$http', '$rootScope', '$stateParams', function(Search, ModulePass, $scope, $http, $rootScope, $stateParams) {
     $scope.searchInput = Search.navInput;
-    
+    $scope.setOrder = function (order) {
+        $scope.order = order;
+    }
+
     $scope.$watch(function() {
             return Search.results.searchResults;
         }, function() {
