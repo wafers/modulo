@@ -12,6 +12,9 @@ var npm = new Registry({
 });
 var db = require(__dirname + '/dbParsing.js');
 
+//
+var GitHubApi = require('github');
+
 ///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
 var findDependents = module.exports.findDependents = function(module, cb){
