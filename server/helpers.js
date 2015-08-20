@@ -277,7 +277,7 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
       findMonthlyDownloads(module, function(err, moduleWithDownloads){
         findDependents(module, function(err, finalData){
           if (finalData.dependents && finalData.downloads){ // Check to make sure the data is good before sending to GitHub API
-            if(results[0].github) github.repos.get(results[0].github, function(err, result){
+            if(githubConfig) github.repos.get(githubConfig, function(err, result){
               if(err){
                 console.log('github-api grab error', err); 
                 cb(err, null);
