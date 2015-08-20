@@ -287,8 +287,8 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
 
               finalData['subscribers'] = result['subscribers_count'];
               finalData['forks'] = result['forks_count'];
-              finalData['watchers'] = resut['watchers_count'];
-              finalData['openIssues'] = resut['forks_count'];
+              finalData['watchers'] = result['watchers_count'];
+              finalData['openIssues'] = result['forks_count'];
               console.log(finalData);
 
               cb(null, finalData);
