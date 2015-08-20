@@ -12,6 +12,22 @@ var npm = new Registry({
 });
 var db = require(__dirname + '/dbParsing.js');
 
+// Configure github npm module
+var GitHubApi = require('github');
+var github = new GitHubApi({
+    // required 
+    version: "3.0.0",
+    // optional 
+    debug: true,
+    protocol: "https",
+    host: "api.github.com", // should be api.github.com for GitHub 
+    pathPrefix: "", // for some GHEs; none for GitHub 
+    timeout: 5000,
+    headers: {
+        "user-agent": "makersquare-was-here" // GitHub is happy with a unique user agent 
+    }
+});
+
 ///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
 var findDependents = module.exports.findDependents = function(module, cb){
@@ -248,6 +264,8 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
       cb(err, module);
       // write module to errorQueue
     } else if (results[0] && (results[0].description !== '' || results[0].starred || results[0].time)) {
+      // Inside here i have access to the result[0].github = {user:'username', repo: 'repo-name'} object
+      var githubConfig = results[0].github || undefined;
       module['description'] = results[0].description || 'None Provided';
       module['readme'] = results[0].readme || 'None Provided';
       module['time'] = results[0].time || 'None Provided';
@@ -255,11 +273,25 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
       module['url'] = results[0]['homepage'].url || 'None Provided'
       module['keywords'] = results[0].keywords || 'None Provided';
       module['starred'] = results[0].starred || 'None Provided';
+
       findMonthlyDownloads(module, function(err, moduleWithDownloads){
         findDependents(module, function(err, finalData){
-          if (finalData.dependents && finalData.downloads){
-            console.log('Success!', moduleName, 'going back to DB now.')
-            cb(null, finalData);
+          if (finalData.dependents && finalData.downloads){ // Check to make sure the data is good before sending to GitHub API
+            if(githubConfig) github.repos.get(githubConfig, function(err, result){
+              if(err){
+                console.log('github-api grab error', err); 
+                cb(err, null);
+                return;
+              } 
+              console.log('Success!', moduleName, 'going back to DB now.')
+
+              finalData['subscribers'] = result['subscribers_count'];
+              finalData['forks'] = result['forks_count'];
+              finalData['watchers'] = result['watchers_count'];
+              finalData['openIssues'] = result['forks_count'];
+
+              cb(null, finalData);
+            });
           } else {
             console.log('Something went wrong in findDependents. Will try',moduleName,'again later.')
             console.log('dependents', finalData.dependents, 'downloads', finalData.downloads)

@@ -22,7 +22,7 @@ var dbInsert = function(collection) {
                 }
                 return console.log("Oh, oh error")
             } else {
-                var querryString = "MATCH (n{name:{name}}) SET n.description = {description}, n.time = {time}, n.url = {url} , n.starred = {starred}, n.downloads = {downloads}, n.monthlyDownloadSum = {monthlyDownloadSum}, n.dependentsSize = {dependentsSize}, n.readme = {readme}, n.keywords = {keywords}"
+                var querryString = "MATCH (n{name:{name}}) SET n.description = {description}, n.time = {time}, n.url = {url} , n.starred = {starred}, n.downloads = {downloads}, n.monthlyDownloadSum = {monthlyDownloadSum}, n.dependentsSize = {dependentsSize}, n.readme = {readme}, n.keywords = {keywords}, n.subscribers = {subscribers}, n.forks = {forks}, n.watchers = {watchers}, n.openIssues = {openIssues}"
                 console.log("Working on inserting into database. Finish count is", finished, "and y count is:", y)
                 dependencys[data.name] = data.dependents
                 dbRemote.queryRaw(querryString, {
@@ -35,7 +35,11 @@ var dbInsert = function(collection) {
                         monthlyDownloadSum: data.monthlyDownloadSum,
                         dependentsSize : data.dependents.length,
                         readme : data.readme,
-                        keywords: data.keywords
+                        keywords: data.keywords,
+                        subscribers : data.subscribers,
+                        forks : data.forks,
+                        watchers: data.watchers,
+                        openIssues: data.openIssues
                     },
                     function(err, node) {
                         if (err) {
