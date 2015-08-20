@@ -63,6 +63,10 @@ h3 {
   height: 44px;
 }
 
+.input-group-btn{
+  height: 44px;
+}
+
 
 /* RESULTS */
 .order-list {
@@ -295,7 +299,9 @@ div.landing-explanation {
 }
 
 .demo-img {
-  width: 100%;
+  width: 600px;
+  padding: 4px;
+  border:1px solid #8fafa2;
 }
 
 /* LANDING > advanced-features */
@@ -315,7 +321,14 @@ div.landing-explanation {
 }
 
 .npm-gif {
-  border:10px solid #8fafa2;
+  width: 600px;
+  padding: 8px;
+  border:1px solid #ddd;
+}
+
+.npm-search-bullets {
+  font-family: Roboto-Thin;
+  font-size: 24px;
 }
 
 /* LANDING > tech */
@@ -343,7 +356,7 @@ div.img-div{
   width:220px;
   overflow:hidden;
   border-radius:50%;
-  border:10px solid #8fafa2;
+  border:5px solid #8fafa2;
 /*  box-shadow: 5px 5px 2px #888;
 */}
 
