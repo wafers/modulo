@@ -289,10 +289,9 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
               finalData['forks'] = result['forks_count'];
               finalData['watchers'] = result['watchers_count'];
               finalData['openIssues'] = result['forks_count'];
-              console.log(finalData);
 
               cb(null, finalData);
-            })
+            });
           } else {
             console.log('Something went wrong in findDependents. Will try',moduleName,'again later.')
             console.log('dependents', finalData.dependents, 'downloads', finalData.downloads)
