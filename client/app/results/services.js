@@ -38,7 +38,7 @@ angular.module('app')
     if (!module.starred) {
       module.starRank = 0;
     } else {
-      module.starRank = module.starred > 100 ? 100 : module.starred;
+      module.starRank = module.starred > 50 ? 100 : 2 * module.starred;
     }
 
     if (!module.dependentsSize) {
