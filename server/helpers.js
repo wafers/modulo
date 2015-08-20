@@ -12,8 +12,21 @@ var npm = new Registry({
 });
 var db = require(__dirname + '/dbParsing.js');
 
-//
+// Configure github npm module
 var GitHubApi = require('github');
+var github = new GitHubApi({
+    // required 
+    version: "3.0.0",
+    // optional 
+    debug: true,
+    protocol: "https",
+    host: "api.github.com", // should be api.github.com for GitHub 
+    pathPrefix: "", // for some GHEs; none for GitHub 
+    timeout: 5000,
+    headers: {
+        "user-agent": "makersquare-was-here" // GitHub is happy with a unique user agent 
+    }
+});
 
 ///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
