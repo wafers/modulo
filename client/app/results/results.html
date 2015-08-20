@@ -1,6 +1,17 @@
 <div class="results-container">
+  <div class="order-list">
+    <ul class="list-inline" id="order-list">
+    sort by: 
+      <li ng-class="{'active': order=='-downloadRank'}"><button href="#" ng-click="setOrder('-downloadRank')" class="order-btn">downloads </button></li>
+      <li ng-class="{'active': order=='-updateRank'}"><button href="#" ng-click="setOrder('-updateRank')" class="order-btn">last update</button></li>
+      <li ng-class="{'active': order=='-starRank'}"><button href="#" ng-click="setOrder('-starRank')" class="order-btn">NPM stars</button></li>
+      <li ng-class="{'active': order=='-dependentRank'}"><button href="#" ng-click="setOrder('-dependentRank')" class="order-btn">dependers</button></li>
+    </ul>
+  </div>
+
+
   <div class="list-group" style="position: relative" >
-    <li class="list-group-item clearfix" ng-repeat="result in results" ng-click="toggle(result)">
+    <li class="list-group-item clearfix" ng-repeat="result in results | orderBy: order" ng-click="toggle(result)">
 
       <div class="page-header">
         <h1>
