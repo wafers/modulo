@@ -141,16 +141,18 @@ angular.module('app')
   this.sigmaGraph = function(moduleName){
     $http.post('/relationships', {"data": moduleName})
     .success(function(data){
-      // populate sigma here
-      s = new sigma({ 
-              graph: data,
-              container: 'graph-container',
-              settings: {
-                borderSize: 1,
-                autoRescale: false,
-                labelThreshold: 6.1
-              }
-      });
+      var currentGraph = $('#graph-container').attr('data');
+      if(currentGraph === 'dependency'){
+        s = new sigma({ 
+                graph: data,
+                container: 'graph-container',
+                settings: {
+                  borderSize: 1,
+                  autoRescale: false,
+                  labelThreshold: 6.1
+                }
+        });
+      }
     })
     .error(function(data){
       console.log(data);
