@@ -3,7 +3,7 @@
     <ul class="list-inline" id="order-list">
     sort by: 
       <li ng-class="{'active': order=='-downloadRank'}"><button href="#" ng-click="setOrder('-downloadRank')" class="order-btn">downloads </button></li>
-      <li ng-class="{'active': order=='-updateRank'}"><button href="#" ng-click="setOrder('-updateRank')" class="order-btn">last update</button></li>
+      <li ng-class="{'active': order=='-dateRank'}"><button href="#" ng-click="setOrder('-dateRank')" class="order-btn">last update</button></li>
       <li ng-class="{'active': order=='-starRank'}"><button href="#" ng-click="setOrder('-starRank')" class="order-btn">NPM stars</button></li>
       <li ng-class="{'active': order=='-dependentRank'}"><button href="#" ng-click="setOrder('-dependentRank')" class="order-btn">dependers</button></li>
     </ul>
@@ -17,7 +17,7 @@
         <h1>
           <div class="module-title">{{result.name}}</div>
           <small class="module-stats clearfix">
-            <div class="last-update">Update Rank: {{result.updateRank}}</div>
+            <div class="last-update">Update Rank: {{result.dateRank}}</div>
             <div class="star-count">Star Rank: {{result.starRank}}</div>
             <div class="dependent-number">Dependents Rank: {{result.dependentRank}}</div>
             <div class="monthly-downloads">Download Rank: {{result.downloadRank}}</div>
@@ -27,11 +27,8 @@
       <div id="content">{{result.description}}</div>
       <br>
 
-      <div class="details-div" ng-show="result.show">
-        <div class="col-md-3">Download Rank: {{result.downloadRank}} <br> {{result.monthlyDownloadSum}} monthly downloads</div>
-        <div class="col-md-3">Dependents Rank: {{result.dependentRank}} <br> Used by {{result.dependentsSize}} packages</div>
-        <div class="col-md-3">Star Rank: {{result.starRank}} <br> <i class="material-icons" id="star">star</i> {{result.starred}} on NPM</div>
-        <div class="col-md-3">Update Rank: {{result.updateRank}} <br> Last update {{result.lastUpdate}}</div>
+      <div id="dropdown-div" class="details-div" ng-show="result.show">
+        <div id="rank-bars"></div>
         <a class="col-md-3 detail-link" href="/#/details/{{result.name}}">view more</a>
       </div>
     </li>
