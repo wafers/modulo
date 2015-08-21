@@ -53,13 +53,15 @@ angular.module('app')
         .append('text')
         .attr({'x': 2,'y':function(d){ return yscale(ranks.indexOf(d))+13; }})
         .text(function(d){ return d[1]; }).style({'fill':'#fff','font-size':'14px'})    
+        .attr('class', 'masterTooltip')
+        .attr('val', function(d){return rankDetails(d)});
       
     var transit = d3.select('#dropdown-div-'+index).select('svg')
       .selectAll('rect')
         .data(ranks)
         .transition()
         .duration(1000) 
-        .attr("width", function(d) {return xscale(d[1]); });
+        .attr("width", function(d) {return xscale(d[1]) === 0 ? 15 : xscale(d[1]); });
 
     var transit = d3.select('#dropdown-div-'+index).select('svg')
       .selectAll('text')
@@ -82,13 +84,23 @@ angular.module('app')
       var key = rank[2];
       console.log('rank', key)
       console.log('module', module[key])
-      
+
       var displayData = ''
 
       if (key === 'time') {
-        displayData = Object.keys(module[key]).length-2
-      } else {
-        displayData = module[key]
+        displayData = Object.keys(module[key]).length-2 + ' versions published';
+      } else if (key === 'lastUpdate') {
+        displayData = 'Last update on ' + module[key];
+      } else if (key === 'monthlyDownloadSum') {
+        displayData = module[key] + ' downloads in past 30 days';
+      } else if (key === 'dependentsSize') {
+        displayData = module[key] + ' modules depending on ' + module.name;
+      } else if (key === 'starred') {
+        displayData = module[key] + ' stars on NPM';
+      } else if (key === 'overallRank') {
+        displayData = module[key] + ' overall module score';
+      } else if (key === 'completenessRank') {
+        displayData = module[key] + '% module information complete'
       }
 
       return displayData
