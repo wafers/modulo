@@ -7,12 +7,9 @@ angular.module('app')
   }
 
   $scope.bulletGraph = function(module, index) {
-    // var elementID = element.attr('id');
-    console.log(index)
     var ranks = [['Overall Rank',module.overallRank], ['Last Update Rank', module.dateRank], ['Number of Versions Rank', module.versionNumberRank], ['Module Data Completeness', module.completenessRank], ['Monthly Download Rank', module.downloadRank], ['Dependents Rank', module.dependentRank], ['Number of Stars Rank', module.starRank]];
     var margin = {top: 5, bottom: 5, left: 200};
     var width = document.getElementsByClassName('page-header')[0].offsetWidth - margin.left;
-    console.log('width', document.getElementsByClassName('page-header')[0].offsetWidth)
     var height = 200 - margin.top - margin.bottom;
     var buckets = 3;
     var colors = ['rgb(245,75,26)', 'rgb(229,195,158)', 'rgb(1,171,233)'];
@@ -28,6 +25,8 @@ angular.module('app')
     var colorScale = d3.scale.quantize()
       .domain([0, buckets-1, 100])
       .range(colors);
+    
+    d3.select('#dropdown-div-'+index).select("svg").remove();
 
     var canvas = d3.select('#dropdown-div-'+index)
       .append('svg')
