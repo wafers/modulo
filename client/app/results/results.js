@@ -7,7 +7,7 @@ angular.module('app')
   }
 
   $scope.bulletGraph = function(module, index) {
-    var ranks = [['Overall Rank',module.overallRank], ['Last Update Rank', module.dateRank], ['Number of Versions Rank', module.versionNumberRank], ['Module Data Completeness', module.completenessRank], ['Monthly Download Rank', module.downloadRank], ['Dependents Rank', module.dependentRank], ['Number of Stars Rank', module.starRank]];
+    var ranks = [['Overall Rank',module.overallRank, 'overallRank'], ['Last Update Rank', module.dateRank, 'lastUpdate'], ['Number of Versions Rank', module.versionNumberRank, 'time'], ['Module Data Completeness', module.completenessRank, 'completenessRank'], ['Monthly Download Rank', module.downloadRank, 'monthlyDownloadSum'], ['Dependents Rank', module.dependentRank, 'dependentsSize'], ['Number of Stars Rank', module.starRank, 'starred']];
     var margin = {top: 5, bottom: 5, left: 200};
     var width = document.getElementsByClassName('page-header')[0].offsetWidth - margin.left;
     var height = 200 - margin.top - margin.bottom;
@@ -44,7 +44,7 @@ angular.module('app')
         .style('fill',function(d){ return colorScale(d[1]); })
         .attr('width',function(d){ return 0; })
         .attr('class', 'masterTooltip')
-        .attr('val', function(d) {return d[1]});
+        .attr('val', function(d){return rankDetails(d)});
 
     var text = d3.select('#dropdown-div-'+index).select('svg').select('#bars')
       .selectAll('text')
@@ -77,6 +77,22 @@ angular.module('app')
         .append('text')
         .attr({'x':'0','y':function(d){ return yscale(ranks.indexOf(d))+13; }})
         .text(function(d){ return d[0]; }).style({'fill':'#000','font-size':'14px'});
+
+    function rankDetails(rank) {
+      var key = rank[2];
+      console.log('rank', key)
+      console.log('module', module[key])
+      
+      var displayData = ''
+
+      if (key === 'time') {
+        displayData = Object.keys(module[key]).length-2
+      } else {
+        displayData = module[key]
+      }
+
+      return displayData
+    }
   }
 
   $scope.$watch(function() {
