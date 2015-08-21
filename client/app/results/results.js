@@ -51,12 +51,15 @@ angular.module('app')
       .duration(1000) 
       .attr("width", function(d) {return xscale(d[1]); });
 
+
     var transitext = d3.select('#dropdown-div-'+index).select('svg').select('#bars')
       .selectAll('text')
       .data(ranks)
       .enter()
       .append('text')
-      .attr({'x':function(d) {return xscale(d[1])-50; },'y':function(d){ return yscale(ranks.indexOf(d))+13; }})
+      .attr({'x':function(d) {
+        return xscale(d[1])-50 < 0 ? 1 : xscale(d[1]) - 50;
+      },'y':function(d){ return yscale(ranks.indexOf(d))+13; }})
       .text(function(d){ return d[1]; }).style({'fill':'#000','font-size':'14px'})    
       
     var labelText = d3.select('#dropdown-div-'+index).select('svg')
