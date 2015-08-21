@@ -1,0 +1,175 @@
+.fluid-container {
+  background-color: #eee;
+}
+
+.landing-header {
+  font-size: 40px;
+  font-family: Roboto-Thin;
+}
+
+.landing-explanation, .landing-npm-demo, .landing-advanced-features, .landing-tech-stack {
+  background-color: #eee;
+  padding: 40px;
+}
+
+.landing-feature-demo, .landing-demo-gif, .landing-advanced-features, .landing-bios {
+  background-color: #fff;
+  padding: 40px;
+}
+
+.mint {
+  color: #8fafa2;
+}
+
+.maroon {
+  color: #4c1313;
+}
+
+.white {
+  color: #fff;
+}
+
+.grey {
+  color: #BFBFBF;
+}
+
+.center-me {
+  margin:0 auto;
+  text-align: center;
+}
+
+div.landing-explanation {
+  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8) ), url('./assets/stock-mouse.jpg') no-repeat center;
+  background-size:100% auto;
+  height: 450px;
+  margin-bottom: -30px;
+}
+
+/* LANDING > feature-demo */
+.demo-text{
+  padding-top:50px;
+}
+
+.demo-img {
+  width: 600px;
+  padding: 4px;
+  border:1px solid #8fafa2;
+}
+
+/* LANDING > advanced-features */
+.feature-card-img{
+  width: 150px;
+  margin: 15px;
+}
+
+.feature-explanation{
+  font-size: 15px;
+}
+
+/* LANDING > NPM */
+.landing-npm-demo {
+  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8) ), url('./assets/stock-mug.jpg') no-repeat bottom;
+  background-size:100% auto;
+}
+
+.npm-gif {
+  width: 600px;
+  padding: 8px;
+  border:1px solid #ddd;
+}
+
+.npm-search-bullets {
+  font-family: Roboto-Thin;
+  font-size: 24px;
+}
+
+/* LANDING > tech */
+
+.tech-logo {
+  height: 130px;
+  padding-top: 20px;
+}
+
+/* LANDING > bios */
+div.landing-bios {
+  background: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5) ), url('./assets/stock-pencil.jpg') no-repeat center;
+  background-size:100% auto;
+}
+div.panel {
+  background: none;
+  border:none;
+  box-shadow: none;
+  margin: -20px;
+}
+
+div.img-div{
+  background-color: #8fafa2;
+  height:220px;
+  width:220px;
+  overflow:hidden;
+  border-radius:50%;
+  border:5px solid #8fafa2;
+/*  box-shadow: 5px 5px 2px #888;
+*/}
+
+.github-div {
+  margin-top: -12px;
+  margin-left: -15px;
+}
+
+.github {
+  width: 45px;
+}
+
+.github-username {
+  color: #8fafa2;
+  font-size: 18px;
+  font-family: Roboto-Light;
+}
+
+span.teamrole {
+  color: #fff;
+  font-family: Roboto-Thin;
+}
+
+.img-div img{
+  -webkit-transform:translate(-50%);
+  margin-left:100px;
+}
+
+.img-team {
+  width: 220px;
+}
+
+/* LANDING > footer */
+.landing-footer {
+  background-image: linear-gradient(#4c1313, #3f1010);
+  padding: 5px;
+  padding-right: 15px;
+  color: #fff;
+  text-align: right;
+}
+
+a[href^="mailto:"] { 
+  color: #8fafa2;
+}
+
+/* ANGULAR LOADING BAR (Overriding CSS) */
+#loading-bar .bar {
+  background: #8fafa2;
+  height: 5px;
+}
+
+/* High priority over-ride classes */
+.full-width{
+  width: 100%;
+}
+
+.text-to-left{
+  text-align: left;
+}
+
+.text-to-right{
+  text-align: right;
+  float: right;
+}
