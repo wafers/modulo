@@ -46,29 +46,37 @@ angular.module('app')
         .attr('class', 'masterTooltip')
         .attr('val', function(d) {return d[1]});
 
-    var transit = d3.select('#dropdown-div-'+index).select('svg').selectAll("rect")
-      .data(ranks)
-      .transition()
-      .duration(1000) 
-      .attr("width", function(d) {return xscale(d[1]); });
-
-    var transitext = d3.select('#dropdown-div-'+index).select('svg').select('#bars')
+    var text = d3.select('#dropdown-div-'+index).select('svg').select('#bars')
       .selectAll('text')
       .data(ranks)
       .enter()
         .append('text')
-        .attr({'x':function(d) {
-          return xscale(d[1])-50 < 0 ? 1 : xscale(d[1]) - 50;
-        },'y':function(d){ return yscale(ranks.indexOf(d))+13; }})
-        .text(function(d){ return d[1]; }).style({'fill':'#000','font-size':'14px'})    
+        .attr({'x': 2,'y':function(d){ return yscale(ranks.indexOf(d))+13; }})
+        .text(function(d){ return d[1]; }).style({'fill':'#fff','font-size':'14px'})    
       
+    var transit = d3.select('#dropdown-div-'+index).select('svg')
+      .selectAll('rect')
+        .data(ranks)
+        .transition()
+        .duration(1000) 
+        .attr("width", function(d) {return xscale(d[1]); });
+
+    var transit = d3.select('#dropdown-div-'+index).select('svg')
+      .selectAll('text')
+        .data(ranks)
+        .transition()
+        .duration(1000) 
+        .attr("x", function(d) {
+          return xscale(d[1])-50 < 0 ? 1 : xscale(d[1]) - 50;
+        });
+
     var labelText = d3.select('#dropdown-div-'+index).select('svg')
       .selectAll('labels')
       .data(ranks)
       .enter()
         .append('text')
         .attr({'x':'0','y':function(d){ return yscale(ranks.indexOf(d))+13; }})
-        .text(function(d){ return d[0]; }).style({'fill':'#000','font-size':'14px'});     
+        .text(function(d){ return d[0]; }).style({'fill':'#000','font-size':'14px'});
   }
 
   $scope.$watch(function() {
@@ -95,7 +103,6 @@ angular.module('app')
     $('.masterTooltip').hover(function(){
       var tipData = $(this).attr('val')
       $(this).data('tipText', tipData);
-      console.log('hovering on', $(this))
         $('<p class="tooltip"></p>')
           .text(tipData)
           .appendTo('body')
