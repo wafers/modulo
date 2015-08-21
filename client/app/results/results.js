@@ -45,13 +45,13 @@ angular.module('app')
         .style('fill',function(d){ return colorScale(d[1]); })
         .attr('width',function(d){ return 0; });
 
-    var transit = d3.select("svg").selectAll("rect")
+    var transit = d3.select('#dropdown-div-'+index).select('svg').selectAll("rect")
       .data(ranks)
       .transition()
       .duration(1000) 
       .attr("width", function(d) {return xscale(d[1]); });
 
-    var transitext = d3.select('#bars')
+    var transitext = d3.select('#dropdown-div-'+index).select('svg').select('#bars')
       .selectAll('text')
       .data(ranks)
       .enter()
@@ -59,7 +59,7 @@ angular.module('app')
       .attr({'x':function(d) {return xscale(d[1])-50; },'y':function(d){ return yscale(ranks.indexOf(d))+13; }})
       .text(function(d){ return d[1]; }).style({'fill':'#000','font-size':'14px'})    
       
-    var labelText = d3.select('svg')
+    var labelText = d3.select('#dropdown-div-'+index).select('svg')
       .selectAll('labels')
       .data(ranks)
       .enter()
