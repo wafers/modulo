@@ -257,7 +257,7 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
       source: sourceIdStr, 
       target: targetIdStr, 
       id: idStr, 
-      color: '#eee',
+      color: '#ccc',
       type: 'curve',
       hover_color: "#000"
     }

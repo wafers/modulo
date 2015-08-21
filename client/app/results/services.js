@@ -143,16 +143,25 @@ angular.module('app')
       if(currentGraph === 'dependency'){  // Check to make sure only to render sigma if the dependency graph is still selected
         s = new sigma({ 
                 graph: data,
-                container: 'graph-container',
+                renderer: {
+                  container: document.getElementById('graph-container'),
+                  type: 'canvas'
+                },
                 settings: {
                   doubleClickEnabled: false,
-                  edgeHoverColor: 'edge',
-                  defaultEdgeHoverColor: "#000",
-                  edgeHoverSizeRatio: 1,
-                  edgeHoverExtremities: true,
                   borderSize: 1,
                   autoRescale: false,
                   labelThreshold: 6.1,
+
+                  //Edge options
+                  minEdgeSize: 0.5,
+                  maxEdgeSize: 4,
+                  enableEdgeHovering: true,
+                  edgeHoverColor: 'edge',
+                  defaultEdgeColor: "#eee",
+                  defaultEdgeHoverColor: "#000",
+                  edgeHoverSizeRatio: 1,
+                  edgeHoverExtremities: true,
                 }
         });
 
