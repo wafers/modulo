@@ -16,7 +16,9 @@ angular.module('app')
     return this.results;
   }
 
+  // Calculate quality ranking for given module and attach relevent metrics to module.
   this.calculateRank = function(module) {
+    // Rank by time since last module update. Longer time => lower score.
     if (module.lastUpdate === 'Unknown') {
       module.dateRank = 0;
     } else {
@@ -27,33 +29,68 @@ angular.module('app')
       module.dateRank = Math.floor((100/(recent-year))*(moduleDate - now) + 100 - (100/(recent-year))*(recent-now))
       if (module.dateRank < 0 ) module.dateRank = 0;
     };
+
+    // Rank by total number of published module updates.
     module.versionNumberRank = Object.keys(module.time).length < 35 ? 3 * (Object.keys(module.time).length-2) : 100; // versionNumberRank gives 3pts per published update, max 100 pts.
-    
+
+    // Rank by number of downloads in past 30 days.
     if (!module.monthlyDownloadSum) {
       module.downloadRank = 0;
-    } else { // If there are downloads, min score is 40. Score moves up from there on log10 scale. Max score of 100 reached at 1million monthly downloads.
-      module.downloadRank = Math.log10(module.monthlyDownloadSum)*10+40 > 100 ? 100 : Math.floor(Math.log10(module.monthlyDownloadSum)*10+40);
-    }
-    
-    if (!module.starred) {
-      module.starRank = 0;
-    } else {
-      module.starRank = module.starred > 50 ? 100 : 2 * module.starred;
+    } else { // If there are downloads, min score is 10. Score moves up from there on log10 scale. Max score of 100 reached at 1million monthly downloads.
+      module.downloadRank = Math.log10(module.monthlyDownloadSum)*15+10 > 100 ? 100 : Math.floor(Math.log10(module.monthlyDownloadSum)*15+10);
     }
 
+    // Rank by number of NPM stars and Github stars. 
+    if (!module.starred && !module.watchers) {
+      module.starRank = 0;
+    } else { // NPM stars added to GitHub stars, then scaled on log10. Max score of 100 reached at 10,000 combined stars.
+      module.starRank = Math.floor(Math.log10(module.starred+module.watchers)*25) > 100 ? 100 : Math.floor(Math.log10(module.starred+module.watchers)*25);
+    }
+
+    // Rank by number of modules listing this module as a dependency
     if (!module.dependentsSize) {
       module.dependentRank = 0;
     } else {
       module.dependentRank = Math.log10(module.dependentsSize)*25 > 100 ? 100 : Math.floor(Math.log10(module.dependentsSize)*25) ;
     }
 
+    // Rank by NPM module submission completeness (quality module must have Readme, Keywords, and URL)
+    // Store lacking pieces for rank explanations
     module.completenessRank = 0;
-    if (module.readme !== 'No readme provided') module.completenessRank += 34;
-    if (module.url && module.url.length > 0) module.completenessRank += 33;
-    if (module.keywords && module.keywords.length > 0) module.completenessRank += 33;
+    if (module.readme !== 'No readme provided') {
+      module.completenessRank += 34;
+    } else {
+      module.completenessFailures = ['Readme'];
+    }
+    if (module.url && module.url.length > 0) {
+      module.completenessRank += 33;
+    } else {
+      if (module.completenessFailures) module.completenessFailures.push('URL')
+      else module.completenessFailures = ['URL']; 
+    }
+    if (module.keywords && module.keywords.length > 0) {
+      module.completenessRank += 33;
+    } else {
+      if (module.completenessFailures) module.completenessFailures.push('Keywords')
+      else module.completenessFailures = ['Keywords']; 
+    }
 
-    var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank)
-    module.overallRank = Math.floor(rankSum/600 * 100)
+    // Rank by GitHub followers, forks, and open issues/pulls
+    if (!module.subscribers || !module.forks || !module.openIssues) {
+      module.githubRank = 0;
+    } else {
+      // Count users watching repo for 33 of 100 points. Scaled on log10 with max score of 33 reached at 1500 users watching. 
+      var watchersPortion = Math.floor(Math.log10(module.subscribers)*31.5/100*33) > 33 ? 33 : Math.floor(Math.log10(module.subscribers)*31.5/100*33);
+      // Count forked repos for 34 of 100 points. Scaled on log10 with max score of 34 reached at 1000 forks. 
+      var forkPortion = Math.floor(Math.log10(module.forks)*33/100*34) > 34 ? 34 : Math.floor(Math.log10(module.forks)*33/100*34);
+      // Count issues+pulls for 33 of 100 points. Scaled on log10 with max score of 33 reached at 150 open issues/pulls.
+      var issuesPortion = Math.floor(Math.log10(module.openIssues)*46/100*33) > 33 ? 33 : Math.floor(Math.log10(module.openIssues)*46/100*33);
+      module.githubRank = watchersPortion + forkPortion + issuesPortion;
+    }
+
+    // Calculate overall rank as average of individual rankings
+    var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank + module.githubRank)
+    module.overallRank = Math.floor(rankSum/7)
   }
 
   this.getResults = function() {
@@ -239,7 +276,7 @@ angular.module('app')
       var thisTotal = thisVersion[0]+thisVersion[1]+thisVersion[2];
       var lastTotal = lastVersion[0]+lastVersion[1]+lastVersion[2];
       var versionDiff = thisTotal - lastTotal;
-      
+
       return versionDiff > 0 ? versionDiff : 1;
     }
     var data = [];
@@ -257,7 +294,7 @@ angular.module('app')
           versionObj['majorVersion'] = key.split('.')[0]
           data.push(versionObj);
           last = versionObj['versionLabel'];
-        }      
+        }
       }
     }
 
@@ -301,7 +338,7 @@ angular.module('app')
         str += "</br><string>Date:</strong><span class='tip-values'> " + date + "</span>";
         return str;
       })
-    
+
     // Create main svg for drawing 
     var svg = d3.select("#graph-container").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -329,7 +366,7 @@ angular.module('app')
           .attr('x', 0)
           .attr('dx', 15)
           .attr('transform', 'rotate(30)')
-    
+
     // Load in data and create circles for each
     svg.selectAll(".circle")
         .data(data)
