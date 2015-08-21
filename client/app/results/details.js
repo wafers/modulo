@@ -1,6 +1,7 @@
 angular.module('app')
 .controller('DetailsController', ['Graph','ModulePass', '$showdown', '$scope', '$rootScope', '$stateParams', 'Search', 
 function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search){  
+  // View variable declarations
   $scope.module = ModulePass.module;
   $scope.selectedGraph = 'downloads'
   $scope.dlForm = {
@@ -13,6 +14,7 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   $scope.readmeMarkdown = '';
   $scope.selectedModule = Graph.selectedModule;
 
+  // Module Data watchers
   $scope.$watch(function(){ return Graph.selectedModule }, function(){
     $scope.selectedModule = Graph.selectedModule;    
   });
@@ -23,20 +25,24 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
     $scope.readmeMarkdown = $showdown.makeHtml(ModulePass.module.readme)
   });
 
+  // Draw graph function
   $scope.drawGraph = function(type){
     Graph.clearGraph();
     this.selectedGraph = type;
     var width = document.getElementById('graph-container').offsetWidth-25;
 
     if(type === 'version'){
+      // Draw the version graph
       var options = _.pick(this.dlForm, 'startDate', 'endDate');
       options['width'] = width;
       Graph.lineGraph(this.module, options);
     }
     else if(type === 'dependency'){
+      // Draw the dependency graph
       Graph.sigmaGraph(this.module.name);
     }
     else if(type === 'downloads'){
+      // Draw the downloads graph
       var options = this.dlForm;
       options['width'] = width;
       Graph.downloadGraph(this.module.downloads, options);
