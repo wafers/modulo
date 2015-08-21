@@ -11,6 +11,12 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
     filter: 'all'
   }
   $scope.readmeMarkdown = '';
+  $scope.selectedModule = Graph.selectedModule;
+
+  $scope.$watch(function(){ return Graph.selectedModule }, function(){
+    $scope.selectedModule = Graph.selectedModule;    
+    window.allen = $scope.selectedModule;
+  });
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
     $scope.module = ModulePass.module;
@@ -80,6 +86,5 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
     var client = new ZeroClipboard( document.getElementById('install-link') );
     var client = new ZeroClipboard( document.getElementById('install-link') );
     Graph.clearGraph();
-
   } 
 }]);
