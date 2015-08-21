@@ -221,14 +221,14 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
     relationships.forEach(function(row){
       // Node Creation
       var newNode = makeNode(""+nodeId, row.name, 0, 0, scaleNode(row.monthlyDownloadSum), randomColorGenerator(), relationships.indexOf(row)+1, totalNodeNum, row.monthlyDownloadSum)
+      nodes.push(newNode);
 
       // Edge creation
-      var newEdge = makeEdge(""+nodeId, '1', ""+edgeId);
-
+      if (newNode.size > 6) { // Only make an edge if the node is significant (size > 6)
+        var newEdge = makeEdge(""+nodeId, '1', ""+edgeId);
+        edges.push(newEdge);
+      }
       nodeId++; edgeId++;
-      nodes.push(newNode);
-      edges.push(newEdge);
-      // if (newNode.size > 6) {edges.push(newEdge);}
     });
 
     cb(null, {edges: edges, nodes: nodes});
@@ -258,7 +258,7 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
       source: sourceIdStr, 
       target: targetIdStr, 
       size: Math.random(),
-      color: '#ccc',
+      color: '#bbb',
       type: 'curve',
       hover_color: "#000"
     }
