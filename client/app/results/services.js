@@ -176,11 +176,25 @@ angular.module('app')
 
         s.bind('doubleClickNode', function(e) {
           var node = e.data.node;
-          window.location = "/#/details/"+node.label;
+          window.location = "/#/details/"+node.label; // Redirect to the node double clicked
         });
-        // s.bind('clickStage', function(e) {
-        //   console.log(e.type, e.data.captor);
-        // });
+
+        s.bind('clickStage', function(e) {
+          // Show instructions
+          console.log(e.data.captor.clientY);
+          console.log(e.data.captor.clientX);
+
+          // if($('#graph-popover').length === 0){
+          //   $('body').prepend('<span id="graph-popover" data-toggle="popover" data-title="Instructions" data-content="Single click on a node to see details. Double click on a node to redirect to that node\'s details page." data-placement="right" data-trigger="focus"></span>');
+          //   $('#graph-popover').popover('show');
+          //   $('#graph-popover').css({
+          //     top: e.data.captor.clientY + 'px', 
+          //     left: e.data.captor.clientX + 'px'
+          //   });
+            // $("#graph-popover").css('top', e.data.captor.clientY + "px");
+            // $("#graph-popover").css('left', e.data.captor.clientX + "px");
+          }
+        });
         // s.bind('doubleClickStage rightClickStage', function(e) {
         //   console.log(e.type, e.data.captor);
         // });

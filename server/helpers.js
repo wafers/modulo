@@ -236,7 +236,7 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
   
 
   function makeNode(idStr, labelStr, x, y, size, colorStr, nodeNum, totalNodeNum, monthlyDownloadSum){
-    var radius = scaleNode(monthlyDownloadSum)> 6 ? 100 : 200;
+    var radius = scaleNode(monthlyDownloadSum) > 6 ? 100 : 200;
     var cosine = Math.cos(Math.PI*2*nodeNum/(totalNodeNum));
     var sine = Math.sin(Math.PI*2*nodeNum/totalNodeNum);
     var xPos = (radius+Math.random()*100)*cosine;
@@ -314,7 +314,7 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
               finalData['subscribers'] = result['subscribers_count'];
               finalData['forks'] = result['forks_count'];
               finalData['watchers'] = result['watchers_count'];
-              finalData['openIssues'] = result['forks_count'];
+              finalData['openIssues'] = result['open_issues_count'];
 
               cb(null, finalData);
             });
