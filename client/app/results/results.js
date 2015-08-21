@@ -42,7 +42,9 @@ angular.module('app')
         .attr('height',15)
         .attr({'x':0,'y':function(d){ return yscale(ranks.indexOf(d)); }})
         .style('fill',function(d){ return colorScale(d[1]); })
-        .attr('width',function(d){ return 0; });
+        .attr('width',function(d){ return 0; })
+        .attr('class', 'masterTooltip')
+        .attr('val', function(d) {return d[1]});
 
     var transit = d3.select('#dropdown-div-'+index).select('svg').selectAll("rect")
       .data(ranks)
@@ -50,25 +52,23 @@ angular.module('app')
       .duration(1000) 
       .attr("width", function(d) {return xscale(d[1]); });
 
-
     var transitext = d3.select('#dropdown-div-'+index).select('svg').select('#bars')
       .selectAll('text')
       .data(ranks)
       .enter()
-      .append('text')
-      .attr({'x':function(d) {
-        return xscale(d[1])-50 < 0 ? 1 : xscale(d[1]) - 50;
-      },'y':function(d){ return yscale(ranks.indexOf(d))+13; }})
-      .text(function(d){ return d[1]; }).style({'fill':'#000','font-size':'14px'})    
+        .append('text')
+        .attr({'x':function(d) {
+          return xscale(d[1])-50 < 0 ? 1 : xscale(d[1]) - 50;
+        },'y':function(d){ return yscale(ranks.indexOf(d))+13; }})
+        .text(function(d){ return d[1]; }).style({'fill':'#000','font-size':'14px'})    
       
     var labelText = d3.select('#dropdown-div-'+index).select('svg')
       .selectAll('labels')
       .data(ranks)
       .enter()
-      .append('text')
-      .attr({'x':'0','y':function(d){ return yscale(ranks.indexOf(d))+13; }})
-      .text(function(d){ return d[0]; }).style({'fill':'#000','font-size':'14px'});    
-    
+        .append('text')
+        .attr({'x':'0','y':function(d){ return yscale(ranks.indexOf(d))+13; }})
+        .text(function(d){ return d[0]; }).style({'fill':'#000','font-size':'14px'});     
   }
 
   $scope.$watch(function() {
@@ -83,12 +83,33 @@ angular.module('app')
     result.show = !result.show;
     if (result.show) {
       $scope.bulletGraph(result, $index)
+      $scope.tooltip($index);
     }
   }
-
-
 
   $rootScope.$on('$stateChangeSuccess', function() {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   });
+
+  $scope.tooltip = function (index){
+    $('.masterTooltip').hover(function(){
+      var tipData = $(this).attr('val')
+      $(this).data('tipText', tipData);
+      console.log('hovering on', $(this))
+        $('<p class="tooltip"></p>')
+          .text(tipData)
+          .appendTo('body')
+          .fadeIn('fast');
+    }, function() {
+        // Hover out code
+        $('.tooltip').remove();
+    })
+    .mousemove(function(e) {
+        var mousex = e.pageX + 20; //Get X coordinates
+        var mousey = e.pageY + 10; //Get Y coordinates
+        $('.tooltip')
+        .css({ top: mousey, left: mousex })
+    })
+  }
+
 }]);
