@@ -150,6 +150,10 @@ angular.module('app')
                   labelThreshold: 6.1
                 }
         });
+
+        s.bind('overNode outNode clickNode doubleClickNode rightClickNode', function(e) {
+          console.log(e.type, e.data.node.label, e.data.captor);
+        });
       }
     })
     .error(function(data){
