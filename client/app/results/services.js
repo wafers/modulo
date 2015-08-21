@@ -145,9 +145,14 @@ angular.module('app')
                 graph: data,
                 container: 'graph-container',
                 settings: {
+                  doubleClickEnabled: false,
+                  edgeHoverColor: 'edge',
+                  defaultEdgeHoverColor: "#000",
+                  edgeHoverSizeRatio: 1,
+                  edgeHoverExtremities: true,
                   borderSize: 1,
                   autoRescale: false,
-                  labelThreshold: 6.1
+                  labelThreshold: 6.1,
                 }
         });
 

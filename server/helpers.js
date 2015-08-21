@@ -227,7 +227,8 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
 
       nodeId++; edgeId++;
       nodes.push(newNode);
-      if (newNode.size > 6) {edges.push(newEdge);}
+      edges.push(newEdge);
+      // if (newNode.size > 6) {edges.push(newEdge);}
     });
 
     cb(null, {edges: edges, nodes: nodes});
@@ -256,10 +257,12 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
       source: sourceIdStr, 
       target: targetIdStr, 
       id: idStr, 
-      color: '#8fafa2'
+      color: '#eee',
+      type: 'curve',
+      hover_color: "#000"
     }
   }
-  
+
   function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
   }
