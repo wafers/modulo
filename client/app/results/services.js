@@ -140,7 +140,7 @@ angular.module('app')
     $http.post('/relationships', {"data": moduleName})
     .success(function(data){
       var currentGraph = $('#graph-container').attr('data');
-      if(currentGraph === 'dependency'){
+      if(currentGraph === 'dependency'){  // Check to make sure only to render sigma if the dependency graph is still selected
         s = new sigma({ 
                 graph: data,
                 container: 'graph-container',
@@ -150,7 +150,7 @@ angular.module('app')
                   labelThreshold: 6.1
                 }
         });
-        
+
         s.bind('overNode outNode clickNode doubleClickNode rightClickNode', function(e) {
           console.log(e.type, e.data.node.label, e.data.captor);
         });
