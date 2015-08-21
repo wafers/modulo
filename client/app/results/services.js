@@ -122,7 +122,7 @@ angular.module('app')
 }])
 
 // Graph service responsible for drawing the sigma, download, and version graphs
-.service('Graph', ['$http', function($http){
+.service('Graph', ['$http', '$location', function($http, $location){
   var margin = {top: 50, right: 10, bottom: 50, left: 80};
   var height = 500 - margin.top - margin.bottom;
 
@@ -165,11 +165,18 @@ angular.module('app')
                 }
         });
 
-        s.bind('overNode outNode clickNode doubleClickNode rightClickNode', function(e) {
-          console.log(e.type, e.data.node.label, e.data.captor);
+        // s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {
+        //   console.log(e.type, e.data.edge, e.data.captor);
+        // });
+
+        s.bind('clickNode', function(e) {
+          console.log(e.data.node);
+          // console.log(e.type, e.data.node.label, e.data.captor);
         });
-        s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {
-          console.log(e.type, e.data.edge, e.data.captor);
+
+        s.bind('doubleClickNode', function(e) {
+          var node = e.data.node;
+          window.location = "/#/details/"+node.label;
         });
         // s.bind('clickStage', function(e) {
         //   console.log(e.type, e.data.captor);

@@ -254,9 +254,10 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
 
   function makeEdge(sourceIdStr, targetIdStr, idStr){
     return {
+      id: idStr, 
       source: sourceIdStr, 
       target: targetIdStr, 
-      id: idStr, 
+      size: Math.random(),
       color: '#ccc',
       type: 'curve',
       hover_color: "#000"
