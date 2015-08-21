@@ -6,7 +6,9 @@ angular.module('app')
       $scope.order = order;
   }
 
-  $scope.bulletGraph = function(module) {
+  $scope.bulletGraph = function(module, index) {
+    // var elementID = element.attr('id');
+    console.log(index)
     var ranks = [['Overall Rank',module.overallRank], ['Last Update Rank', module.dateRank], ['Number of Versions Rank', module.versionNumberRank], ['Module Data Completeness', module.completenessRank], ['Monthly Download Rank', module.downloadRank], ['Dependents Rank', module.dependentRank], ['Number of Stars Rank', module.starRank]];
     var margin = {top: 5, bottom: 5, left: 200};
     var width = document.getElementsByClassName('page-header')[0].offsetWidth - margin.left;
@@ -27,7 +29,7 @@ angular.module('app')
       .domain([0, buckets-1, 100])
       .range(colors);
 
-    var canvas = d3.select('#rank-bars')
+    var canvas = d3.select('#dropdown-div-'+index)
       .append('svg')
       .attr({'width':width,'height':height});
 
@@ -68,19 +70,18 @@ angular.module('app')
   }
 
   $scope.$watch(function() {
-          return Search.results.searchResults;
-      }, function() {
-          $scope.results = Search.showResults().searchResults
-      })
+      return Search.results.searchResults;
+    }, function() {
+      $scope.results = Search.showResults().searchResults
+  })
       // function() { return Search.showResults() };
       // $scope.results();
-  $scope.toggle = function(result) {
-      console.log('clicked module:', this.result)
-      ModulePass.updateModule(this.result);
-      result.show = !result.show;
-      if (result.show) {
-        $scope.bulletGraph(this.result)
-      }
+  $scope.toggle = function(result, $index) {
+    ModulePass.updateModule(this.result);
+    result.show = !result.show;
+    if (result.show) {
+      $scope.bulletGraph(result, $index)
+    }
   }
 
 
