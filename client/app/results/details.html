@@ -108,8 +108,9 @@
             </div>
           </form>
         </div>
-        <div ng-switch-when="dependency">
+        <div class="dependency-switch" ng-switch-when="dependency">
           <h4>Modules that list {{module.name}} as a dependency.</h4>
+          <p><span>Instructions:</span> Left click a node to view information. Right click a node to view its analytics page.</p>
           <div class="target-stats">
             <h3 ng-if="!selectedModule.name">Selected Module</h3>
             <h3 ng-if="selectedModule.name">{{selectedModule.name}}</h3>

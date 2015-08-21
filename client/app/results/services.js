@@ -195,7 +195,7 @@ angular.module('app')
           // console.log(e.type, e.data.node.label, e.data.captor);
         });
 
-        s.bind('doubleClickNode', function(e) {
+        s.bind('rightClickNode', function(e) {
           var node = e.data.node;
           window.location = "/#/details/"+node.label; // Redirect to the node double clicked
         });
