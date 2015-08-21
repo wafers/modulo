@@ -241,7 +241,7 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
     var sine = Math.sin(Math.PI*2*nodeNum/totalNodeNum);
     var xPos = (radius+Math.random()*100)*cosine;
     var yPos = sine < 0 ? (radius+Math.random()*100)*sine : (radius+Math.random()*100)*sine;
-    
+
     return {
       id: idStr, 
       label: labelStr, 
@@ -268,7 +268,8 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
   }
 
   function randomColorGenerator(){
-    return rgbToHex(Math.random()*255, Math.random()*255, Math.random()*255);
+    var calc = rgbToHex(Math.random()*255, Math.random()*255, Math.random()*255);
+    return calc.slice(0,7);
   }
 
   function scaleNode(monthlyDownloadSum) {

@@ -171,12 +171,12 @@ angular.module('app')
         s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {
           console.log(e.type, e.data.edge, e.data.captor);
         });
-        s.bind('clickStage', function(e) {
-          console.log(e.type, e.data.captor);
-        });
-        s.bind('doubleClickStage rightClickStage', function(e) {
-          console.log(e.type, e.data.captor);
-        });
+        // s.bind('clickStage', function(e) {
+        //   console.log(e.type, e.data.captor);
+        // });
+        // s.bind('doubleClickStage rightClickStage', function(e) {
+        //   console.log(e.type, e.data.captor);
+        // });
       }
     })
     .error(function(data){
