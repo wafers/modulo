@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'Roboto';
+	src: url('./assets/roboto/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto-Light';
+	src: url('./assets/roboto/Roboto-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto-Thin';
+	src: url('./assets/roboto/Roboto-Thin.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto-ThinItalic';
+	src: url('./assets/roboto/Roboto-ThinItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto-Black';
+	src: url('./assets/roboto/Roboto-Black.ttf') format('truetype');
+}
+
+$red: rgba(231,76,60,1);
+$grey: rgba(236,240,241,1);
+$navy: rgba(44,62,80,1);
+$blue: rgba(41,128,185,1);
+$lightblue: rgba(52,152,219,1);
+
+body {
+  font-family: Roboto-Light;
+}
+
+h1 {
+  font-family: Roboto-Thin;
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 22px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+@import 'nav';
+@import 'landing';
+@import 'results';
+@import 'details';
+@import 'graphs';

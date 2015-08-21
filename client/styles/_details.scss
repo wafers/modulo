@@ -1,0 +1,58 @@
+#install-link {
+  text-align: right;
+  cursor: pointer;
+}
+
+.graph-type{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.details-module-name{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.details-stats{
+  padding-top: 40px;
+}
+
+.details-readme{
+  padding-left: 10px;
+}
+
+.details-div {
+  padding: 20px;
+  width: 100%;
+  float: none;
+  display: block;
+}
+
+.detail-link {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#graph-container{
+  /*position: absolute;*/
+  width: 100%;
+  height: 500px;
+  margin-bottom: 30px;
+  background-color: #eee;
+  border: 1px solid lightgrey;
+}
+
+.graph-buttons {
+  margin: 0 auto;
+  display: center;
+}
+
+.bar {
+  fill: #4c1313;
+  opacity: 0.75;  
+}
+
+.moving-average {
+  stroke: #8fafa2;
+  stroke-width: 2;
+}

@@ -1,0 +1,108 @@
+.order-list {
+  margin: 0 auto;
+  width: 800px;
+  padding: 10px;
+}
+
+#order-list {
+  font-size: 15px;
+  text-align: center;
+}
+
+.order-btn {
+  color: #8fafa2;
+  font-size: 15px;
+  background-color: #fff;
+  border: 1px solid #8fafa2;
+  outline: none !important;
+}
+
+.list-group {
+  width: 100%;
+  padding-top: 20px;
+}
+
+.list-group-item {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  margin: 0 auto;
+  padding: 0;
+  width: 85%;
+}
+
+.list-group-item:hover {
+  cursor: pointer;
+  color: #4c1313;
+  border-color: #8fafa2;
+  margin-bottom: 1px;
+}
+
+.page-header {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  margin: 0;
+  padding: 10px;
+  background-color: #eee;
+}
+
+.module-title {
+  width: 25%;
+  display: inline-block;
+  color: #000;
+  font: Roboto;
+}
+
+.module-stats {
+  width: 70%;
+  display: inline-block;
+  text-align: right;
+  font-size: 50%;
+  color: #4c1313;
+  font-family: Roboto-Thin;
+}
+
+#star {
+  font-size: 12px;
+}
+
+#content {
+  float: left;
+  font-size: 16px;
+  font-family: Roboto-Light;
+  color: #8fafa2;
+  padding: 2px;
+  padding-top: 10px;
+  padding-left: 12px;
+  margin-bottom: 2px;
+}
+
+.last-update {
+  width: 25%;
+  float: right;
+}
+
+.star-count {
+  width: 25%;
+  float: right;
+}
+
+.dependent-number {
+  width: 25%;
+  float: right;
+}
+
+.monthly-downloads {
+  width: 25%;
+  float: right;
+}
+
+#content, #content > div {
+  -webkit-box-sixing: border-box;
+  -moz-box-sizing: border-box; 
+  box-sizing: border-box;
+  display: block;
+}
+
+.show-div {
+  height: 100px;
+}

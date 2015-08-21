@@ -1,0 +1,32 @@
+.nav-container {
+  padding: 20px;
+  background-image: linear-gradient(#3f1010, #4c1313);
+  border-bottom: 1px solid #4c1313;
+}
+
+.search-container {
+  width: 900px;
+  margin: 0 auto;
+}
+
+.title {
+  float: left;
+  color: #fff;
+  font-family: Roboto-Thin;
+  font-size: 40px;
+  text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+}
+
+.input-group {
+  position: relative;
+  padding-left: 40px;
+  width: 600px;
+}
+
+.input-group .form-control {
+  height: 44px;
+}
+
+.input-group-btn{
+  height: 44px;
+}
