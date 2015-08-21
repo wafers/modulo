@@ -119,8 +119,6 @@ angular.module('app')
       })
       .error(function(data){ console.log('error', data) })
   }
-
-
 }])
 
 // Graph service responsible for drawing the sigma, download, and version graphs
