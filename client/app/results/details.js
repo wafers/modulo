@@ -15,7 +15,6 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
 
   $scope.$watch(function(){ return Graph.selectedModule }, function(){
     $scope.selectedModule = Graph.selectedModule;    
-    window.allen = $scope.selectedModule;
   });
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
