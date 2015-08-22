@@ -111,7 +111,7 @@ angular.module('app')
           data.latestVersion = Object.keys(data.time).slice(-3)[0];
         } else {
           data.lastUpdate = moment().fromNow();
-          data[i].time = {}
+          data.time = {}
         }
         if(!data.readme) data.readme = "No readme provided";
        that.module = data;
@@ -122,12 +122,16 @@ angular.module('app')
 }])
 
 // Graph service responsible for drawing the sigma, download, and version graphs
-.service('Graph', ['$http', function($http){
+.service('Graph', ['$http', '$location', function($http, $location){
   var margin = {top: 50, right: 10, bottom: 50, left: 80};
   var height = 500 - margin.top - margin.bottom;
 
+  this.selectedModule = {};
+  var graphService = this;
+
   // Clears out the entire graph container
   this.clearGraph = function() {
+    this.selectedModule = {};
     var myNode = document.getElementById("graph-container");
     while (myNode.firstChild) {
         myNode.removeChild(myNode.firstChild);
@@ -140,16 +144,81 @@ angular.module('app')
     $http.post('/relationships', {"data": moduleName})
     .success(function(data){
       var currentGraph = $('#graph-container').attr('data');
-      if(currentGraph === 'dependency'){
+      if(currentGraph === 'dependency'){  // Check to make sure only to render sigma if the dependency graph is still selected
         s = new sigma({ 
                 graph: data,
-                container: 'graph-container',
+                renderer: {
+                  container: document.getElementById('graph-container'),
+                  type: 'canvas'
+                },
                 settings: {
+                  doubleClickEnabled: false,
                   borderSize: 1,
                   autoRescale: false,
-                  labelThreshold: 6.1
+                  labelThreshold: 6.1,
+
+                  //Edge options
+                  minEdgeSize: 0.5,
+                  maxEdgeSize: 4,
+                  enableEdgeHovering: true,
+                  edgeHoverColor: 'edge',
+                  defaultEdgeColor: "#eee",
+                  defaultEdgeHoverColor: "#000",
+                  edgeHoverSizeRatio: 1,
+                  edgeHoverExtremities: true,
                 }
         });
+
+        // s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {
+        //   console.log(e.type, e.data.edge, e.data.captor);
+        // });
+
+        s.bind('clickNode', function(e) {
+          var data = { data : e.data.node.label };
+          $http.post('/detailedSearch', data)
+            .success(function(data){
+              if (data === 'No results found') data = {name: 'No results found'};
+              if (data.downloads) data.downloads = JSON.parse(data.downloads);
+              if (data.time) {
+                data.time = JSON.parse(data.time);
+                data.lastUpdate = moment(data.time.modified).fromNow();
+                data.latestVersion = Object.keys(data.time).slice(-3)[0];
+              } else {
+                data.lastUpdate = moment().fromNow();
+                data.time = {}
+              }
+              graphService.selectedModule = data;
+            })
+            .error(function(data){ console.log('error', data) })
+
+          // console.log(e.data.node.label);
+          // console.log(e.type, e.data.node.label, e.data.captor);
+        });
+
+        s.bind('rightClickNode', function(e) {
+          var node = e.data.node;
+          window.location = "/#/details/"+node.label; // Redirect to the node double clicked
+        });
+
+        s.bind('clickStage', function(e) {
+          // Show instructions
+          console.log(e.data.captor.clientY);
+          console.log(e.data.captor.clientX);
+
+          // if($('#graph-popover').length === 0){
+          //   $('body').prepend('<span id="graph-popover" data-toggle="popover" data-title="Instructions" data-content="Single click on a node to see details. Double click on a node to redirect to that node\'s details page." data-placement="right" data-trigger="focus"></span>');
+          //   $('#graph-popover').popover('show');
+          //   $('#graph-popover').css({
+          //     top: e.data.captor.clientY + 'px', 
+          //     left: e.data.captor.clientX + 'px'
+          //   });
+            // $("#graph-popover").css('top', e.data.captor.clientY + "px");
+            // $("#graph-popover").css('left', e.data.captor.clientX + "px");
+          // }
+        });
+        // s.bind('doubleClickStage rightClickStage', function(e) {
+        //   console.log(e.type, e.data.captor);
+        // });
       }
     })
     .error(function(data){
