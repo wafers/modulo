@@ -17,10 +17,14 @@
         <h1>
           <div class="module-title">{{result.name}}</div>
           <small class="module-stats clearfix">
-            <div class="last-update">Update Rank: {{result.dateRank}}</div>
-            <div class="star-count">Star Rank: {{result.starRank}}</div>
-            <div class="dependent-number">Dependents Rank: {{result.dependentRank}}</div>
-            <div class="monthly-downloads">Download Rank: {{result.downloadRank}}</div>
+            <div class="last-update rank-int">{{result.dateRank}}</div>
+            <div class="last-update rank-sub">Last Update</div>
+            <div class="star-count rank-int">{{result.starRank}}</div>
+            <div class="star-count rank-sub">Stars</div>
+            <div class="dependent-number rank-int">{{result.dependentRank}}</div>
+            <div class="dependent-number rank-sub">Dependents</div>
+            <div class="monthly-downloads rank-int">{{result.downloadRank}}</div>
+            <div class="monthly-downloads rank-sub">Downloads</div>
           </small>
         </h1>
       </div>
