@@ -7,7 +7,7 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   $scope.dlForm = {
     barWidth: 5,
     maPeriod: 100,
-    startDate: moment().subtract(3, 'years').toDate(),
+    startDate: moment('01 01 2009').toDate(),
     endDate: moment().toDate(),
     filter: 'all'
   }
