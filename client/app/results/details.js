@@ -7,7 +7,7 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   $scope.dlForm = {
     barWidth: 5,
     maPeriod: 100,
-    startDate: moment().subtract(3, 'years').toDate(),
+    startDate: moment('01 01 2009').toDate(),
     endDate: moment().toDate(),
     filter: 'all'
   }
@@ -37,7 +37,7 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
       // Draw the version graph
       var options = _.pick(this.dlForm, 'startDate', 'endDate');
       options['width'] = width;
-      Graph.lineGraph(this.module, options);
+      Graph.versionGraph(this.module, options);
     }
     else if(type === 'dependency'){
       // Draw the dependency graph
