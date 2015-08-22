@@ -16,16 +16,40 @@
       <div class="page-header">
         <h1>
           <div class="module-title">{{result.name}}</div>
-          <small class="module-stats clearfix">
-            <div class="last-update rank-int">{{result.dateRank}}</div>
-            <div class="last-update rank-sub">Last Update</div>
-            <div class="star-count rank-int">{{result.starRank}}</div>
-            <div class="star-count rank-sub">Stars</div>
-            <div class="dependent-number rank-int">{{result.dependentRank}}</div>
-            <div class="dependent-number rank-sub">Dependents</div>
-            <div class="monthly-downloads rank-int">{{result.downloadRank}}</div>
-            <div class="monthly-downloads rank-sub">Downloads</div>
-          </small>
+          <div class="module-stats clearfix">
+            <div class="overall">
+              <div class="rank-int">{{result.overallRank}}</div>
+              <small><div class="rank-sub">Overall</div></small>
+            </div>
+            <div class="github">
+              <div class="rank-int">{{result.githubRank}}</div>
+              <small><div class="rank-sub">GitHub</div></small>
+            </div>
+            <div class="monthly-downloads">
+              <div class="rank-int">{{result.downloadRank}}</div>
+              <small><div class="rank-sub">Downloads</div></small>
+            </div>
+            <div class="last-update">
+              <div class="rank-int">{{result.dateRank}}</div>
+              <small><div class="rank-sub">Last Update</div></small>
+            </div>
+            <div class="version-number">
+              <div class="rank-int">{{result.versionNumberRank}}</div>
+              <small><div class="rank-sub">Version Number</div></small>
+            </div>
+            <div class="dependent-number">
+              <div class="rank-int">{{result.dependentRank}}</div>
+              <small><div class="rank-sub">Dependents</div></small>
+            </div>
+            <div class="star-count">
+              <div class="rank-int">{{result.starRank}}</div>
+              <small><div class="rank-sub">Stars</div></small>
+            </div>
+            <div class="completeness">
+              <div class="rank-int">{{result.completenessRank}}</div>
+              <small><div class="rank-sub">Completeness</div></small>
+            </div>
+          </div>
         </h1>
       </div>
       <div id="content">{{result.description}}</div>
