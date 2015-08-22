@@ -238,13 +238,14 @@ angular.module('app')
     })
   }
 
-  this.bulletGraph = function(module, index) {
+  this.bulletGraph = function(module, index, options) {
     var ranks = [['Overall Rank',module.overallRank, 'overallRank'], ['Last Update Rank', module.dateRank, 'lastUpdate'], ['Number of Versions Rank', module.versionNumberRank, 'time'], ['Module Data Completeness', module.completenessRank, 'completenessRank'], ['Monthly Download Rank', module.downloadRank, 'monthlyDownloadSum'], ['Dependents Rank', module.dependentRank, 'dependentsSize'], ['Number of Stars Rank', module.starRank, 'starred'], ['GitHub Repo Rank', module.githubRank, 'github']];
     var margin = {top: 5, bottom: 5, left: 200};
-    var width = document.getElementsByClassName('page-header')[0].offsetWidth - margin.left;
+    var width = index === undefined ? options.width : document.getElementsByClassName('page-header')[0].offsetWidth - margin.left;
     var height = 200 - margin.top - margin.bottom;
     var buckets = 3;
     var colors = ['rgb(245,75,26)', 'rgb(229,195,158)', 'rgb(1,171,233)'];
+    var container = index === undefined ? '#graph-container' : '#dropdown-div-'+index;
 
     var xscale = d3.scale.linear()
       .domain([0,101])
@@ -258,9 +259,9 @@ angular.module('app')
       .domain([0, buckets-1, 100])
       .range(colors);
     
-    d3.select('#dropdown-div-'+index).select("svg").remove();
+    d3.select(container).select("svg").remove();
 
-    var canvas = d3.select('#dropdown-div-'+index)
+    var canvas = d3.select(container)
       .append('svg')
       .attr({'width':width,'height':height});
 
@@ -278,7 +279,7 @@ angular.module('app')
         .attr('class', 'masterTooltip')
         .attr('val', function(d){return rankDetails(d)});
 
-    var text = d3.select('#dropdown-div-'+index).select('svg').select('#bars')
+    var text = d3.select(container).select('svg').select('#bars')
       .selectAll('text')
       .data(ranks)
       .enter()
@@ -288,14 +289,14 @@ angular.module('app')
         .attr('class', 'masterTooltip')
         .attr('val', function(d){return rankDetails(d)});
       
-    var transit = d3.select('#dropdown-div-'+index).select('svg')
+    var transit = d3.select(container).select('svg')
       .selectAll('rect')
         .data(ranks)
         .transition()
         .duration(1000) 
         .attr("width", function(d) {return xscale(d[1]) === 0 ? 15 : xscale(d[1]); });
 
-    var transit = d3.select('#dropdown-div-'+index).select('svg')
+    var transit = d3.select(container).select('svg')
       .selectAll('text')
         .data(ranks)
         .transition()
@@ -304,7 +305,7 @@ angular.module('app')
           return xscale(d[1])-50 < 0 ? 1 : xscale(d[1]) - 50;
         });
 
-    var labelText = d3.select('#dropdown-div-'+index).select('svg')
+    var labelText = d3.select(container).select('svg')
       .selectAll('labels')
       .data(ranks)
       .enter()
