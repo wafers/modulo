@@ -317,7 +317,7 @@ angular.module('app')
       console.log('rank', key)
       console.log('module', module[key])
 
-      var displayData = ''
+      var displayData = '';
 
       if (key === 'time') {
         displayData = Object.keys(module[key]).length-2 + ' versions published';
@@ -338,9 +338,29 @@ angular.module('app')
         displayData = 'Watched by ' + module.subscribers.toLocaleString() + ' GitHub users. \n' + module.forks.toLocaleString() + ' forked repos. \n' + module.openIssues.toLocaleString() + ' open issues and pull requests.'
       }
 
-      return displayData
+      return displayData;
     }
 
+    // Generate the tool tip -- IFFE
+    (function tooltip(index){
+      $('.masterTooltip').hover(function(){
+        var tipData = $(this).attr('val')
+        $(this).data('tipText', tipData);
+        $('<p class="tooltip"></p>')
+          .text(tipData)
+          .appendTo('body')
+          .fadeIn('fast');
+      }, function() {
+          // Hover out code
+          $('.tooltip').remove();
+      })
+      .mousemove(function(e) {
+          var mousex = e.pageX + 20; //Get X coordinates
+          var mousey = e.pageY + 10; //Get Y coordinates
+          $('.tooltip')
+          .css({ top: mousey, left: mousex })
+      })
+    })(index);
   }
 
   this.lineGraph = function(module, options){
