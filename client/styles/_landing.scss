@@ -1,48 +1,18 @@
 .fluid-container {
-  background-color: #eee;
+  background-color: $white;
 }
 
 .landing-header {
-  font-size: 40px;
+  min-height: 600px;
+}
+
+.landing-title {
   font-family: Roboto-Thin;
+  font-size: 78px;
 }
 
-.landing-explanation, .landing-npm-demo, .landing-advanced-features, .landing-tech-stack {
-  background-color: #eee;
-  padding: 40px;
-}
-
-.landing-feature-demo, .landing-demo-gif, .landing-advanced-features, .landing-bios {
-  background-color: #fff;
-  padding: 40px;
-}
-
-.mint {
-  color: #8fafa2;
-}
-
-.maroon {
-  color: #4c1313;
-}
-
-.white {
-  color: #fff;
-}
-
-.grey {
-  color: #BFBFBF;
-}
-
-.center-me {
-  margin:0 auto;
-  text-align: center;
-}
-
-div.landing-explanation {
-  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8) ), url('./assets/stock-mouse.jpg') no-repeat center;
-  background-size:100% auto;
-  height: 450px;
-  margin-bottom: -30px;
+.landing-pitch {
+  margin-top: -5px;
 }
 
 /* LANDING > feature-demo */
@@ -53,7 +23,6 @@ div.landing-explanation {
 .demo-img {
   width: 600px;
   padding: 4px;
-  border:1px solid #8fafa2;
 }
 
 /* LANDING > advanced-features */
@@ -68,14 +37,15 @@ div.landing-explanation {
 
 /* LANDING > NPM */
 .landing-npm-demo {
-  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8) ), url('./assets/stock-mug.jpg') no-repeat bottom;
   background-size:100% auto;
 }
 
 .npm-gif {
+  background-color: white;
   width: 600px;
-  padding: 8px;
-  border:1px solid #ddd;
+  border: 5px solid white;
+  padding: 10px;
+  box-shadow: 
 }
 
 .npm-search-bullets {
@@ -90,73 +60,60 @@ div.landing-explanation {
   padding-top: 20px;
 }
 
-/* LANDING > bios */
-div.landing-bios {
-  background: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5) ), url('./assets/stock-pencil.jpg') no-repeat center;
-  background-size:100% auto;
-}
-div.panel {
-  background: none;
-  border:none;
-  box-shadow: none;
-  margin: -20px;
-}
-
-div.img-div{
-  background-color: #8fafa2;
-  height:220px;
-  width:220px;
-  overflow:hidden;
-  border-radius:50%;
-  border:5px solid #8fafa2;
-/*  box-shadow: 5px 5px 2px #888;
-*/}
-
-.github-div {
-  margin-top: -12px;
-  margin-left: -15px;
-}
-
-.github {
-  width: 45px;
-}
-
-.github-username {
-  color: #8fafa2;
-  font-size: 18px;
-  font-family: Roboto-Light;
-}
-
-span.teamrole {
-  color: #fff;
-  font-family: Roboto-Thin;
-}
-
-.img-div img{
-  -webkit-transform:translate(-50%);
-  margin-left:100px;
-}
-
-.img-team {
-  width: 220px;
-}
 
 /* LANDING > footer */
-.landing-footer {
-  background-image: linear-gradient(#4c1313, #3f1010);
-  padding: 5px;
-  padding-right: 15px;
-  color: #fff;
-  text-align: right;
-}
+footer {
+  .landing-footer {
+    background-color: $navy;
+    padding: 5px;
+    padding-right: 15px;
+    min-height: 400px;
+    text-align: right;
+  }
 
-a[href^="mailto:"] { 
-  color: #8fafa2;
+  .team {
+    padding-left: 20%;
+    padding-top: 125px;
+    position: relative;
+    width: 400px;
+    float: left;
+    text-align: left;
+  }
+
+  a {
+    color: $white;
+  }
+
+  :hover {
+    text-decoration: none;
+    color: $red;
+  }
+
+  .about {
+    padding-left: 100px;
+    padding-top: 125px;
+    position: left;
+    float: left;
+    text-align: left;
+    width: 750px;
+    word-wrap: break-word;
+  }
+
+  .footer-title {
+    color: $red;
+    font-size: 16px;
+  }
+
+  .footer-body {
+    padding-top: 10px;
+    color: $darkgrey;
+    font-size: 14px;
+  }
 }
 
 /* ANGULAR LOADING BAR (Overriding CSS) */
 #loading-bar .bar {
-  background: #8fafa2;
+  background: $red;
   height: 5px;
 }
 

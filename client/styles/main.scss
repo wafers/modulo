@@ -28,6 +28,9 @@ $grey: rgba(236,240,241,1);
 $navy: rgba(44,62,80,1);
 $blue: rgba(41,128,185,1);
 $lightblue: rgba(52,152,219,1);
+$white: rgba(255,255,255,1);
+$black: rgba(0,0,0,1);
+$darkgrey: rgba(128, 128, 128,1);
 
 body {
   font-family: Roboto-Light;
@@ -45,6 +48,9 @@ h2 {
 h3 {
   font-size: 18px;
 }
+
+.break { width: 500px; height: 1px; color: $darkgrey; margin-top: -100px; }
+
 
 @import 'nav';
 @import 'landing';
