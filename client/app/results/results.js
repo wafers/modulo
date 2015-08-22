@@ -7,7 +7,7 @@ angular.module('app')
   }
 
   $scope.bulletGraph = function(module, index) {
-    var ranks = [['Overall Rank',module.overallRank, 'overallRank'], ['Last Update Rank', module.dateRank, 'lastUpdate'], ['Number of Versions Rank', module.versionNumberRank, 'time'], ['Module Data Completeness', module.completenessRank, 'completenessRank'], ['Monthly Download Rank', module.downloadRank, 'monthlyDownloadSum'], ['Dependents Rank', module.dependentRank, 'dependentsSize'], ['Number of Stars Rank', module.starRank, 'starred']];
+    var ranks = [['Overall Rank',module.overallRank, 'overallRank'], ['Last Update Rank', module.dateRank, 'lastUpdate'], ['Number of Versions Rank', module.versionNumberRank, 'time'], ['Module Data Completeness', module.completenessRank, 'completenessRank'], ['Monthly Download Rank', module.downloadRank, 'monthlyDownloadSum'], ['Dependents Rank', module.dependentRank, 'dependentsSize'], ['Number of Stars Rank', module.starRank, 'starred'], ['GitHub Repo Rank', module.githubRank, 'github']];
     var margin = {top: 5, bottom: 5, left: 200};
     var width = document.getElementsByClassName('page-header')[0].offsetWidth - margin.left;
     var height = 200 - margin.top - margin.bottom;
@@ -92,19 +92,23 @@ angular.module('app')
       } else if (key === 'lastUpdate') {
         displayData = 'Last update on ' + module[key];
       } else if (key === 'monthlyDownloadSum') {
-        displayData = module[key] + ' downloads in past 30 days';
+        displayData = module[key].toLocaleString() + ' downloads in past 30 days';
       } else if (key === 'dependentsSize') {
-        displayData = module[key] + ' modules depending on ' + module.name;
+        displayData = module[key].toLocaleString() + ' modules depending on ' + module.name;
       } else if (key === 'starred') {
-        displayData = module[key] + ' stars on NPM';
+        displayData = module[key].toLocaleString() + ' stars on NPM';
       } else if (key === 'overallRank') {
         displayData = module[key] + ' overall module score';
       } else if (key === 'completenessRank') {
         displayData = module[key] + '% module information complete'
+        if (module[key] < 100) displayData += '. Missing info: ' + module.completenessFailures
+      } else if (key === 'github' && module.subscribers) {
+        displayData = 'Watched by ' + module.subscribers.toLocaleString() + ' GitHub users. \n' + module.forks.toLocaleString() + ' forked repos. \n' + module.openIssues.toLocaleString() + ' open issues and pull requests.'
       }
 
       return displayData
     }
+
   }
 
   $scope.$watch(function() {
