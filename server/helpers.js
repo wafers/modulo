@@ -206,6 +206,7 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
     var edges = [], nodes = [];
     var nodeId = 2, edgeId = 1; 
 
+    // Calculating the largest dependent -- to scale all the others
     largestDependent = relationships.reduce(function(sum, row){
       row.monthlyDownloadSum = row.monthlyDownloadSum || 0;
       return sum > row.monthlyDownloadSum ? sum : row.monthlyDownloadSum
@@ -215,41 +216,66 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
     nodes.push(makeNode('1', moduleName, 0, 0, 15, randomColorGenerator(), 0)); // make initial
     var totalNodeNum = relationships.length;
     relationships = _.shuffle(relationships)
+
+    // Looping through all the relationships and building the node and edges
     relationships.forEach(function(row){
+      // Node Creation
       var newNode = makeNode(""+nodeId, row.name, 0, 0, scaleNode(row.monthlyDownloadSum), randomColorGenerator(), relationships.indexOf(row)+1, totalNodeNum, row.monthlyDownloadSum)
-      var newEdge = makeEdge(""+nodeId, '1', ""+edgeId);
-      nodeId++; edgeId++;
       nodes.push(newNode);
-      if (newNode.size > 6) {edges.push(newEdge);}
+
+      // Edge creation
+      if (newNode.size > 6) { // Only make an edge if the node is significant (size > 6)
+        var newEdge = makeEdge(""+nodeId, '1', ""+edgeId);
+        edges.push(newEdge);
+      }
+      nodeId++; edgeId++;
     });
 
     cb(null, {edges: edges, nodes: nodes});
   });
   
+
+  function makeNode(idStr, labelStr, x, y, size, colorStr, nodeNum, totalNodeNum, monthlyDownloadSum){
+    var radius = scaleNode(monthlyDownloadSum) > 6 ? 100 : 200;
+    var cosine = Math.cos(Math.PI*2*nodeNum/(totalNodeNum));
+    var sine = Math.sin(Math.PI*2*nodeNum/totalNodeNum);
+    var xPos = (radius+Math.random()*100)*cosine;
+    var yPos = sine < 0 ? (radius+Math.random()*100)*sine : (radius+Math.random()*100)*sine;
+
+    return {
+      id: idStr, 
+      label: labelStr, 
+      x: xPos, 
+      y: yPos, 
+      size: size, 
+      color: colorStr
+    };
+  }
+
+  function makeEdge(sourceIdStr, targetIdStr, idStr){
+    return {
+      id: idStr, 
+      source: sourceIdStr, 
+      target: targetIdStr, 
+      size: Math.random(),
+      color: '#bbb',
+      type: 'curve',
+      hover_color: "#000"
+    }
+  }
+
   function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
   }
 
   function randomColorGenerator(){
-    return rgbToHex(Math.random()*255, Math.random()*255, Math.random()*255);
+    var calc = rgbToHex(Math.random()*255, Math.random()*255, Math.random()*255);
+    return calc.slice(0,7);
   }
 
   function scaleNode(monthlyDownloadSum) {
     var size = monthlyDownloadSum > 0 ? 2 + 8 * (monthlyDownloadSum/largestDependent) : 1.5;
     return size;
-  }
-
-  function makeNode(idStr, labelStr, x, y, size, colorStr, nodeNum, totalNodeNum, monthlyDownloadSum){
-    var radius = scaleNode(monthlyDownloadSum)> 6 ? 100 : 200;
-    var cosine = Math.cos(Math.PI*2*nodeNum/(totalNodeNum));
-    var sine = Math.sin(Math.PI*2*nodeNum/totalNodeNum);
-    var xPos = (radius+Math.random()*100)*cosine;
-    var yPos = sine < 0 ? (radius+Math.random()*100)*sine : (radius+Math.random()*100)*sine;
-    return {id: idStr, label: labelStr, x: xPos, y: yPos, size: size, color: colorStr};
-  }
-
-  function makeEdge(sourceIdStr, targetIdStr, idStr){
-    return {source: sourceIdStr, target: targetIdStr, id: idStr, color: '#8fafa2'}
   }
 }
 
@@ -288,7 +314,7 @@ var moduleDataBuilder = module.exports.moduleDataBuilder = function(moduleName, 
               finalData['subscribers'] = result['subscribers_count'];
               finalData['forks'] = result['forks_count'];
               finalData['watchers'] = result['watchers_count'];
-              finalData['openIssues'] = result['forks_count'];
+              finalData['openIssues'] = result['open_issues_count'];
 
               cb(null, finalData);
             });

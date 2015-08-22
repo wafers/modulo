@@ -9,7 +9,7 @@
       <div class="btn-group graph-type">
         <button type="button" class="btn btn-default" ng-click="drawGraph('downloads')">Downloads</button> 
         <button type="button" class="btn btn-default" ng-click="drawGraph('version')">Version</button>
-        <button type="button" class="btn btn-default" ng-click="drawGraph('dependency')">Dependents</button>
+        <button type="button" class="btn btn-default" ng-click="drawGraph('dependency')">Explore</button>
         <button type="button" class="btn btn-default" ng-click="">Keywords</button>
         <button type="button" class="btn btn-default" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
       </div>
@@ -108,8 +108,25 @@
             </div>
           </form>
         </div>
-        <div ng-switch-when="dependency">
+        <div class="dependency-switch" ng-switch-when="dependency">
           <h4>Modules that list {{module.name}} as a dependency.</h4>
+          <p><span>Instructions:</span> Left click a node to view information. Right click a node to view its analytics page.</p>
+          <div class="target-stats">
+            <h3 ng-if="!selectedModule.name">Selected Module</h3>
+            <h3 ng-if="selectedModule.name">{{selectedModule.name}}</h3>
+            <dl class="dl-horizontal">
+              <dt>Monthly Downloads</dt>
+              <dd>{{selectedModule.monthlyDownloadSum}}</dd>
+              <dt>Last Update</dt>
+              <dd>{{selectedModule.lastUpdate}}</dd>
+              <dt>Latest Version</dt>
+              <dd>{{selectedModule.latestVersion}}</dd>
+              <dt>Starred</dt>
+              <dd>{{selectedModule.starred}}</dd>
+              <dt># of Dependents</dt>
+              <dd>{{selectedModule.dependentsSize}}</dd>
+            </dl>
+          </div>
         </div>
         <div ng-switch-when="version">
           <h4>Version release history.</h4>

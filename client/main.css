@@ -314,6 +314,22 @@ footer .footer-body {
   cursor: pointer;
 }
 
+.target-stats {
+  padding-top: 10px;
+  border: 1px solid lightgrey;
+}
+
+.target-stats h3 {
+  margin-top: 0px;
+  text-align: center;
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.dependency-switch p span {
+  font-weight: bold;
+}
+
 .graph-type {
   padding-top: 5px;
   padding-bottom: 5px;
