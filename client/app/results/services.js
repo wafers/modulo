@@ -316,8 +316,6 @@ angular.module('app')
 
     function rankDetails(rank) {
       var key = rank[2];
-      console.log('rank', key)
-      console.log('module', module[key])
 
       var displayData = '';
 
