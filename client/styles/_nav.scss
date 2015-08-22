@@ -1,38 +1,52 @@
 .nav-container {
   min-height: 100px;
-}
-/* home-link */
-.m-home {
-  position: absolute;
-  float: left;
-  padding-top: 25px;
-  padding-left: 100px;
-
-  a, :link, :visited, :active {
-    font-size: 30px;
-    color: $red;
-  }
-
-  :hover {
-    text-decoration: none;
-    color: $black;
-  }
+  width: 700px;
+  margin: 0 auto;
 }
 
 .search-container {
-  float: right;
   padding-top: 25px;
-  padding-right: 100px;
   background-color: transparent;
 }
 
 .input-group {
-  width: 400px;
+  width: 600px;
+  margin: 0 auto;
 }
 
 .input-group .form-control, .btn {
-  background-color: transparent;
+  background-color: $white;
   border: none;
   border-bottom: 1px solid $grey;
-  height: 44px;
+  height: 50px;
+  outline: none !important;
+  box-shadow: none;
+  border-radius: 0 !important;
+}
+
+.btn {
+  width: 50px;
+}
+
+.btn:hover, .btn:focus, .btn:active, .btn:visited {
+  background-color: $white;
+  border: none;
+  outline: none !important;
+  border-radius: 0 !important;
+}
+
+.glyphicon-search {
+  color: $black;
+}
+
+.glyphicon-home {
+  color: $red;
+}
+
+.no-transition {
+  -webkit-transition: height 0;
+  -moz-transition: height 0;
+  -ms-transition: height 0;
+  -o-transition: height 0;
+  transition: height 0;
 }

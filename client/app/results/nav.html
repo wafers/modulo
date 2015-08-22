@@ -1,11 +1,12 @@
 <div class="nav-container">
-	<div class="m-home"><a ui-sref="app">M</a></div>
-	
 	<div class="search-container">
 		<form ng-submit="submit()" ng-controller="NavController" class="input-group">
-			<input type="text" class="form-control" placeholder="find packages" ng-model="searchInput">
+			<input type="text" class="form-control" placeholder="search for packages" ng-model="searchInput">
 			<span class="input-group-btn">
-				<button type="submit" class="btn btn-default" type="button" ui-sref="app.results" ng-click="submit()"><i class="material-icons search-icon">search</i></button>
+				<button type="submit" class="btn btn-default" type="button" ui-sref="app.results" ng-click="submit()"><span class="glyphicon glyphicon-search"></span></button>
+			</span>
+			<span class="input-group-btn">
+				<button type="submit" class="btn btn-default" type="button" ui-sref="app"><span class="glyphicon glyphicon-home"></span></button>
 			</span>
 		</form>
   </div>
