@@ -159,7 +159,7 @@ angular.module('app')
 }])
 
 // Graph service responsible for drawing the sigma, download, and version graphs
-.service('Graph', ['$http', '$location', function($http, $location){
+.service('Graph', ['Search', '$http', '$location', function(Search, $http, $location){
   var margin = {top: 50, right: 10, bottom: 50, left: 80};
   var height = 500 - margin.top - margin.bottom;
 
@@ -239,21 +239,22 @@ angular.module('app')
   }
 
   this.bulletGraph = function(module, index, options) {
+    Search.calculateRank(module);
     var ranks = [['Overall Rank',module.overallRank, 'overallRank'], ['Last Update Rank', module.dateRank, 'lastUpdate'], ['Number of Versions Rank', module.versionNumberRank, 'time'], ['Module Data Completeness', module.completenessRank, 'completenessRank'], ['Monthly Download Rank', module.downloadRank, 'monthlyDownloadSum'], ['Dependents Rank', module.dependentRank, 'dependentsSize'], ['Number of Stars Rank', module.starRank, 'starred'], ['GitHub Repo Rank', module.githubRank, 'github']];
-    var margin = {top: 5, bottom: 5, left: 200};
+    var margin = index === undefined ? {top: 50, bottom: 5, left: 250} : {top: 15, bottom: 5, left: 200};
     var width = index === undefined ? options.width : document.getElementsByClassName('page-header')[0].offsetWidth - margin.left;
-    var height = 200 - margin.top - margin.bottom;
+    var height = index === undefined ? 500 - margin.top - margin.bottom : 200 - margin.top - margin.bottom;
     var buckets = 3;
     var colors = ['rgb(245,75,26)', 'rgb(229,195,158)', 'rgb(1,171,233)'];
     var container = index === undefined ? '#graph-container' : '#dropdown-div-'+index;
 
     var xscale = d3.scale.linear()
       .domain([0,101])
-      .range([0,width-200]);
+      .range([0,width - margin.left]);
 
     var yscale = d3.scale.linear()
       .domain([0,ranks.length])
-      .range([0,height]);
+      .range([20,height]);
 
     var colorScale = d3.scale.quantize()
       .domain([0, buckets-1, 100])
@@ -266,13 +267,13 @@ angular.module('app')
       .attr({'width':width,'height':height});
 
     var chart = canvas.append('g')
-      .attr("transform", "translate(200,0)")
+      .attr("transform", "translate("+margin.left+",0)")
       .attr('id','bars')
       .selectAll('rect')
       .data(ranks)
       .enter()
         .append('rect')
-        .attr('height',19)
+        .attr('height', index === undefined ? 50 : 19 )
         .attr({'x':0,'y':function(d){ return yscale(ranks.indexOf(d)); }})
         .style('fill',function(d){ return colorScale(d[1]); })
         .attr('width',function(d){ return 0; })
@@ -284,7 +285,7 @@ angular.module('app')
       .data(ranks)
       .enter()
         .append('text')
-        .attr({'x': 2,'y':function(d){ return yscale(ranks.indexOf(d))+13; }})
+        .attr({'x': 2,'y':function(d){ return yscale(ranks.indexOf(d))+(index === undefined ? 30 : 13); }})
         .text(function(d){ return d[1]; }).style({'fill':'#fff','font-size':'14px'})    
         .attr('class', 'masterTooltip')
         .attr('val', function(d){return rankDetails(d)});
@@ -310,7 +311,7 @@ angular.module('app')
       .data(ranks)
       .enter()
         .append('text')
-        .attr({'x':'0','y':function(d){ return yscale(ranks.indexOf(d))+13; }})
+        .attr({'x': index===undefined ? '50' : '0','y':function(d){ return yscale(ranks.indexOf(d))+(index === undefined ? 30 : 13); }})
         .text(function(d){ return d[0]; }).style({'fill':'#000','font-size':'14px'});
 
     function rankDetails(rank) {
