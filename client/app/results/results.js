@@ -22,25 +22,4 @@ angular.module('app')
   $rootScope.$on('$stateChangeSuccess', function() {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   });
-
-  $scope.tooltip = function (index){
-    $('.masterTooltip').hover(function(){
-      var tipData = $(this).attr('val')
-      $(this).data('tipText', tipData);
-        $('<p class="tooltip"></p>')
-          .text(tipData)
-          .appendTo('body')
-          .fadeIn('fast');
-    }, function() {
-        // Hover out code
-        $('.tooltip').remove();
-    })
-    .mousemove(function(e) {
-        var mousex = e.pageX + 20; //Get X coordinates
-        var mousey = e.pageY + 10; //Get Y coordinates
-        $('.tooltip')
-        .css({ top: mousey, left: mousex })
-    })
-  }
-
 }]);
