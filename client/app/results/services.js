@@ -592,15 +592,32 @@ angular.module('app')
       .enter().append("rect")
         .attr("class", "bar")
         .attr("x", function(d) { return x(dateFormat.parse(d.day)); })
-        .attr("y", function(d) { return y(d.count); })
-        .attr("height", function(d) { return height - y(d.count); })
+        .attr("y", function(d) { return height; })
+        .attr("height", function(d) { return 0 })
         .attr("width", options.barWidth)
+      
+    var transit = d3.select('#graph-container').select('svg')
+      .selectAll('rect')
+        .data(data)
+          .transition()
+          .duration(1000) 
+          .attr("y", function(d) { return y(d.count); })
+          .attr("height", function(d) { return height - y(d.count); })
 
-    chart.append('path')
-        .attr("class", "moving-average")
-        .attr('d', line(data))
-        .attr('fill-opacity', 0)
-    // });
+    setTimeout(function(){
+      var path = chart.append('path')
+          .attr("class", "moving-average")
+          .attr('d', line(data))
+          .attr('fill', 'none')
+      
+      var totalLength = path.node().getTotalLength();
+      
+      path.attr('stroke-dasharray', totalLength + ' ' + totalLength)
+      .attr('stroke-dashoffset', totalLength)
+      .transition()
+      .duration(2000)
+      .ease('linear')
+      .attr('stroke-dashoffset', 0);}, 500)
 
     function type(d) {
       d.count = +d.count; // coerce to number
