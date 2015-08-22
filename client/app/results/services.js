@@ -206,11 +206,8 @@ angular.module('app')
                 }
         });
 
-        // s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {
-        //   console.log(e.type, e.data.edge, e.data.captor);
-        // });
-
         s.bind('clickNode', function(e) {
+          // Click sigma node event handler
           var data = { data : e.data.node.label };
           $http.post('/detailedSearch', data)
             .success(function(data){
@@ -227,35 +224,13 @@ angular.module('app')
               graphService.selectedModule = data;
             })
             .error(function(data){ console.log('error', data) })
-
-          // console.log(e.data.node.label);
-          // console.log(e.type, e.data.node.label, e.data.captor);
         });
 
-        s.bind('rightClickNode', function(e) {
+        s.bind('doubleClickNode', function(e) {
+          // Double click sigma event handler. Should re-route to the target node's analytics page
           var node = e.data.node;
           window.location = "/#/details/"+node.label; // Redirect to the node double clicked
         });
-
-        s.bind('clickStage', function(e) {
-          // Show instructions
-          console.log(e.data.captor.clientY);
-          console.log(e.data.captor.clientX);
-
-          // if($('#graph-popover').length === 0){
-          //   $('body').prepend('<span id="graph-popover" data-toggle="popover" data-title="Instructions" data-content="Single click on a node to see details. Double click on a node to redirect to that node\'s details page." data-placement="right" data-trigger="focus"></span>');
-          //   $('#graph-popover').popover('show');
-          //   $('#graph-popover').css({
-          //     top: e.data.captor.clientY + 'px', 
-          //     left: e.data.captor.clientX + 'px'
-          //   });
-            // $("#graph-popover").css('top', e.data.captor.clientY + "px");
-            // $("#graph-popover").css('left', e.data.captor.clientX + "px");
-          // }
-        });
-        // s.bind('doubleClickStage rightClickStage', function(e) {
-        //   console.log(e.type, e.data.captor);
-        // });
       }
     })
     .error(function(data){

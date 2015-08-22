@@ -1,7 +1,7 @@
 angular.module('app')
 .controller('DetailsController', ['Graph','ModulePass', '$showdown', '$scope', '$rootScope', '$stateParams', 'Search', 
 function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search){  
-  // View variable declarations
+  // View variable declarations-------------------------------------------------
   $scope.module = ModulePass.module;
   $scope.selectedGraph = 'downloads'
   $scope.dlForm = {
@@ -14,18 +14,20 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
   $scope.readmeMarkdown = '';
   $scope.selectedModule = Graph.selectedModule;
 
-  // Module Data watchers
+  // Module Data watchers-------------------------------------------------
   $scope.$watch(function(){ return Graph.selectedModule }, function(){
+    // Watches the Graph service's selectedModule and sets it in the $scope if it exists
     $scope.selectedModule = Graph.selectedModule;    
   });
 
   $scope.$watch(function(){ return ModulePass.module }, function(){
+    // Watches the ModulePass service's module and sets it in the $scope if it exists
     $scope.module = ModulePass.module;
     if($scope.module.downloads) $scope.drawGraph('downloads');
     $scope.readmeMarkdown = $showdown.makeHtml(ModulePass.module.readme)
   });
 
-  // Draw graph function
+  // Draw graph function-------------------------------------------------
   $scope.drawGraph = function(type){
     Graph.clearGraph();
     this.selectedGraph = type;
@@ -78,9 +80,10 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
     return percentChange.toFixed(2) + "%";
   }
 
-  // Clear the graph when leaving the details page
-  $scope.$on("$destroy", function(){ Graph.clearGraph() });
+  // Clear the graph when leaving the details page-------------------------------------------------
+  $scope.$on("$destroy", function(){ Graph.clearGraph() }); // Only runs on view destroy
   $scope.init = function(){
+    // Only runs on initial view creation
     // Send a GET request to the database if there is no module data, or if it has the wrong module data
     if(this.module.name !== $stateParams.moduleName || _.isEmpty(this.module)){
       ModulePass.getModule($stateParams.moduleName);
