@@ -41,7 +41,7 @@ angular.module('app')
     }
 
     // Rank by number of NPM stars and Github stars. 
-    if (!module.starred && !module.watchers) {
+    if (!module.starred || !module.watchers) {
       module.starRank = 0;
     } else { // NPM stars added to GitHub stars, then scaled on log10. Max score of 100 reached at 10,000 combined stars.
       module.starRank = Math.floor(Math.log10(module.starred+module.watchers)*25) > 100 ? 100 : Math.floor(Math.log10(module.starred+module.watchers)*25);

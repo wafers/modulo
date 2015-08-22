@@ -13,10 +13,7 @@ angular.module('app')
   $scope.toggle = function(result, $index) {
     ModulePass.updateModule(this.result);
     result.show = !result.show;
-    if(result.show) {
-      Graph.bulletGraph(result, $index)
-      $scope.tooltip($index);
-    }
+    if(result.show) Graph.bulletGraph(result, $index);
   }
 
   $rootScope.$on('$stateChangeSuccess', function() {
