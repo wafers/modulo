@@ -37,7 +37,7 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
       // Draw the version graph
       var options = _.pick(this.dlForm, 'startDate', 'endDate');
       options['width'] = width;
-      Graph.lineGraph(this.module, options);
+      Graph.versionGraph(this.module, options);
     }
     else if(type === 'dependency'){
       // Draw the dependency graph
