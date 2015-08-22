@@ -1,3 +1,11 @@
+.blue {
+  color: $blue;
+}
+
+.red {
+  color: $red;
+}
+
 .fluid-container {
   background-color: $white;
 }
@@ -6,127 +14,38 @@
   min-height: 600px;
 }
 
+.landing-title-div {
+  padding-top: 60px;
+}
+
 .landing-title {
   font-family: Roboto-Thin;
   font-size: 78px;
+  line-height: 10px;
 }
 
-.landing-pitch {
-  margin-top: -5px;
+.landing-modulo {
+  min-height: 500px;
 }
 
-/* LANDING > feature-demo */
-.demo-text{
-  padding-top:50px;
+.landing-npm {
+  min-height: 500px;
 }
 
-.demo-img {
-  width: 600px;
-  padding: 4px;
+.landing-text {
+  font-size: 22px;
+  padding-top: 25px;
+  word-wrap: word-break;
+  line-height: 30px;
+  width: 65%;
 }
 
-/* LANDING > advanced-features */
-.feature-card-img{
-  width: 150px;
-  margin: 15px;
+.filler-image {
+  background-color: $grey;
+  width: 500px;
+  height: 500px;
 }
-
-.feature-explanation{
-  font-size: 15px;
-}
-
-/* LANDING > NPM */
-.landing-npm-demo {
-  background-size:100% auto;
-}
-
-.npm-gif {
+.npm-image {
   background-color: white;
-  width: 600px;
-  border: 5px solid white;
-  padding: 10px;
-  box-shadow: 
-}
-
-.npm-search-bullets {
-  font-family: Roboto-Thin;
-  font-size: 24px;
-}
-
-/* LANDING > tech */
-
-.tech-logo {
-  height: 130px;
-  padding-top: 20px;
-}
-
-
-/* LANDING > footer */
-footer {
-  .landing-footer {
-    background-color: $navy;
-    padding: 5px;
-    padding-right: 15px;
-    min-height: 400px;
-    text-align: right;
-  }
-
-  .team {
-    padding-left: 20%;
-    padding-top: 125px;
-    position: relative;
-    width: 400px;
-    float: left;
-    text-align: left;
-  }
-
-  a {
-    color: $white;
-  }
-
-  :hover {
-    text-decoration: none;
-    color: $red;
-  }
-
-  .about {
-    padding-left: 100px;
-    padding-top: 125px;
-    position: left;
-    float: left;
-    text-align: left;
-    width: 750px;
-    word-wrap: break-word;
-  }
-
-  .footer-title {
-    color: $red;
-    font-size: 16px;
-  }
-
-  .footer-body {
-    padding-top: 10px;
-    color: $darkgrey;
-    font-size: 14px;
-  }
-}
-
-/* ANGULAR LOADING BAR (Overriding CSS) */
-#loading-bar .bar {
-  background: $red;
-  height: 5px;
-}
-
-/* High priority over-ride classes */
-.full-width{
-  width: 100%;
-}
-
-.text-to-left{
-  text-align: left;
-}
-
-.text-to-right{
-  text-align: right;
-  float: right;
+  box-shadow: 0 8px 6px -6px $darkgrey;
 }

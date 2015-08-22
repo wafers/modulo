@@ -1,11 +1,33 @@
 .nav-container {
-  padding: 10px;
+  min-height: 100px;
+}
+/* home-link */
+.m-home {
+  position: absolute;
+  float: left;
+  padding-top: 25px;
+  padding-left: 100px;
+
+  a, :link, :visited, :active {
+    font-size: 30px;
+    color: $red;
+  }
+
+  :hover {
+    text-decoration: none;
+    color: $black;
+  }
+}
+
+.search-container {
+  float: right;
+  padding-top: 25px;
+  padding-right: 100px;
   background-color: transparent;
 }
 
 .input-group {
   width: 400px;
-  margin: 0 auto;
 }
 
 .input-group .form-control, .btn {
