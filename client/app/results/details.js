@@ -49,6 +49,11 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
       options['width'] = width;
       Graph.downloadGraph(this.module.downloads, options);
     }
+    else if(type === 'bullet'){
+      // Draw the bulletGraph
+      var options = { width: width };
+      Graph.bulletGraph(this.module, undefined, options);
+    }
   }
 
   $scope.hasSearchResults = function(){
