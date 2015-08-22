@@ -7,7 +7,6 @@
 }
 
 .fluid-container {
-  background-color: $white;
 }
 
 .landing-header {
@@ -33,7 +32,7 @@
 }
 
 .landing-text {
-  font-size: 22px;
+  font-size: 18px;
   padding-top: 25px;
   word-wrap: word-break;
   line-height: 30px;
@@ -41,8 +40,8 @@
 }
 
 .filler-image {
-  background-color: $grey;
-  width: 500px;
+  background-color: $blue;
+  width: 800px;
   height: 500px;
 }
 .npm-image {

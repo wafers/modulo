@@ -34,6 +34,7 @@ $darkgrey: rgba(128, 128, 128,1);
 
 body {
   font-family: Roboto-Light;
+  background-color: $grey;
 }
 
 h1 {
@@ -49,7 +50,7 @@ h3 {
   font-size: 18px;
 }
 
-.break { width: 80%; height: 1px; color: $darkgrey; margin-top: -100px; }
+.break { width: 80%; height: 1px; color: $blue; }
 
 .content-wrapper {
   min-height: 800px;
@@ -75,6 +76,7 @@ footer {
   }
 
   a, :link, :visited, :active {
+    text-decoration: none;
     color: $white;
   }
 
@@ -123,6 +125,19 @@ footer {
 #loading-bar .bar {
   background: $red;
   height: 5px;
+}
+
+/* form */
+.form-control::-webkit-input-placeholder { color: $darkgrey; }
+.form-control:-moz-placeholder { color: $darkgrey; }
+.form-control::-moz-placeholder { color: $darkgrey; }
+.form-control:-ms-input-placeholder { color: $darkgrey; }
+
+textarea:focus,
+input[type="text"]:focus, .uneditable-input:focus {   
+  border-color: none;
+  box-shadow: none;
+  outline: 0 none;
 }
 
 /* importing partials */
