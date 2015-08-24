@@ -356,3 +356,8 @@ var getAllNames = module.exports.getAllNames = function (cb){
 var updateMissingData = module.exports.updateMissingData = function(){
   db.updateModules();
 }
+
+// TOP MODULES ENDPOINT helper
+var getTopModules = module.exports.getTopModules = function(cb){
+  
+}
