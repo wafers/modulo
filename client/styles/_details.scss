@@ -77,19 +77,19 @@
   margin-bottom: 30px;
   background-color: #eee;
   border: 1px solid lightgrey;
+
+  .bar {
+    fill: $red;
+    opacity: 0.75;  
+  }
+
+  .moving-average {
+    stroke: $black;
+    stroke-width: 2;
+  }
 }
 
 .graph-buttons {
   margin: 0 auto;
   display: center;
-}
-
-.bar {
-  fill: #4c1313;
-  opacity: 0.75;  
-}
-
-.moving-average {
-  stroke: #8fafa2;
-  stroke-width: 2;
 }
