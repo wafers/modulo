@@ -11,6 +11,4 @@ angular.module('app')
       console.log('retrieved top module data', $scope.data);
     }
   });
-
-
 }]);
