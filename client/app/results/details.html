@@ -1,4 +1,4 @@
-<div class="container" ng-init="init()">
+<div class="container details-container" ng-init="init()">
   <div class="row text-center details-module-name">
       <h1><strong><a href="{{module.url}}">{{module.name}}</a></strong> - <small>{{module.description}}</small></h1> 
   </div>
@@ -7,12 +7,12 @@
     <div class="col-md-9">
       <!-- Graphs Selection here -->
       <div class="btn-group graph-type">
-        <button type="button" class="btn btn-default" ng-click="drawGraph('downloads')">Downloads</button> 
-        <button type="button" class="btn btn-default" ng-click="drawGraph('version')">Version</button>
-        <button type="button" class="btn btn-default" ng-click="drawGraph('dependency')">Explore</button>
-        <button type="button" class="btn btn-default" ng-click="drawGraph('bullet')">Ranking</button>
-        <button type="button" class="btn btn-default" ng-click="">Keywords</button>
-        <button type="button" class="btn btn-default" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
+        <button type="button" class="btn btn-danger" ng-click="drawGraph('downloads')">Downloads</button> 
+        <button type="button" class="btn btn-danger" ng-click="drawGraph('version')">Version</button>
+        <button type="button" class="btn btn-danger" ng-click="drawGraph('dependency')">Explore</button>
+        <button type="button" class="btn btn-danger" ng-click="drawGraph('bullet')">Ranking</button>
+        <button type="button" class="btn btn-danger" ng-click="">Keywords</button>
+        <button type="button" class="btn btn-danger" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
       </div>
       <div id="graph-container" data="{{selectedGraph}}"></div>
     </div>

@@ -1,11 +1,19 @@
+.details-container{
+  .btn{
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
+
 #install-link {
   text-align: right;
   cursor: pointer;
 }
 
+
 .target-stats{
   padding-top: 10px;
-  // background-color: #eee;
+  background-color: $white;
   border: 1px solid lightgrey;
 
   h3{
@@ -57,21 +65,67 @@
   width: 100%;
   height: 500px;
   margin-bottom: 30px;
-  background-color: #eee;
+  background-color: $white;
   border: 1px solid lightgrey;
+
+  .bar {
+    fill: $red;
+    opacity: 0.75;  
+  }
+
+  .moving-average {
+    stroke: $black;
+    stroke-width: 2;
+  }
+
+  // Line Styling inside the graph-container ---------------------------------
+  .versionVis {
+    font: 10px sans-serif;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000000;
+    shape-rendering: crispEdges;
+  }
+
+  .x.axis path {
+  }
+
+  .line {
+    fill: none;
+    stroke: #b83130;
+    stroke-width: 1.5px;
+  }
+
+  .circle {
+    stroke: #FFFFFF;
+    opacity: 0.5;
+    stroke-width: 1.5px;
+  }
+
+  .circle:hover, .bar:hover {
+    fill: #C78A8A;
+  }
+
+  .d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(211, 211, 211, 0.9);
+    color: #FFFFFF;
+    border-radius: 2px;
+  }
+
+  .tip-values {
+    color: #b83130;
+  }
+  // ------------------------------------------------------------------------
+
 }
 
 .graph-buttons {
   margin: 0 auto;
   display: center;
-}
-
-.bar {
-  fill: #4c1313;
-  opacity: 0.75;  
-}
-
-.moving-average {
-  stroke: #8fafa2;
-  stroke-width: 2;
 }
