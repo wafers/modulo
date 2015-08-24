@@ -13,7 +13,7 @@
 
 .target-stats{
   padding-top: 10px;
-  // background-color: #eee;
+  background-color: $white;
   border: 1px solid lightgrey;
 
   h3{
@@ -65,7 +65,7 @@
   width: 100%;
   height: 500px;
   margin-bottom: 30px;
-  background-color: #eee;
+  background-color: $white;
   border: 1px solid lightgrey;
 
   .bar {
