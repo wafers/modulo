@@ -41,10 +41,14 @@ angular.module('app')
     }
 
     // Rank by number of NPM stars and Github stars. 
-    if (!module.starred || !module.watchers) {
+    // Comment out versions with GitHub data. May re-implement later. 
+    // if (!module.starred || !module.watchers) {
+    if (!module.starred) {
       module.starRank = 0;
     } else { // NPM stars added to GitHub stars, then scaled on log10. Max score of 100 reached at 10,000 combined stars.
-      module.starRank = Math.floor(Math.log10(module.starred+module.watchers)*25) > 100 ? 100 : Math.floor(Math.log10(module.starred+module.watchers)*25);
+      // Comment out versions with GitHub data. May re-implement later. 
+      // module.starRank = Math.floor(Math.log10(module.starred+module.watchers)*25) > 100 ? 100 : Math.floor(Math.log10(module.starred+module.watchers)*25);
+      module.starRank = module.starred*2 > 100 ? 100 : module.starred*2;
     }
 
     // Rank by number of modules listing this module as a dependency
@@ -75,22 +79,26 @@ angular.module('app')
       else module.completenessFailures = ['Keywords']; 
     }
 
+    // Comment out versions with GitHub data. May re-implement later. 
     // Rank by GitHub followers, forks, and open issues/pulls
-    if (!module.subscribers || !module.forks || !module.openIssues) {
-      module.githubRank = 0;
-    } else {
-      // Count users watching repo for 33 of 100 points. Scaled on log10 with max score of 33 reached at 1500 users watching. 
-      var watchersPortion = Math.floor(Math.log10(module.subscribers)*31.5/100*33) > 33 ? 33 : Math.floor(Math.log10(module.subscribers)*31.5/100*33);
-      // Count forked repos for 34 of 100 points. Scaled on log10 with max score of 34 reached at 1000 forks. 
-      var forkPortion = Math.floor(Math.log10(module.forks)*33/100*34) > 34 ? 34 : Math.floor(Math.log10(module.forks)*33/100*34);
-      // Count issues+pulls for 33 of 100 points. Scaled on log10 with max score of 33 reached at 150 open issues/pulls.
-      var issuesPortion = Math.floor(Math.log10(module.openIssues)*46/100*33) > 33 ? 33 : Math.floor(Math.log10(module.openIssues)*46/100*33);
-      module.githubRank = watchersPortion + forkPortion + issuesPortion;
-    }
+    // if (!module.subscribers || !module.forks || !module.openIssues) {
+    //   module.githubRank = 0;
+    // } else {
+    //   // Count users watching repo for 33 of 100 points. Scaled on log10 with max score of 33 reached at 1500 users watching. 
+    //   var watchersPortion = Math.floor(Math.log10(module.subscribers)*31.5/100*33) > 33 ? 33 : Math.floor(Math.log10(module.subscribers)*31.5/100*33);
+    //   // Count forked repos for 34 of 100 points. Scaled on log10 with max score of 34 reached at 1000 forks. 
+    //   var forkPortion = Math.floor(Math.log10(module.forks)*33/100*34) > 34 ? 34 : Math.floor(Math.log10(module.forks)*33/100*34);
+    //   // Count issues+pulls for 33 of 100 points. Scaled on log10 with max score of 33 reached at 150 open issues/pulls.
+    //   var issuesPortion = Math.floor(Math.log10(module.openIssues)*46/100*33) > 33 ? 33 : Math.floor(Math.log10(module.openIssues)*46/100*33);
+    //   module.githubRank = watchersPortion + forkPortion + issuesPortion;
+    // }
 
+    // Comment out versions with GitHub data. May re-implement later. 
     // Calculate overall rank as average of individual rankings
-    var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank + module.githubRank)
-    module.overallRank = Math.floor(rankSum/7)
+    // var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank + module.githubRank)
+    // module.overallRank = Math.floor(rankSum/7)
+    var rankSum = (module.dateRank + module.versionNumberRank + module.downloadRank + module.starRank + module.dependentRank + module.completenessRank)
+    module.overallRank = Math.floor(rankSum/6)
   }
 
   this.getResults = function() {
@@ -240,7 +248,9 @@ angular.module('app')
 
   this.bulletGraph = function(module, index, options) {
     Search.calculateRank(module);
-    var ranks = [['Overall Rank',module.overallRank, 'overallRank'], ['Last Update Rank', module.dateRank, 'lastUpdate'], ['Number of Versions Rank', module.versionNumberRank, 'time'], ['Module Data Completeness', module.completenessRank, 'completenessRank'], ['Monthly Download Rank', module.downloadRank, 'monthlyDownloadSum'], ['Dependents Rank', module.dependentRank, 'dependentsSize'], ['Number of Stars Rank', module.starRank, 'starred'], ['GitHub Repo Rank', module.githubRank, 'github']];
+    // Comment out ranks including GitHub data. May re-implement later. 
+    // var ranks = [['Overall Rank',module.overallRank, 'overallRank'], ['Last Update Rank', module.dateRank, 'lastUpdate'], ['Number of Versions Rank', module.versionNumberRank, 'time'], ['Module Data Completeness', module.completenessRank, 'completenessRank'], ['Monthly Download Rank', module.downloadRank, 'monthlyDownloadSum'], ['Dependents Rank', module.dependentRank, 'dependentsSize'], ['Number of Stars Rank', module.starRank, 'starred'], ['GitHub Repo Rank', module.githubRank, 'github']];
+    var ranks = [['Overall Rank',module.overallRank, 'overallRank'], ['Last Update Rank', module.dateRank, 'lastUpdate'], ['Number of Versions Rank', module.versionNumberRank, 'time'], ['Module Data Completeness', module.completenessRank, 'completenessRank'], ['Monthly Download Rank', module.downloadRank, 'monthlyDownloadSum'], ['Dependents Rank', module.dependentRank, 'dependentsSize'], ['Number of Stars Rank', module.starRank, 'starred']];
     var margin = index === undefined ? {top: 50, bottom: 5, left: 250} : {top: 15, bottom: 5, left: 200};
     var width = index === undefined ? options.width : document.getElementsByClassName('page-header')[0].offsetWidth - margin.left;
     var height = index === undefined ? 500 - margin.top - margin.bottom : 200 - margin.top - margin.bottom;
@@ -334,9 +344,11 @@ angular.module('app')
       } else if (key === 'completenessRank') {
         displayData = module[key] + '% module information complete'
         if (module[key] < 100) displayData += '. Missing info: ' + module.completenessFailures
-      } else if (key === 'github' && module.subscribers) {
-        displayData = 'Watched by ' + module.subscribers.toLocaleString() + ' GitHub users. \n' + module.forks.toLocaleString() + ' forked repos. \n' + module.openIssues.toLocaleString() + ' open issues and pull requests.'
-      }
+      } 
+      // Comment out bar for GitHub data. May re-implement later. 
+      //else if (key === 'github' && module.subscribers) {
+      //  displayData = 'Watched by ' + module.subscribers.toLocaleString() + ' GitHub users. \n' + module.forks.toLocaleString() + ' forked repos. \n' + module.openIssues.toLocaleString() + ' open issues and pull requests.'
+      //}
 
       return displayData;
     }
