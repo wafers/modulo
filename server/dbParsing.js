@@ -162,3 +162,12 @@ var updateMissingDataModules = module.exports.updateMissingDataModules = functio
 }
 
 // dbInsert(['basscss-base-forms']);
+
+var fetchTopModuleData = module.exports.fetchTopModuleData = function(cb){
+    dbRemote.queryRaw("MATCH (n:MODULE) WHERE n.overallRank IS NOT NULL return n.name , n.overallRank  order by n.overallRank DESC LIMIT 10;", function(err, result){
+        if(err) {console.log(err); return;}
+        cb(null, result)
+    })
+
+    // there will be multiple db requests to get data?
+}

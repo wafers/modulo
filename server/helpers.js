@@ -357,7 +357,5 @@ var updateMissingData = module.exports.updateMissingData = function(){
   db.updateModules();
 }
 
-// TOP MODULES ENDPOINT helper
-var getTopModules = module.exports.getTopModules = function(cb){
-  
-}
+// TOP MODULES GET ENDPOINT helper-----------------------------------------------------------------
+var getTopModules = module.exports.getTopModules = db.fetchTopModuleData;
