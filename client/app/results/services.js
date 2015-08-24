@@ -642,9 +642,8 @@ angular.module('app')
   var topModulesService = this;
 
   this.fetchTopModules = function(){
-    $http.get('/topModules').then(function(data){
-      console.log('inside the fetchTopModules', data);
-      topModulesService.data = data;
+    $http.get('/topModules').then(function(res){
+      topModulesService.data = res.data;
     });
   } 
 }]);
