@@ -1,5 +1,5 @@
 angular.module('app')
 
-.controller('TopModulesController', function($scope, $http){
+.controller('TopModulesController', ['$scope', '$http', function($scope, $http){
 
-});
+}]);
