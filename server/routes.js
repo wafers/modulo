@@ -4,12 +4,12 @@ module.exports = function(app){
   // Add new routes inside the routes array.
   // The requesthandler function MUST have the same name as the string
   var postRoutes = ['search', 'relationships', 'detailedSearch'];
-  var getRoutes = ['topModules']
+  var getRoutes = ['topModules'];
 
-  postRoutes.forEach(createRoute);
-  getRoutes.forEach(createRoute);
+  postRoutes.forEach(function(endpoint){ createRoute(endpoint, 'post') });
+  getRoutes.forEach(function(endpoint){ createRoute(endpoint, 'get') });
 
-  function createRoute(endpoint){
-    app.post('/'+endpoint, requestHandler[endpoint]);
+  function createRoute(name, type){
+    app[type]('/'+name, requestHandler[name]);
   }
 }
