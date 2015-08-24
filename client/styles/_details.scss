@@ -1,11 +1,24 @@
+.details-container{
+  .btn{
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .btn-default{
+    color: $red;
+    background-color: $grey;
+  }
+
+  .btn-success{
+    background-color: #5cb85c;
+  }
+}
+
 #install-link {
   text-align: right;
   cursor: pointer;
 }
 
-.btn-success{
-  background-color: #5cb85c;
-}
 
 .target-stats{
   padding-top: 10px;
