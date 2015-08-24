@@ -164,10 +164,19 @@ var updateMissingDataModules = module.exports.updateMissingDataModules = functio
 // dbInsert(['basscss-base-forms']);
 
 var fetchTopModuleData = module.exports.fetchTopModuleData = function(cb){
-    dbRemote.queryRaw("MATCH (n:MODULE) WHERE n.overallRank IS NOT NULL return n.name , n.overallRank  order by n.overallRank DESC LIMIT 10;", function(err, result){
-        if(err) {console.log(err); return;}
-        cb(null, result)
-    })
+    var data = [];
 
-    // there will be multiple db requests to get data?
+    // Initial Query - total rank
+    dbRemote.queryRaw("MATCH (n:MODULE) WHERE n.overallRank IS NOT NULL return n.name , n.overallRank  order by n.overallRank DESC LIMIT 10;", function(err, result){
+        if(err) {console.log(err); cb(err, null); return;}
+        data.push({overall: result});
+
+        // Next Query - Downloads
+        dbRemote.queryRaw("MATCH (n:MODULE) WHERE n.monthlyDownloadSum IS NOT NULL return n.name , n.monthlyDownloadSum  order by n.monthlyDownloadSum DESC LIMIT 10;", function(err, result){
+            if(err) {console.log(err); cb(err, null); return;}
+            data.push({downloads: result});
+
+            cb(null, data);
+        });
+    });
 }

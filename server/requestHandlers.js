@@ -26,10 +26,8 @@ var detailedSearch = module.exports.detailedSearch = function(req, res){
 }
 
 var topModules = module.exports.topModules = function(req, res){
-  console.log('top modules run');
-  res.json("hello");
-  // helpers.getTopModules(function(err, data){
-  //   console.log("HERE'S THE DATA!", data);
-  //   res.json(data);
-  // });
+  helpers.getTopModules(function(err, data){
+    console.log("HERE'S THE TOP MODULES DATA!", data);
+    res.json(data);
+  });
 }
