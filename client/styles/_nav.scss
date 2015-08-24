@@ -7,6 +7,17 @@
 .search-container {
   padding-top: 25px;
   background-color: transparent;
+  
+  .btn {
+    width: 50px;
+  }
+
+  .btn:hover, .btn:focus, .btn:active, .btn:visited {
+    background-color: $white;
+    border: none;
+    outline: none !important;
+    border-radius: 0 !important;
+  }
 }
 
 .input-group {
@@ -24,16 +35,6 @@
   border-radius: 0 !important;
 }
 
-.btn {
-  width: 50px;
-}
-
-.btn:hover, .btn:focus, .btn:active, .btn:visited {
-  background-color: $white;
-  border: none;
-  outline: none !important;
-  border-radius: 0 !important;
-}
 
 .glyphicon-search {
   color: $black;
