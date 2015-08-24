@@ -123,6 +123,24 @@ var search = module.exports.search = function(moduleName, cb){
     })
 }
 
+var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
+    var queryString = "MATCH (n:KEYWORD {name: {keywordInput} })-[r:KEYWORD_RELATED_WITH]-m RETURN m, r ORDER BY r.count DESC LIMIT 10"
+    dbRemote.query(queryString, {keywordInput: keyword}, function(err, results){
+        if (err) { 
+            console.log(err);
+            cb(err, null);
+        } else {
+            results = results.map(function(keyword){
+                return {
+                    name: keyword.m.name,
+                    relationship: keyword.r.properties.count
+                }
+            })
+            cb(null, results);
+        }
+    })
+}
+
 var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
     var queryString = "MATCH (n { name: {name} })<-[r:DEPENDS_ON]-(m) RETURN m.name, m.monthlyDownloadSum;"
     dbRemote.query(queryString, {name: moduleName}, function(err, result){

@@ -12,21 +12,6 @@ var npm = new Registry({
 });
 var db = require(__dirname + '/dbParsing.js');
 
-// Configure github npm module
-var GitHubApi = require('github');
-var github = new GitHubApi({
-    // required 
-    version: "3.0.0",
-    // optional 
-    debug: true,
-    protocol: "https",
-    host: "api.github.com", // should be api.github.com for GitHub 
-    pathPrefix: "", // for some GHEs; none for GitHub 
-    timeout: 5000,
-    headers: {
-        "user-agent": "makersquare-was-here" // GitHub is happy with a unique user agent 
-    }
-});
 
 ///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
@@ -81,23 +66,7 @@ var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module
       }   
   })
 }
-// Give me the version # and latest update
-var versionTracker = module.exports.versionTracker = function(module, cb) {
-    var url = 'https://www.npmjs.com/package/'+module.name;
-    request(url, function(err, res, body){
-      if (err) {
-        console.log('ERROR: ',err);
-        cb(err, module);
-      }
-      var $ = cheerio.load(body);
-      if ($('.last-publisher')['0']){
-        module.lastUpdate = moment($('.last-publisher')['0']['children'][3]['attribs']['data-date'], moment.ISO_8601)['_d'];
-      } else {
-        module.lastUpdate = 'Not available';
-      }
-      cb(null, module);
-    })
-  }
+
 // gives the npm search results
 var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, cb) {
     // Takes in search terms and returns array of search result objects in npmjs search order
@@ -131,26 +100,31 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 
 ///////////////// MAIN EXPORT FUNCTIONS /////////////////
 
-var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
+var keywordSearch = module.exports.keywordSearch = function(keyword) {
   var searchResults = [];
 
   // query DB for module with name===keyword. Push found module to searchResults
 
   // query DB for keywords with a relation to given keyword. Limit to 4 based on relation strength, giving 5 total keywords
-
+  db.keywordSearch(keyword, function(err, resultsArray){
+    console.log('Found these related keywords:', resultsArray)
+  })
   // query DB for modules with relation to any of the 5 keywords.
     // If module has overallRank >= 90 or relation to 2+ of the 5 keywords, push to searchResults
 
-  searchResults = searchResults.sort(function(moduleA, moduleB){ // Sort search results by overall module rank.
-    return moduleB.overallRank - moduleA.overallRank;
-  })
+  // searchResults = searchResults.sort(function(moduleA, moduleB){ // Sort search results by overall module rank.
+  //   return moduleB.overallRank - moduleA.overallRank;
+  // })
 
-  cb(null, searchResults.slice(0,15)); // Send back only top 15 search results based on overall module rank.
+  // cb(null, searchResults.slice(0,15)); // Send back only top 15 search results based on overall module rank.
 }
 
 // Used by server for finding npmjs search results. Takes in a search term and sends back an array of modules.
 var searchResults = module.exports.searchResults = function(searchInput, cb){  
   var finishedRuns = 0;
+  console.log('Looking for related keywords')
+  keywordSearch(searchInput)
+
   npmSearchScraper(searchInput, function(err, npmSearchResults){
     if(err) { console.log('npmSearchScraper ERROR:',err); cb(err, null);}
     else{
