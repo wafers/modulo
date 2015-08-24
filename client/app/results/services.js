@@ -636,3 +636,15 @@ angular.module('app')
   }
 }])
 
+.service('TopModules',['$http', function($http) {
+  this.data = {};
+
+  var topModulesService = this;
+
+  this.fetchTopModules = function(){
+    $http.get('/topModules').then(function(data){
+      console.log('inside the fetchTopModules', data);
+      topModulesService.data = data;
+    });
+  } 
+}]);
