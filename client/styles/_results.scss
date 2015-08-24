@@ -146,6 +146,11 @@
   color: $lightblue;
 }
 
+
+.btn-view-more:focus {
+  outline: none;
+}
+
 .tooltip {
   display: none;
   position: absolute;
