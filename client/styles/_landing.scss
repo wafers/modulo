@@ -6,11 +6,15 @@
   color: $red;
 }
 
-.fluid-container {
+hr {
+  // margin-top: 0px;
+  border-bottom: solid 1px rgba(128,128,128,.3);
+  color: none;
+  width: 80%;
 }
 
-.landing-header {
-  min-height: 600px;
+.bold-text {
+  font-family: Roboto;
 }
 
 .landing-title-div {
@@ -23,15 +27,6 @@
   line-height: 10px;
 }
 
-.landing-modulo {
-  min-height: 500px;
-}
-
-.landing-npm {
-  min-height: 500px;
-  padding-bottom: 100px;
-}
-
 .landing-text {
   font-size: 18px;
   padding-top: 25px;
@@ -40,17 +35,108 @@
   width: 65%;
 }
 
+.landing-header {
+  margin-bottom: 60px;
+}
+
+.landing-stats {
+  height: 500px;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.modulo-stats {
+  position: relative;
+  top: -430px;
+  left: 700px;
+  width: 420px;
+}
+
+.modulo-demo-image {
+  position: relative;
+  width: 950px;
+  left: 100px;
+}
+
+.stats-a, .stats-b, .stats-c, .stats-d {
+  width: 50%;
+  height: 50%;
+  float: left;
+  padding-top: 25px;
+}
+
+.stat-num {
+  font: 66px Roboto-Thin;
+  color: $lightblue;
+}
+
+.stat-type {
+  font: 13px Roboto-Light;
+  color: $darkgrey;
+  letter-spacing: 1px;
+  padding-left: 10px;
+}
+
+.landing-modulo {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.landing-modulo-text {
+  width: 60%;
+  word-wrap: word-break;
+  font-family: Roboto-Light;
+  font-size: 20px;
+  padding-bottom: 50px;
+}
+
+.bullets-container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.bullets-a, .bullets-b, .bullets-c, .bullets-d {
+  width: 50%;
+  height: 50%;
+  float: left;
+  padding-top: 25px;
+  padding-left: 20px;
+  padding-bottom: 30px;
+  font-size: 16px;
+}
+
+.bullets-glyph {
+  font-size: 30px;
+  color: $red;
+  width: 10%;
+  height: 50%;
+  float: left;
+}
+
+.bullets-text {
+  width: 90%;
+  height: 50%;
+  float: left;
+}
+
+.bullet-header {
+  font-family: Roboto;
+  font-size: 16px;
+  margin-top: 0px;
+}
+
+.landing-npm {
+  margin-bottom: 60px;
+}
+
 .filler-image {
   background-color: $blue;
   width: 800px;
   height: 500px;
+  box-shadow: 0 8px 6px -6px $darkgrey;
 }
 
 .npm-image {
   background-color: white;
   box-shadow: 0 8px 6px -6px $darkgrey;
-}
-
-.modulo-demo-image {
-  width: 700px;
 }
