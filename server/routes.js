@@ -3,9 +3,11 @@ var requestHandler = require('./requestHandlers.js');
 module.exports = function(app){
   // Add new routes inside the routes array.
   // The requesthandler function MUST have the same name as the string
-  var routes = ['search', 'relationships', 'detailedSearch', 'topModules'];
+  var postRoutes = ['search', 'relationships', 'detailedSearch'];
+  var getRoutes = ['topModules']
 
-  routes.forEach(createRoute);
+  postRoutes.forEach(createRoute);
+  getRoutes.forEach(createRoute);
 
   function createRoute(endpoint){
     app.post('/'+endpoint, requestHandler[endpoint]);
