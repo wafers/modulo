@@ -24,3 +24,7 @@ var detailedSearch = module.exports.detailedSearch = function(req, res){
     res.json(results);
   });
 }
+
+var topModules = module.exports.topModules = function(req, res){
+  
+}
