@@ -1,11 +1,11 @@
 <div class="results-container">
   <div class="order-list">
     <ul class="list-inline" id="order-list">
-    sort by: 
-      <li ng-class="{'active': order=='-downloadRank'}"><button href="#" ng-click="setOrder('-downloadRank')" class="order-btn">downloads </button></li>
-      <li ng-class="{'active': order=='-dateRank'}"><button href="#" ng-click="setOrder('-dateRank')" class="order-btn">last update</button></li>
-      <li ng-class="{'active': order=='-starRank'}"><button href="#" ng-click="setOrder('-starRank')" class="order-btn">NPM stars</button></li>
-      <li ng-class="{'active': order=='-dependentRank'}"><button href="#" ng-click="setOrder('-dependentRank')" class="order-btn">dependers</button></li>
+      <strong>Sort by </strong>
+      <li ng-class="{'active': order=='-downloadRank'}"><button href="#" ng-click="setOrder('-downloadRank')" class="btn btn-danger">Downloads </button></li>
+      <li ng-class="{'active': order=='-dateRank'}"><button href="#" ng-click="setOrder('-dateRank')" class="btn btn-danger">Last update</button></li>
+      <li ng-class="{'active': order=='-starRank'}"><button href="#" ng-click="setOrder('-starRank')" class="btn btn-danger">NPM stars</button></li>
+      <li ng-class="{'active': order=='-dependentRank'}"><button href="#" ng-click="setOrder('-dependentRank')" class="btn btn-danger">Dependers</button></li>
     </ul>
   </div>
 
@@ -31,7 +31,7 @@
             </div>
             <div class="rank overall">
               <div class="rank-int">{{result.overallRank}}</div>
-              <div class="rank-sub">Overall</div>
+              <div class="rank-sub"><span class="rank-overall-label">Overall</span></div>
             </div>
           </div>
         </h1>
