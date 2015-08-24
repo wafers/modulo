@@ -391,6 +391,11 @@ hr {
   background-color: #eee;
 }
 
+.page-header h1 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 .module-title {
   width: 30%;
   display: inline-block;
