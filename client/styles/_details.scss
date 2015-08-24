@@ -2,17 +2,7 @@
   .btn{
     font-size: 16px;
     font-weight: bold;
-    // background-color: $red;
   }
-
-  // .btn-default{
-  //   color: $red;
-  //   background-color: $grey;
-  // }
-
-  // .btn-success{
-  //   background-color: #5cb85c;
-  // }
 }
 
 #install-link {
@@ -87,6 +77,52 @@
     stroke: $black;
     stroke-width: 2;
   }
+
+  // Line Styling inside the graph-container ---------------------------------
+  .versionVis {
+    font: 10px sans-serif;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000000;
+    shape-rendering: crispEdges;
+  }
+
+  .x.axis path {
+  }
+
+  .line {
+    fill: none;
+    stroke: #b83130;
+    stroke-width: 1.5px;
+  }
+
+  .circle {
+    stroke: #FFFFFF;
+    opacity: 0.5;
+    stroke-width: 1.5px;
+  }
+
+  .circle:hover, .bar:hover {
+    fill: #C78A8A;
+  }
+
+  .d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(211, 211, 211, 0.9);
+    color: #FFFFFF;
+    border-radius: 2px;
+  }
+
+  .tip-values {
+    color: #b83130;
+  }
+  // ------------------------------------------------------------------------
+
 }
 
 .graph-buttons {
