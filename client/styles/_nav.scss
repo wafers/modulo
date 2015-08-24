@@ -18,22 +18,23 @@
     outline: none !important;
     border-radius: 0 !important;
   }
+  
+  .input-group {
+    width: 600px;
+    margin: 0 auto;
+  }
+
+  .input-group .form-control, .btn {
+    background-color: $white;
+    border: none;
+    border-bottom: 1px solid $grey;
+    height: 50px;
+    outline: none !important;
+    box-shadow: none;
+    border-radius: 0 !important;
+  }
 }
 
-.input-group {
-  width: 600px;
-  margin: 0 auto;
-}
-
-.input-group .form-control, .btn {
-  background-color: $white;
-  border: none;
-  border-bottom: 1px solid $grey;
-  height: 50px;
-  outline: none !important;
-  box-shadow: none;
-  border-radius: 0 !important;
-}
 
 
 .glyphicon-search {
