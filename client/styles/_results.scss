@@ -59,25 +59,32 @@
   font-size: 50%;
   color: #4c1313;
   font-family: Roboto-Thin;
+
+  .rank {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .rank-int {
+    width: 75%;
+    margin: auto;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 150%;
+  }
+
+  .overall {
+    margin-right: 10px;
+    font-size: 120%;
+    color: $red;
+
+    .rank-overall-label{
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
 }
 
-.rank {
-  display: inline-block;
-  margin-right: 5px;
-}
-
-.rank-int {
-  width: 75%;
-  margin: auto;
-  text-align: center;
-  font-family: Roboto;
-  font-size: 150%;
-}
-
-.overall {
-  margin-right: 10px;
-  font-size: 175%
-}
 
 #star {
   font-size: 12px;
