@@ -1,48 +1,56 @@
 <div class="results-container">
-  <div class="order-list">
-    <ul class="list-inline" id="order-list">
-      <strong>Sort by </strong>
-      <li ng-class="{'active': order=='-downloadRank'}"><button href="#" ng-click="setOrder('-downloadRank')" class="btn btn-danger">Downloads </button></li>
-      <li ng-class="{'active': order=='-dateRank'}"><button href="#" ng-click="setOrder('-dateRank')" class="btn btn-danger">Last update</button></li>
-      <li ng-class="{'active': order=='-starRank'}"><button href="#" ng-click="setOrder('-starRank')" class="btn btn-danger">NPM stars</button></li>
-      <li ng-class="{'active': order=='-dependentRank'}"><button href="#" ng-click="setOrder('-dependentRank')" class="btn btn-danger">Dependers</button></li>
+  
+  <div class="sort-div">
+    <ul class="list-inline order-list">
+      <span class="span-sort-by">sort by</span>
+      <li ng-class="{'active': order=='-downloadRank'}">
+        <a href="#" ng-click="setOrder('-downloadRank')" class="order-link">downloads </a>
+      </li>
+      <li ng-class="{'active': order=='-dateRank'}">
+        <a href="#" ng-click="setOrder('-dateRank')" class="order-link">last update</a>
+      </li>
+      <li ng-class="{'active': order=='-starRank'}">
+        <a href="#" ng-click="setOrder('-starRank')" class="order-link">npm stars</a>
+      </li>
+      <li ng-class="{'active': order=='-dependentRank'}">
+        <a href="#" ng-click="setOrder('-dependentRank')" class="order-link">dependers</a>
+      </li>
     </ul>
   </div>
 
-
-  <div class="list-group" style="position: relative" >
+  <div class="list-group">
     <li class="list-group-item clearfix" ng-repeat="result in results | orderBy: order" ng-click="toggle(result,$index)">
 
       <div class="page-header">
-        <h1>
-          <div class="module-title">{{result.name}}</div>
-          <div class="module-stats clearfix">
+          <div class="module-title"><span class="module-name">{{result.name}}</span></div>
+          <div class="module-stats">
             <div class="rank monthly-downloads">
               <div class="rank-int">{{result.downloadRank}}</div>
-              <div class="rank-sub">Downloads</div>
+              <div class="rank-sub">DOWNLOADS</div>
             </div>
             <div class="rank last-update">
               <div class="rank-int">{{result.dateRank}}</div>
-              <div class="rank-sub">Last Update</div>
+              <div class="rank-sub">LAST UPDATE</div>
             </div>
             <div class="rank dependent-number">
               <div class="rank-int">{{result.dependentRank}}</div>
-              <div class="rank-sub">Dependents</div>
+              <div class="rank-sub">DEPENDENTS</div>
             </div>
             <div class="rank overall">
               <div class="rank-int">{{result.overallRank}}</div>
-              <div class="rank-sub"><span class="rank-overall-label">Overall</span></div>
+              <div class="rank-sub">OVERALL</div>
             </div>
           </div>
-        </h1>
       </div>
-      <div id="content">{{result.description}}</div>
+      <div class="module-description">{{result.description}}</div>
       <br>
 
       <div id="dropdown-div-{{$index}}" class="details-div" ng-show="result.show">
-        <div id="rank-bars"></div>
-        <a class="col-md-3 detail-link" href="/#/details/{{result.name}}">view more</a>
+
+      <button href="/#/details/{{result.name}}" class="btn-view-more">view more</button>
       </div>
+
     </li>
   </div>
+
 </div>

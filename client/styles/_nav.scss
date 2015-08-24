@@ -35,8 +35,6 @@
   }
 }
 
-
-
 .glyphicon-search {
   color: $black;
 }
@@ -51,4 +49,25 @@
   -ms-transition: height 0;
   -o-transition: height 0;
   transition: height 0;
+}
+
+::-webkit-input-placeholder {
+  font-family: Roboto-Light;
+  letter-spacing: 1px;
+  color: $darkgrey;
+}
+::-moz-placeholder {
+  font-family: Roboto-Light;
+  letter-spacing: 1px;
+  color: $darkgrey;
+}
+:-ms-input-placeholder {
+  font-family: Roboto-Light;
+  letter-spacing: 1px;
+  color: $darkgrey;
+}
+input:-moz-placeholder {
+  font-family: Roboto-Light;
+  letter-spacing: 1px;
+  color: $darkgrey;
 }

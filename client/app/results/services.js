@@ -255,7 +255,7 @@ angular.module('app')
     var width = index === undefined ? options.width : document.getElementsByClassName('page-header')[0].offsetWidth - margin.left;
     var height = index === undefined ? 500 - margin.top - margin.bottom : 200 - margin.top - margin.bottom;
     var buckets = 3;
-    var colors = ['rgb(245,75,26)', 'rgb(229,195,158)', 'rgb(1,171,233)'];
+    var colors = ['rgb(231,76,60)', 'rgb(52,152,219)', 'rgb(44,62,80)'];
     var container = index === undefined ? '#graph-container' : '#dropdown-div-'+index;
 
     var xscale = d3.scale.linear()
