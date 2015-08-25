@@ -189,18 +189,25 @@ var updateMissingDataModules = module.exports.updateMissingDataModules = functio
 
 var fetchTopModuleData = module.exports.fetchTopModuleData = function(cb){
     var data = {};
+    var dataToFetch = ['overallRank', 'monthlyDownloadSum', 'dateRank', 'versionNumberRank', 'completenessRank', 'dependentRank', 'downloadRank'];
 
-    // Initial Query - total rank
-    dbRemote.queryRaw("MATCH (n:MODULE) WHERE n.overallRank IS NOT NULL return n.name , n.overallRank  order by n.overallRank DESC LIMIT 10;", function(err, result){
-        if(err) {console.log(err); cb(err, null); return;}
-        data['overall'] = result;
+    dataToFetch.forEach(addToDataObject);
 
-        // Next Query - Downloads
-        dbRemote.queryRaw("MATCH (n:MODULE) WHERE n.monthlyDownloadSum IS NOT NULL return n.name , n.monthlyDownloadSum  order by n.monthlyDownloadSum DESC LIMIT 10;", function(err, result){
+    function inDataObject(property){ return data.hasOwnProperty(property); }
+
+    function addToDataObject(property){
+        var queryString = "MATCH (n:MODULE) WHERE n." + property + " IS NOT NULL return n.name, n." + property + " order by n." + property + " DESC LIMIT 10;";
+
+        // Send the DB QUERY
+        dbRemote.queryRaw(queryString, function(err, result){
+            console.log('inside the dbquery for ', property);
             if(err) {console.log(err); cb(err, null); return;}
-            data['downloads'] = result;
+            data[property] = result;
 
-            cb(null, data);
+            // Check if the data object is ready to be sent back
+            if(dataToFetch.every(inDataObject)){
+                cb(null, data);
+            }
         });
-    });
+    }
 }

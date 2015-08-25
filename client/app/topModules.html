@@ -1,111 +1,27 @@
 <div class="container details-container" ng-init="init()">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="panel panel-danger">
-        <!-- Default panel contents -->
-        <div class="panel-heading">Top Modules by Downloads</div>
-        <!-- Table -->
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Monthly Downloads</th>
-            </tr>
-          </thead>
 
-          <tbody>
-            <tr ng-repeat="module in data.downloads.data">
-              <th scope="row">{{$index+1}}</th>
-              <th><a href="/#/details/{{module[0]}}">{{module[0]}}</a></th>
-              <th>{{module[1].toLocaleString()}}</th>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="col-md-6" ng-repeat="property in properties">
+    <div class="panel panel-danger">
+      <div class="panel-heading">Top Modules by <strong>{{formatProperty(property)}}</strong></div>
+      <!-- Table -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Module Name</th>
+            <th>{{formatProperty(property)}}</th>
+          </tr>
+        </thead>
 
-    <div class="col-md-6">
-      <div class="panel panel-warning">
-        <!-- Default panel contents -->
-        <div class="panel-heading">Top Modules by Overall Rank</div>
-        <!-- Table -->
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Overall Rank</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr ng-repeat="module in data.overall.data">
-              <th scope="row">{{$index+1}}</th>
-              <th><a href="/#/details/{{module[0]}}">{{module[0]}}</a></th>
-              <th>{{module[1]}}</th>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <tbody>
+          <tr ng-repeat="row in data[property].data">
+            <th scope="row">{{$index+1}}</th>
+            <th><a href="/#/details/{{row[0]}}">{{row[0]}}</a></th>
+            <th>{{row[1].toLocaleString()}}</th>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="panel panel-success">
-        <!-- Default panel contents -->
-        <div class="panel-heading">Top Modules by Downloads</div>
-        <!-- Table -->
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Downloads</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <th>Underscore</th>
-              <th>310419403190</th>
-            </tr>
-            <tr>
-              <th scope="row">1</th>
-              <th>Express</th>
-              <th>310419403190</th>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <div class="panel panel-info">
-        <!-- Default panel contents -->
-        <div class="panel-heading">Top Modules by Updates</div>
-        <!-- Table -->
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Updates</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <th>Underscore</th>
-              <th>310419403190</th>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
 </div>

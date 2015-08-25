@@ -1,6 +1,7 @@
 // Add request handlers to routes in here
 var helpers = require('./helpers.js');
 
+// Old npm search crawling + parsing for search results
 var npmSearch = module.exports.npmSearch = function(req, res){
   var moduleName = req.body.data;
   helpers.searchResults(moduleName, function(err, searchResults){
@@ -11,6 +12,7 @@ var npmSearch = module.exports.npmSearch = function(req, res){
   })
 }
 
+// New keyword algorithm search results
 var search = module.exports.search = function(req, res){
   var moduleName = req.body.data;
   helpers.keywordSearch(moduleName, function(err, searchResults){
@@ -21,6 +23,7 @@ var search = module.exports.search = function(req, res){
   })
 }
 
+// Fetches module relationships
 var relationships = module.exports.relationships = function(req, res){
   var moduleName = req.body.data;
   helpers.findRelationships(moduleName, function(err, relationships){
@@ -28,6 +31,7 @@ var relationships = module.exports.relationships = function(req, res){
   });
 }
 
+// Fetches all the data for a specific module
 var detailedSearch = module.exports.detailedSearch = function(req, res){
   var moduleName = req.body.data;
   helpers.detailedSearch(moduleName, function(err, results){
@@ -35,6 +39,7 @@ var detailedSearch = module.exports.detailedSearch = function(req, res){
   });
 }
 
+// Fetches the all top 10 modules data 
 var topModules = module.exports.topModules = function(req, res){
   helpers.getTopModules(function(err, data){
     res.json(data);
