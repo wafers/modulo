@@ -781,8 +781,23 @@ angular.module('app')
   } 
 
   this.fetchTopModulesDownloadData = function(moduleNames){
-    $http.get('/detailedSearch', data).then(function(res){
+    var data = {};
+    moduleNames.forEach(function(e){
+      $http.post('/detailedSearch', { data : e }).then(function(res){
+        data[e] = res.data.map(function(obj){  // NOT AN ARRAY. PLUCK THIS 
+          return { 
+            name : obj.name, 
+            downloads: JSON.parse(obj.downloads)
+          }
+        });
 
+        if(moduleNames.every(inDataObject)){
+          topModulesService.topDownloadsData = data;
+          console.log('data download', data);
+        }
+      });
     });
+
+    function inDataObject(property){ return data.hasOwnProperty(property); }
   }
 }]);
