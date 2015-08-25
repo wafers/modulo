@@ -104,6 +104,7 @@ var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
   var searchResults = []; // Modules found. To be sent to the client.
   var keywordInput = keyword.split(' '); // Parse multiple keywords.
   var searchTerms = []; // Collection of all variations of user-input if multiple keywords entered
+  var resultTracker = {}; // Count how many times a module is a result. Used to prevent duplicate results. 
   for (var i=0; i<keywordInput.length; i++) {
     searchTerms.push(keywordInput[i])
     if (keywordInput[i+1]) searchTerms.push([keywordInput[i], keywordInput[i+1]].join('-'))
@@ -111,12 +112,17 @@ var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
   keywordInput.push(keyword);
   // query DB for module with name===keyword. Push found module to beginning of searchResults
   db.search(keyword, function(err, results){
-    if (results) searchResults.unshift(results);
+    if (results) {
+      resultTracker[results.name] = 1;
+      searchResults.push(results);
+      console.log(searchResults[0].name)
+    }
     db.keywordSearch(searchTerms, function(err, modulesFound){
       // console.log('Found these modules:', modulesFound);
       if (modulesFound) {
         modulesFound.forEach(function(moduleResult){
-          searchResults.push(moduleResult.m);
+          resultTracker[moduleResult.m.name] = resultTracker[moduleResult.m.name]+1 || 1;
+          if (resultTracker[moduleResult.m.name] === 1) searchResults.push(moduleResult.m);
         })
         // searchResults = searchResults.sort(function(module1, module2){
         //   return module2.overallRank - module1.overallRank;
