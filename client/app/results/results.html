@@ -2,6 +2,9 @@
   <div class="sort-div">
      <ul class="list-inline order-list">
        <span class="span-sort-by">sort by</span>
+       <li ng-class="{'active': order=='-overallRank'}">
+         <a href="#" ng-click="setOrder('-overallRank')" class="order-link">overall </a>
+       </li>
        <li ng-class="{'active': order=='-downloadRank'}">
          <a href="#" ng-click="setOrder('-downloadRank')" class="order-link">downloads </a>
        </li>
