@@ -124,7 +124,7 @@ var search = module.exports.search = function(moduleName, cb){
 }
 
 var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
-    var queryString = "MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE k.name IN {keywordInput} RETURN m, r ORDER BY r.count DESC LIMIT 10"
+    var queryString = "MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE k.name IN {keywordInput} RETURN m, r ORDER BY r.count DESC LIMIT 8"
     dbRemote.query(queryString, {keywordInput: keywordArray}, function(err, keywordResults){
         if (err) { 
             console.log('ERROR IN FINDING RELATED KEYWORDS');
@@ -137,8 +137,6 @@ var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
             keywordArray.forEach(function(key){
                 keywordResultArray.push(key);
             })
-
-            console.log('Looking for modules with connections to 2 of:', keywordResultArray)
 
             var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m , matches, k ORDER BY matches DESC';
             dbRemote.query(secondQueryString, {keywordArray: keywordResultArray}, function(err, modulesFound){

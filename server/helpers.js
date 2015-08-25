@@ -109,20 +109,22 @@ var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
     if (keywordInput[i+1]) searchTerms.push([keywordInput[i], keywordInput[i+1]].join('-'))
   }
   keywordInput.push(keyword);
-  console.log('Searching for', searchTerms)
   // query DB for module with name===keyword. Push found module to beginning of searchResults
   db.search(keyword, function(err, results){
     if (results) searchResults.unshift(results);
     db.keywordSearch(searchTerms, function(err, modulesFound){
       // console.log('Found these modules:', modulesFound);
-      modulesFound.forEach(function(moduleResult){
-        console.log('sending back', moduleResult.m.name)
-        searchResults.push(moduleResult.m);
-      })
-      // searchResults = searchResults.sort(function(module1, module2){
-      //   return module2.overallRank - module1.overallRank;
-      // })
-      cb(null, searchResults)
+      if (modulesFound) {
+        modulesFound.forEach(function(moduleResult){
+          searchResults.push(moduleResult.m);
+        })
+        // searchResults = searchResults.sort(function(module1, module2){
+        //   return module2.overallRank - module1.overallRank;
+        // })
+        cb(null, searchResults);
+      } else {
+        cb(null, null);        
+      }
     })
   })
 }
