@@ -113,7 +113,7 @@ var insertBatch = function(collection) {
 // DB endpoint setup
 var search = module.exports.search = function(moduleName, cb){
     dbRemote.find({name: moduleName},"MODULE", function(err, objs){
-        if(err){
+        if(err || !objs[0]){
             console.log(err);
             cb(err, null);  
         }
@@ -123,19 +123,23 @@ var search = module.exports.search = function(moduleName, cb){
     })
 }
 
-var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
-    var queryString = "MATCH (n:KEYWORD {name: {keywordInput} })-[r:KEYWORD_RELATED_WITH]-m RETURN m, r ORDER BY r.count DESC LIMIT 5"
-    dbRemote.query(queryString, {keywordInput: keyword}, function(err, keywordResults){
+var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
+    var queryString = "MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE k.name IN {keywordInput} RETURN m, r ORDER BY r.count DESC LIMIT 8"
+    dbRemote.query(queryString, {keywordInput: keywordArray}, function(err, keywordResults){
         if (err) { 
             console.log('ERROR IN FINDING RELATED KEYWORDS');
             cb(err, null);
         } else {
-            keywordArray = keywordResults.map(function(keyword){
+            keywordResultArray = keywordResults.map(function(keyword){
                 return keyword.m.name;
             })
 
+            keywordArray.forEach(function(key){
+                keywordResultArray.push(key);
+            })
+
             var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m , matches, k ORDER BY matches DESC';
-            dbRemote.query(secondQueryString, {keywordArray: keywordArray}, function(err, modulesFound){
+            dbRemote.query(secondQueryString, {keywordArray: keywordResultArray}, function(err, modulesFound){
                 if (err) {
                     console.log('ERROR IN FINDING MODULES BASED ON KEYWORD ARRAY')
                     cb(err, null)
