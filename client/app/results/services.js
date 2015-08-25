@@ -124,7 +124,9 @@ angular.module('app')
         }
 
         for (var j=0; j<data.length; j++) {
-          context.calculateRank(data[j]);
+          if (!data[j].overallRank) {
+            context.calculateRank(data[j]);
+          }
         }
 
         context.results.searchResults =  data;

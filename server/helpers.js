@@ -105,13 +105,14 @@ var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
   var relatedKeywords = [];
   // query DB for module with name===keyword. Push found module to beginning of searchResults
   db.search(keyword, function(err, results){
-    console.log('Found this module with exact name match:', results)
     searchResults.unshift(results);
-    db.keywordSearch(keyword, function(err, modulesFound, keywordArray){
+    db.keywordSearch(keyword, function(err, modulesFound){
       // console.log('Found these modules:', modulesFound);
-      console.log('Searched for these keywords:', keywordArray)
-      searchResults.push(modulesFound);
-      cb(searchResults)
+      modulesFound.forEach(function(moduleResult){
+        searchResults.push(moduleResult.m);
+      })
+      console.log('Searching done, executing requestHandler Callback')
+      cb(null, searchResults)
     })
   })
 }

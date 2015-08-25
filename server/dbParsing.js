@@ -127,21 +127,22 @@ var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
     var queryString = "MATCH (n:KEYWORD {name: {keywordInput} })-[r:KEYWORD_RELATED_WITH]-m RETURN m, r ORDER BY r.count DESC LIMIT 5"
     dbRemote.query(queryString, {keywordInput: keyword}, function(err, keywordResults){
         if (err) { 
-            console.log('ERROR IN FINDING RELATED KEYWORDS', err);
+            console.log('ERROR IN FINDING RELATED KEYWORDS');
             cb(err, null);
         } else {
-            console.log('FOUND KEYWORDS, LOOKING FOR MODULES')
             keywordArray = keywordResults.map(function(keyword){
                 return keyword.m.name;
             })
+            console.log('FOUND KEYWORDS, LOOKING FOR MODULES MATCHING', keywordArray)
+
             // var secondQueryString = 'MATCH (k1:KEYWORD)-[r1:KEYWORD_OF]-(n:MODULE)-[r2:KEYWORD_OF]-(k2:KEYWORD) WHERE k2.name IN {keywordArray} AND k1.name IN {keywordArray} RETURN n, k1, r1, k2, r2 LIMIT 10'
-            var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m.name , matches, k ORDER BY matches DESC';
+            var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m , matches, k ORDER BY matches DESC';
             dbRemote.query(secondQueryString, {keywordArray: keywordArray}, function(err, modulesFound){
                 if (err) {
-                    console.log('FOUND KEYWORDS, LOOKING FOR MODULES')
-                    console.log('ERROR IN FINDING MODULES BASED ON KEYWORD ARRAY', err)
+                    console.log('ERROR IN FINDING MODULES BASED ON KEYWORD ARRAY')
                     cb(err, null)
                 } else {
+                    console.log('FOUND MODULES, SENDING BACK TO HELPERS')
                     cb(null, modulesFound);
                 }
             })
