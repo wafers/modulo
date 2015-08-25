@@ -22,12 +22,12 @@
       <!-- Module information here -->
       <dl class="dl-horizontal details-stats">
         <dt>Monthly downloads</dt>
-        <dd>{{module.monthlyDownloadSum}}</dd>
+        <dd>{{module.monthlyDownloadSum.toLocaleString()}}</dd>
         <div ng-show="selectedGraph === 'downloads'">
           <dt>Downloads today</dt>
-          <dd>{{downloadCount(1)}}</dd>
+          <dd>{{downloadCount(1).toLocaleString()}}</dd>
           <dt>Downloads last 7 days</dt>
-          <dd>{{downloadCount(7)}}</dd>
+          <dd>{{downloadCount(7).toLocaleString()}}</dd>
           <dt>Weekly percent change</dt>
           <dd ng-style="isPositive">{{downloadPercentageChange(7)}}</dd>
           <dt>&nbsp;</dt>
@@ -40,7 +40,7 @@
         <dt>NPM stars</dt>
         <dd>{{module.starred}}</dd>
         <dt>Dependents</dt>
-        <dd>{{module.dependentsSize}}</dd>
+        <dd>{{module.dependentsSize.toLocaleString()}}</dd>
       </dl>
 
       <div ng-click="copy()" id="install-link" data-clipboard-text="npm install {{module.name}}" class="div-npm-copy">
