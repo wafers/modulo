@@ -109,23 +109,22 @@ angular.module('app')
         if (data === 'No results found') data = [{name: 'No results found for '+context.navInput}];
 
         for (var i=0; i<data.length; i++) {
-          if (data[i].downloads) data[i].downloads = JSON.parse(data[i].downloads);
-          if (data[i].time) {
-            data[i].time = JSON.parse(data[i].time);
-            data[i].lastUpdate = moment(data[i].time.modified).fromNow();
-            data[i].latestVersion = Object.keys(data[i].time).slice(-3)[0];
-            data[i].lastUpdate = moment(data[i].time.modified).format('MM DD YYYY');
-          } else {
-            data[i].lastUpdate = 'Unknown';
-            data[i].time = {}
-          }
+          if (data[i]){
+            if (data[i].downloads) data[i].downloads = JSON.parse(data[i].downloads);
+            if (data[i].time) {
+              data[i].time = JSON.parse(data[i].time);
+              data[i].lastUpdate = moment(data[i].time.modified).fromNow();
+              data[i].latestVersion = Object.keys(data[i].time).slice(-3)[0];
+              data[i].lastUpdate = moment(data[i].time.modified).format('MM DD YYYY');
+            } else {
+              data[i].lastUpdate = 'Unknown';
+              data[i].time = {}
+            }
 
-          if(!data[i].readme) data[i].readme = "No readme provided";
-        }
-
-        for (var j=0; j<data.length; j++) {
-          if (!data[j].overallRank) {
-            context.calculateRank(data[j]);
+            if(!data[i].readme) data[i].readme = "No readme provided";
+            if (!data[i].overallRank) {
+              context.calculateRank(data[i]);
+            }
           }
         }
 

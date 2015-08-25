@@ -101,21 +101,22 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 ///////////////// MAIN EXPORT FUNCTIONS /////////////////
 
 var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
-  var searchResults = [];
-  var keywordInput = keyword.split(' ');
-  var searchTerms = [];
-  if (keywordInput.length>1) searchTerms.push(keyword);
+  var searchResults = []; // Modules found. To be sent to the client.
+  var keywordInput = keyword.split(' '); // Parse multiple keywords.
+  var searchTerms = []; // Collection of all variations of user-input if multiple keywords entered
   for (var i=0; i<keywordInput.length; i++) {
     searchTerms.push(keywordInput[i])
     if (keywordInput[i+1]) searchTerms.push([keywordInput[i], keywordInput[i+1]].join('-'))
   }
+  keywordInput.push(keyword);
   console.log('Searching for', searchTerms)
   // query DB for module with name===keyword. Push found module to beginning of searchResults
   db.search(keyword, function(err, results){
-    searchResults.unshift(results);
-    db.keywordSearch(keyword, function(err, modulesFound){
+    if (results) searchResults.unshift(results);
+    db.keywordSearch(searchTerms, function(err, modulesFound){
       // console.log('Found these modules:', modulesFound);
       modulesFound.forEach(function(moduleResult){
+        console.log('sending back', moduleResult.m.name)
         searchResults.push(moduleResult.m);
       })
       // searchResults = searchResults.sort(function(module1, module2){
