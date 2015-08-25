@@ -2,14 +2,14 @@
 
   <div class="col-md-6" ng-repeat="property in properties">
     <div class="panel panel-danger">
-      <div class="panel-heading">Top Modules by {{property}}</div>
+      <div class="panel-heading">Top Modules by <strong>{{formatProperty(property)}}</strong></div>
       <!-- Table -->
       <table class="table">
         <thead>
           <tr>
             <th>#</th>
             <th>Module Name</th>
-            <th>{{property}}</th>
+            <th>{{formatProperty(property)}}</th>
           </tr>
         </thead>
 
@@ -23,7 +23,5 @@
       </table>
     </div>
   </div>
-
-
 
 </div>
