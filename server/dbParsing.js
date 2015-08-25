@@ -112,7 +112,7 @@ var insertBatch = function(collection) {
 
 // DB endpoint setup
 var search = module.exports.search = function(moduleName, cb){
-    dbRemote.find({name: moduleName}, function(err, objs){
+    dbRemote.find({name: moduleName},"MODULE", function(err, objs){
         if(err){
             console.log(err);
             cb(err, null);  
