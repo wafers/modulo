@@ -189,27 +189,25 @@ var updateMissingDataModules = module.exports.updateMissingDataModules = functio
 
 var fetchTopModuleData = module.exports.fetchTopModuleData = function(cb){
     var data = {};
-    var dataToFetch = ['overallRank, monthlyDownloadSum', 'dateRank', 'versionNumberRank', 'completenessRank', 'dependentRank', 'downloadRank'];
+    var dataToFetch = ['overallRank', 'monthlyDownloadSum', 'dateRank', 'versionNumberRank', 'completenessRank', 'dependentRank', 'downloadRank'];
 
     dataToFetch.forEach(addToDataObject);
 
-    // Data Checking
-    while(true){
-        if(dataToFetch.every(inDataObject)){
-            cb(null, data);
-            break;
-        }
-    }
-
-    function inDataObject(property){
-        return data.hasOwnProperty(property);
-    }
+    function inDataObject(property){ return data.hasOwnProperty(property); }
 
     function addToDataObject(property){
-        var queryString = "MATCH (n:MODULE) WHERE n." + property + " IS NOT NULL return n.name, n." + property + " order by n." + property + " DESC LIMIT 10;"
+        var queryString = "MATCH (n:MODULE) WHERE n." + property + " IS NOT NULL return n.name, n." + property + " order by n." + property + " DESC LIMIT 10;";
+
+        // Send the DB QUERY
         dbRemote.queryRaw(queryString, function(err, result){
+            console.log('inside the dbquery for ', property);
             if(err) {console.log(err); cb(err, null); return;}
             data[property] = result;
+
+            // Check if the data object is ready to be sent back
+            if(dataToFetch.every(inDataObject)){
+                cb(null, data);
+            }
         });
     }
 }
