@@ -784,12 +784,8 @@ angular.module('app')
     var data = {};
     moduleNames.forEach(function(e){
       $http.post('/detailedSearch', { data : e }).then(function(res){
-        data[e] = res.data.map(function(obj){  // NOT AN ARRAY. PLUCK THIS 
-          return { 
-            name : obj.name, 
-            downloads: JSON.parse(obj.downloads)
-          }
-        });
+        data[e] = _.pick(res.data, 'name', 'downloads');
+        data[e].downloads = JSON.parse(data[e].downloads);
 
         if(moduleNames.every(inDataObject)){
           topModulesService.topDownloadsData = data;
