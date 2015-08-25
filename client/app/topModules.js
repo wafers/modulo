@@ -1,6 +1,6 @@
 angular.module('app')
 
-.controller('TopModulesController', ['TopModules', '$scope', '$http', function(TopModules, $scope, $http){
+.controller('TopModulesController', ['TopModules', 'Graph', '$scope', '$http', function(TopModules, Graph, $scope, $http){
   $scope.data;
   $scope.properties;
   if(_.isEmpty(TopModules.data)) TopModules.fetchTopModules();
