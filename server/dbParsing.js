@@ -193,7 +193,7 @@ var updateMissingDataModules = module.exports.updateMissingDataModules = functio
 
 var fetchTopModuleData = module.exports.fetchTopModuleData = function(cb){
     var data = {};
-    var dataToFetch = ['overallRank', 'monthlyDownloadSum', 'dateRank', 'versionNumberRank', 'completenessRank', 'dependentRank', 'downloadRank'];
+    var dataToFetch = ['overallRank', 'monthlyDownloadSum', 'dependentRank'];
 
     dataToFetch.forEach(addToDataObject);
 
