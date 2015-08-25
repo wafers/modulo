@@ -106,7 +106,7 @@ angular.module('app')
     return $http.post('/search', {'data': this.navInput}).
       success(function(data, status, headers, config) {
         console.log('search results',data);
-        if (data === 'No results found') data = [{name: 'No results found'}];
+        if (data === 'No results found') data = [{name: 'No results found for '+context.navInput}];
 
         for (var i=0; i<data.length; i++) {
           if (data[i].downloads) data[i].downloads = JSON.parse(data[i].downloads);
@@ -124,7 +124,9 @@ angular.module('app')
         }
 
         for (var j=0; j<data.length; j++) {
-          context.calculateRank(data[j]);
+          if (!data[j].overallRank) {
+            context.calculateRank(data[j]);
+          }
         }
 
         context.results.searchResults =  data;

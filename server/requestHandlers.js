@@ -1,10 +1,20 @@
 // Add request handlers to routes in here
 var helpers = require('./helpers.js');
 
-var search = module.exports.search = function(req, res){
+var npmSearch = module.exports.npmSearch = function(req, res){
   var moduleName = req.body.data;
   helpers.searchResults(moduleName, function(err, searchResults){
     if(err) { console.log(err) }
+    else{
+      res.json(searchResults);
+    }
+  })
+}
+
+var search = module.exports.search = function(req, res){
+  var moduleName = req.body.data;
+  helpers.keywordSearch(moduleName, function(err, searchResults){
+    if(err) { console.log('ERROR IN KEYWORD SEARCH')/*console.log(err)*/ }
     else{
       res.json(searchResults);
     }

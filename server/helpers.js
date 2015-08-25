@@ -12,21 +12,6 @@ var npm = new Registry({
 });
 var db = require(__dirname + '/dbParsing.js');
 
-// Configure github npm module
-var GitHubApi = require('github');
-var github = new GitHubApi({
-    // required 
-    version: "3.0.0",
-    // optional 
-    debug: true,
-    protocol: "https",
-    host: "api.github.com", // should be api.github.com for GitHub 
-    pathPrefix: "", // for some GHEs; none for GitHub 
-    timeout: 5000,
-    headers: {
-        "user-agent": "makersquare-was-here" // GitHub is happy with a unique user agent 
-    }
-});
 
 ///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
@@ -81,23 +66,7 @@ var findMonthlyDownloads = module.exports.findMonthlyDownloads = function(module
       }   
   })
 }
-// Give me the version # and latest update
-var versionTracker = module.exports.versionTracker = function(module, cb) {
-    var url = 'https://www.npmjs.com/package/'+module.name;
-    request(url, function(err, res, body){
-      if (err) {
-        console.log('ERROR: ',err);
-        cb(err, module);
-      }
-      var $ = cheerio.load(body);
-      if ($('.last-publisher')['0']){
-        module.lastUpdate = moment($('.last-publisher')['0']['children'][3]['attribs']['data-date'], moment.ISO_8601)['_d'];
-      } else {
-        module.lastUpdate = 'Not available';
-      }
-      cb(null, module);
-    })
-  }
+
 // gives the npm search results
 var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, cb) {
     // Takes in search terms and returns array of search result objects in npmjs search order
@@ -130,9 +99,30 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 
 
 ///////////////// MAIN EXPORT FUNCTIONS /////////////////
+
+var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
+  var searchResults = [];
+  var relatedKeywords = [];
+  // query DB for module with name===keyword. Push found module to beginning of searchResults
+  db.search(keyword, function(err, results){
+    searchResults.unshift(results);
+    db.keywordSearch(keyword, function(err, modulesFound){
+      // console.log('Found these modules:', modulesFound);
+      modulesFound.forEach(function(moduleResult){
+        searchResults.push(moduleResult.m);
+      })
+      // searchResults = searchResults.sort(function(module1, module2){
+      //   return module2.overallRank - module1.overallRank;
+      // })
+      cb(null, searchResults)
+    })
+  })
+}
+
 // Used by server for finding npmjs search results. Takes in a search term and sends back an array of modules.
 var searchResults = module.exports.searchResults = function(searchInput, cb){  
   var finishedRuns = 0;
+
   npmSearchScraper(searchInput, function(err, npmSearchResults){
     if(err) { console.log('npmSearchScraper ERROR:',err); cb(err, null);}
     else{
