@@ -770,6 +770,7 @@ angular.module('app')
 
 .service('TopModules',['$http', function($http) {
   this.data = {};
+  this.topDownloadsData = {};
 
   var topModulesService = this;
 
@@ -778,4 +779,10 @@ angular.module('app')
       topModulesService.data = res.data;
     });
   } 
+
+  this.fetchTopModulesDownloadData = function(moduleNames){
+    $http.get('/detailedSearch', data).then(function(res){
+
+    });
+  }
 }]);
