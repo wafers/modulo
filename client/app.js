@@ -38,5 +38,18 @@ angular.module('app', ['ui.router', 'angular-loading-bar', 'ng-showdown'])
       }
     }
   })
+  .state('top', {
+    url: '/top',
+    views: {
+      'app.nav' : {
+        templateUrl: './app/results/nav.html',
+        controller: 'NavController'
+      },
+      '': {
+        templateUrl: './app/topModules.html',
+        controller: 'TopModulesController'
+      }
+    }
+  })
   $urlRouterProvider.otherwise('/');
 });

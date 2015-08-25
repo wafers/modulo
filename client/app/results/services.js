@@ -625,7 +625,7 @@ angular.module('app')
       path.attr('stroke-dasharray', totalLength + ' ' + totalLength)
       .attr('stroke-dashoffset', totalLength)
       .transition()
-      .duration(2000)
+      .duration(1000)
       .ease('linear')
       .attr('stroke-dashoffset', 0);}, 500)
 
@@ -636,3 +636,14 @@ angular.module('app')
   }
 }])
 
+.service('TopModules',['$http', function($http) {
+  this.data = {};
+
+  var topModulesService = this;
+
+  this.fetchTopModules = function(){
+    $http.get('/topModules').then(function(res){
+      topModulesService.data = res.data;
+    });
+  } 
+}]);
