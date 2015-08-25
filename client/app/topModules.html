@@ -1,5 +1,9 @@
 <div class="container details-container" ng-init="init()">
 
+  <div class="row">
+    <div id="top-modules-graph"></div>
+  </div>
+
   <div class="col-md-6" ng-repeat="property in properties">
     <div class="panel panel-danger">
       <div class="panel-heading">Top Modules by <strong>{{formatProperty(property)}}</strong></div>

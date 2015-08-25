@@ -635,6 +635,137 @@ angular.module('app')
       return d;
     }
   }
+
+  // Render the top download graph on the top modules page 
+  this.topDownloadsGraph = function(data, options){
+    var width = options.width - margin.left - margin.right;
+    var dateFormat = d3.time.format("%Y-%m-%d");
+
+    var x = d3.time.scale()
+      .range([0, width]);
+    var y = d3.scale.linear()
+        .range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+    var chart = d3.select("#top-modules-graph").append('svg')
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // DATA FILTERING 
+    // - Weekend/Weekday
+    // - Date-range
+    if(options.filter === 'weekdays') data = data.filter(onlyWeekdays);
+    else if(options.filter === 'weekends') data = data.filter(onlyWeekends);
+    data = data.filter(withinDateRange);
+    if(data.length === 0) return;
+    addMovingAverage(data, options.maPeriod); // Defaults to a 100-daily moving average
+
+    // Data filtering helper functions
+
+    function withinDateRange(row){
+      if(moment(row.day).isBefore(options.startDate)) return false;
+      if(moment(row.day).isAfter(options.endDate)) return false;
+      return true;
+    }
+
+    function addMovingAverage(dataArr, period){ // passed in array of downloads
+      for(var i = 0; i < dataArr.length; i++){
+        var currentPeriodMovingAverage;
+        if(i === 0) currentPeriodMovingAverage = dataArr[i].count;
+        else if(i < period - 1){ // if its below the period, special calculation until we have enough data points
+          currentPeriodMovingAverage = (dataArr[i-1].movingAverage * i + dataArr[i].count) / (i+1);
+        }else{
+          currentPeriodMovingAverage = dataArr.slice(i-(period-1), i+1)
+              .map(function(e){ return e.count })
+              .reduce(function(total, current){ return total + current }, 0) / period;
+        }
+        dataArr[i].movingAverage = currentPeriodMovingAverage;
+      }
+    }
+
+    function onlyWeekends(row){
+      var date = moment(row.day);
+      return date.day() === 6 || date.day() === 7 ? true : false;
+    }
+
+    function onlyWeekdays(row){
+      var weekday = [1,2,3,4,5];
+      var date = moment(row.day);
+      return weekday.indexOf(date.day()) >= 0 ? true : false;
+    }
+
+    // D3 Chart drawing
+
+    x.domain([dateFormat.parse(data[0].day), dateFormat.parse(data[data.length-1].day)])
+    y.domain([0, d3.max(data, function(d) { return d.count; })]);
+
+    var line = d3.svg.line()
+      .x(function(d){ return x(dateFormat.parse(d.day)) })
+      .y(function(d){ return y(d.movingAverage) })
+      .interpolate('basis')
+
+    chart.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis)
+
+    chart.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", -70)
+          .attr("x", -150)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+          .style("font-size", "18px")
+          .text("# of Total Daily Downloads");
+
+    // chart.selectAll(".bar")
+    //     .data(data)
+    //   .enter().append("rect")
+    //     .attr("class", "bar")
+    //     .attr("x", function(d) { return x(dateFormat.parse(d.day)); })
+    //     .attr("y", function(d) { return height; })
+    //     .attr("height", function(d) { return 0 })
+    //     .attr("width", options.barWidth)
+      
+    var transit = d3.select('#graph-container').select('svg')
+      .selectAll('rect')
+        .data(data)
+          .transition()
+          .duration(1000) 
+          .attr("y", function(d) { return y(d.count); })
+          .attr("height", function(d) { return height - y(d.count); })
+
+    setTimeout(function(){
+      var path = chart.append('path')
+          .attr("class", "moving-average")
+          .attr('d', line(data))
+          .attr('fill', 'none')
+      
+      var totalLength = path.node().getTotalLength();
+      
+      path.attr('stroke-dasharray', totalLength + ' ' + totalLength)
+      .attr('stroke-dashoffset', totalLength)
+      .transition()
+      .duration(1000)
+      .ease('linear')
+      .attr('stroke-dashoffset', 0);}, 500)
+
+    function type(d) {
+      d.count = +d.count; // coerce to number
+      return d;
+    }
+  }
 }])
 
 .service('TopModules',['$http', function($http) {
