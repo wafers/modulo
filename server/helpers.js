@@ -102,7 +102,14 @@ var npmSearchScraper = module.exports.npmSearchScraper = function (searchTerms, 
 
 var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
   var searchResults = [];
-  var relatedKeywords = [];
+  var keywordInput = keyword.split(' ');
+  var searchTerms = [];
+  if (keywordInput.length>1) searchTerms.push(keyword);
+  for (var i=0; i<keywordInput.length; i++) {
+    searchTerms.push(keywordInput[i])
+    if (keywordInput[i+1]) searchTerms.push([keywordInput[i], keywordInput[i+1]].join('-'))
+  }
+  console.log('Searching for', searchTerms)
   // query DB for module with name===keyword. Push found module to beginning of searchResults
   db.search(keyword, function(err, results){
     searchResults.unshift(results);
