@@ -13,11 +13,9 @@ var npmSearch = module.exports.npmSearch = function(req, res){
 
 var search = module.exports.search = function(req, res){
   var moduleName = req.body.data;
-  console.log('Trying to do a keyword search.')
   helpers.keywordSearch(moduleName, function(err, searchResults){
     if(err) { console.log('ERROR IN KEYWORD SEARCH')/*console.log(err)*/ }
     else{
-      console.log('Got the DB results. Sending response now')
       res.json(searchResults);
     }
   })

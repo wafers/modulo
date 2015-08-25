@@ -133,16 +133,13 @@ var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
             keywordArray = keywordResults.map(function(keyword){
                 return keyword.m.name;
             })
-            console.log('FOUND KEYWORDS, LOOKING FOR MODULES MATCHING', keywordArray)
 
-            // var secondQueryString = 'MATCH (k1:KEYWORD)-[r1:KEYWORD_OF]-(n:MODULE)-[r2:KEYWORD_OF]-(k2:KEYWORD) WHERE k2.name IN {keywordArray} AND k1.name IN {keywordArray} RETURN n, k1, r1, k2, r2 LIMIT 10'
             var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m , matches, k ORDER BY matches DESC';
             dbRemote.query(secondQueryString, {keywordArray: keywordArray}, function(err, modulesFound){
                 if (err) {
                     console.log('ERROR IN FINDING MODULES BASED ON KEYWORD ARRAY')
                     cb(err, null)
                 } else {
-                    console.log('FOUND MODULES, SENDING BACK TO HELPERS')
                     cb(null, modulesFound);
                 }
             })

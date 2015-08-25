@@ -111,7 +111,9 @@ var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
       modulesFound.forEach(function(moduleResult){
         searchResults.push(moduleResult.m);
       })
-      console.log('Searching done, executing requestHandler Callback')
+      // searchResults = searchResults.sort(function(module1, module2){
+      //   return module2.overallRank - module1.overallRank;
+      // })
       cb(null, searchResults)
     })
   })
@@ -120,8 +122,6 @@ var keywordSearch = module.exports.keywordSearch = function(keyword, cb) {
 // Used by server for finding npmjs search results. Takes in a search term and sends back an array of modules.
 var searchResults = module.exports.searchResults = function(searchInput, cb){  
   var finishedRuns = 0;
-  console.log('Looking for related keywords')
-  keywordSearch(searchInput)
 
   npmSearchScraper(searchInput, function(err, npmSearchResults){
     if(err) { console.log('npmSearchScraper ERROR:',err); cb(err, null);}
