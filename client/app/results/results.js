@@ -2,11 +2,13 @@ angular.module('app')
 
 .controller('ResultsController', ['Search', 'ModulePass', 'Graph', '$scope', '$http', '$rootScope', '$stateParams', function(Search, ModulePass, Graph, $scope, $http, $rootScope, $stateParams) {
   $scope.searchInput = Search.navInput;
-  $scope.setOrder = function (order) { $scope.order = order };
+  $scope.setOrder = function (order) {
+    $scope.order = order };
 
   // Watch function on the search results, change when return from async GET request
   $scope.$watch(function() { return Search.results.searchResults}, function(){
-      $scope.results = Search.showResults().searchResults
+    $scope.results = Search.showResults().searchResults
+    $scope.setOrder('-overallRank')
   });
 
   // Toggle a search results dropdown
