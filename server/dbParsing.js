@@ -189,18 +189,37 @@ var updateMissingDataModules = module.exports.updateMissingDataModules = functio
 
 var fetchTopModuleData = module.exports.fetchTopModuleData = function(cb){
     var data = {};
+    var dataToFetch = ['overallRank, monthlyDownloadSum', 'dateRank', 'versionNumberRank', 'completenessRank', 'dependentRank', 'downloadRank'];
 
-    // Initial Query - total rank
-    dbRemote.queryRaw("MATCH (n:MODULE) WHERE n.overallRank IS NOT NULL return n.name , n.overallRank  order by n.overallRank DESC LIMIT 10;", function(err, result){
-        if(err) {console.log(err); cb(err, null); return;}
-        data['overall'] = result;
+    dataToFetch.forEach(addToDataObject);
 
-        // Next Query - Downloads
-        dbRemote.queryRaw("MATCH (n:MODULE) WHERE n.monthlyDownloadSum IS NOT NULL return n.name , n.monthlyDownloadSum  order by n.monthlyDownloadSum DESC LIMIT 10;", function(err, result){
-            if(err) {console.log(err); cb(err, null); return;}
-            data['downloads'] = result;
+    while(true){
+        if(dataToFetch.every(inDataObject)){
+            
+        }
+    }
 
-            cb(null, data);
+    function inDataObject(property){
+        return 
+    }
+
+    function addToDataObject(property){
+        var queryString = "MATCH (n:MODULE) WHERE n." + property + " IS NOT NULL return n.name, n." + property + " order by n." + property + " DESC LIMIT 10;"
+        dbRemote.queryRaw(queryString, function(err, result){
+            data[property] = result;
         });
-    });
+    }
+    // // Initial Query - total rank
+    // dbRemote.queryRaw("MATCH (n:MODULE) WHERE n.overallRank IS NOT NULL return n.name , n.overallRank  order by n.overallRank DESC LIMIT 10;", function(err, result){
+    //     if(err) {console.log(err); cb(err, null); return;}
+    //     data['overall'] = result;
+
+    //     // Next Query - Downloads
+    //     dbRemote.queryRaw("MATCH (n:MODULE) WHERE n.monthlyDownloadSum IS NOT NULL return n.name , n.monthlyDownloadSum  order by n.monthlyDownloadSum DESC LIMIT 10;", function(err, result){
+    //         if(err) {console.log(err); cb(err, null); return;}
+    //         data['downloads'] = result;
+
+    //         cb(null, data);
+    //     });
+    // });
 }
