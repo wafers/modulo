@@ -1,6 +1,7 @@
 <div class="container details-container" ng-init="init()">
-  <div class="row text-center details-module-name">
-      <h1><strong><a href="{{module.url}}">{{module.name}}</a></strong> - <small>{{module.description}}</small></h1> 
+  <div class="row details-module-div">
+      <h1><a href="{{module.url}}" class="details-module-name">{{module.name}}</a></h1>
+      <span class="details-module-description">{{module.description}}</span> 
   </div>
 
   <div class="row">

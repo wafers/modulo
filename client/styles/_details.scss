@@ -35,9 +35,27 @@
   padding-bottom: 5px;
 }
 
-.details-module-name{
+.details-module-div{
   padding-top: 10px;
   padding-bottom: 10px;
+  margin: 0 auto;
+}
+
+.details-module-name, .details-module-name:focus, .details-module-name:visited {
+  color: $navy;
+  font-family: Roboto-Thin;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.details-module-name:hover {
+  text-decoration: none;
+  color: $red;
+}
+
+.details-module-description {
+  position: relative;
+  top: -10px;
 }
 
 .details-stats{
