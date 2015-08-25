@@ -13,17 +13,20 @@ angular.module('app')
       console.log('retrieved top module data', $scope.data);
 
       // Fetch all the data for the top modules -- probably done in the TopModules service
-      var moduleNames = $scope.data.monthlyDownloadSum.data.map(function(element){
+      var modulesObj = $scope.data.monthlyDownloadSum.data.map(function(element){
         return element[0];
       });
 
-      console.log('top d/l module names', moduleNames);
-      TopModules.fetchTopModulesDownloadData(moduleNames);
+      TopModules.fetchTopModulesDownloadData(modulesObj);
 
       // Send all the data packaged to Graph.topDownloadsGraph
+      // var width = document.getElementById('top-modules-graph').offsetWidth;
+      // Graph.topDownloadsGraph(modulesObj, width);
 
     }
   });
+
+  
 
   $scope.formatProperty = function(string){
     var stringArr = string.replace(/([a-z](?=[A-Z]))/g, '$1 ').split('');
