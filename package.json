@@ -33,6 +33,7 @@
     "express": "^4.13.3",
     "github": "^0.2.4",
     "gulp-sourcemaps": "^1.5.2",
+    "memjs": "^0.8.6",
     "moment": "^2.10.6",
     "npm-download-counts": "^0.1.1",
     "npm-registry": "^0.1.13",
