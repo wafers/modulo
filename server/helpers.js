@@ -242,11 +242,12 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
   
 
   function makeNode(idStr, labelStr, x, y, size, colorStr, nodeNum, totalNodeNum, monthlyDownloadSum){
+    var scatterCoefficient = 100;
     var radius = scaleNode(monthlyDownloadSum) > 6 ? 100 : 200;
     var cosine = Math.cos(Math.PI*2*nodeNum/(totalNodeNum));
     var sine = Math.sin(Math.PI*2*nodeNum/totalNodeNum);
-    var xPos = (radius+Math.random()*100)*cosine;
-    var yPos = sine < 0 ? (radius+Math.random()*100)*sine : (radius+Math.random()*100)*sine;
+    var xPos = (radius+Math.random()*scatterCoefficient)*cosine;
+    var yPos = sine < 0 ? (radius+Math.random()*scatterCoefficient)*sine : (radius+Math.random()*scatterCoefficient)*sine;
 
     return {
       id: idStr, 
@@ -280,7 +281,12 @@ var findRelationships = module.exports.findRelationships = function (moduleName,
   }
 
   function scaleNode(monthlyDownloadSum) {
-    var size = monthlyDownloadSum > 0 ? 2 + 8 * (monthlyDownloadSum/largestDependent) : 1.5;
+    if(!monthlyDownloadSum || monthlyDownloadSum < 1){
+      var size = 5;
+    }else{
+      var size = 8 * (Math.log10(monthlyDownloadSum) / Math.log10(largestDependent));
+    }
+    // var size = monthlyDownloadSum > 0 ? 3 + 8 * (Math.log10(monthlyDownloadSum) - Math.log10(largestDependent)) : 5;
     return size;
   }
 }
