@@ -746,6 +746,11 @@ angular.module('app')
       d.count = +d.count; // coerce to number
       return d;
     }
+  this.keywordGraph = function(keywordArray, options){
+    $http.post('/relatedKeywordSearch', {"data": keywordArray})
+    .success(function(data){
+      console.log('Related keywords:', data)
+    })
   }
 }])
 
