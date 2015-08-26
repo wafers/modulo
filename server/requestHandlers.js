@@ -103,3 +103,14 @@ var topModules = module.exports.topModules = function(req, res) {
         }
     })
 }
+
+// Fetches 8 most-related keywords for a given keyword. Used in keyword graph.
+var relatedKeywordSearch = module.exports.relatedKeywordSearch = function(req, res) {
+  helpers.relatedKeywordSearch(req.body.data, function(err, data) {
+    if (err) {
+      res.send('No keywords found')
+    } else {
+      res.json(data)
+    }
+  })
+}

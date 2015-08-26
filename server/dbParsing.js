@@ -151,6 +151,23 @@ var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
     })
 }
 
+var relatedKeywordSearch = module.exports.relatedKeywordSearch = function (keywordArray, cb) {
+    var queryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE m.name IN {keywords} WITH k, COUNT(m) AS matches, COLLECT(m) AS m, COLLECT(r) AS r WHERE matches > 1 RETURN m , matches, k, r ORDER BY matches DESC'
+    console.log(keywordArray)
+    dbRemote.query(queryString, {keywords: keywordArray}, function(err, keywordResults){
+        if (err) {
+            console.log('ERROR IN FINDING RELATED KEYWORDS', err);
+            cb(err, null);
+        } else {
+            console.log(keywordResults)
+            keywordResultsArray = keywordResults.map(function(keyword){
+                return {name: keyword.k.name, count: keyword.r[0].properties.count+keyword.r[1].properties.count};
+            })
+            cb(null, keywordResultsArray)
+        }
+    });
+}
+
 var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
     var queryString = "MATCH (n:MODULE { name: {name} })<-[r:DEPENDS_ON]-(m:MODULE) RETURN m.name, m.monthlyDownloadSum;"
     dbRemote.query(queryString, {name: moduleName}, function(err, result){
