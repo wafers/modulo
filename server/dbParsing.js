@@ -1,6 +1,7 @@
 var helpers = require(__dirname + '/helpers.js')
 var config = (process.env.DATABASE_URL) ? process.env.DATABASE_URL :  require(__dirname + '/config').db;
-var fs = require('fs')
+var fs = require('fs');
+var _ = require('underscore');
 
 var dbRemote = require("seraph")({
     user: process.env.DATABASE_USER || config.username,
@@ -161,8 +162,10 @@ var relatedKeywordSearch = module.exports.relatedKeywordSearch = function (keywo
         } else {
             console.log(keywordResults)
             keywordResultsArray = keywordResults.map(function(keyword){
-                return {name: keyword.k.name, count: keyword.r[0].properties.count+keyword.r[1].properties.count};
+               if (keyword.r[0].properties.count+keyword.r[1].properties.count > 20) return {name: keyword.k.name, count: keyword.r[0].properties.count+keyword.r[1].properties.count};
+               else return;
             })
+            keywordResultsArray = _.compact(keywordResultsArray)
             cb(null, keywordResultsArray)
         }
     });
