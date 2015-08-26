@@ -6,8 +6,9 @@
 }
 
 .sort-div {
-  margin-left: 720px;
-  width: 500px;
+  margin: 0 auto;
+  width: 700px;
+  text-align: center;
 }
 
 .order-list {
@@ -28,6 +29,10 @@
   .order-link:hover {
     text-transform: uppercase;
     text-decoration: none;
+    color: $red;
+  }
+
+  .top-10 {
     color: $red;
   }
 }
@@ -124,6 +129,10 @@
   margin-bottom: 2px;
 }
 
+.div-rank-chart {
+  margin-left: 8%;
+}
+
 .rank-bars {
   padding-left: 50px;
   padding-right: 50px;
@@ -137,8 +146,11 @@
   font-family: Roboto-Light;
   font-size: 14px;
   border: none;
-  bottom: -10px;
-  left: 920px;
+  float: right;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 0px;
 }
 
 .btn-view-more:hover {

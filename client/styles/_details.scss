@@ -5,6 +5,38 @@
   }
 }
 
+.details-module-div{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0 auto;
+  width: 500px;
+  text-align: center;
+}
+
+.details-module-name, .details-module-name:focus, .details-module-name:visited {
+  color: $red;
+  font-family: Roboto-Thin;
+  font-size: 48px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.details-module-name:hover {
+  text-decoration: none;
+  color: $blue;
+}
+
+.details-module-description {
+  position: relative;
+  top: -10px;
+  font-family: Roboto-Light;
+  font-size: 16px;
+}
+
+dt {
+  text-align: left;
+}
+
 #install-link {
   text-align: right;
   cursor: pointer;
@@ -16,12 +48,68 @@
   background-color: $white;
   border: 1px solid lightgrey;
 
-  h3{
-    margin-top:0px;
+  h3 {
+    padding: 5px;
     text-align: center;
-    font-weight: bold;
-    color: $red;
+    color: $blue;
   }
+}
+
+.radio-div {
+  padding-bottom: 10px;
+}
+
+.npm-copy {
+  float: left;
+}
+
+.form-group .form-control {
+  background-color: $white;
+  border: none;
+  outline: none !important;
+  box-shadow: none;
+  border-radius: 0 !important;
+}
+
+.btn-xs {
+  background-color: $lightblue;
+  color: $white;
+  border-color: $blue;
+  outline: $blue;
+  border-radius: 0 !important;
+  font-family: Roboto-Thin;
+  font-size: 12px;
+}
+
+.btn-xs:hover {
+  background-color: $white;
+  color: $lightblue;
+}
+
+.div-npm-copy {
+  background-color: white;
+  float: left;
+  width: auto;
+}
+
+.npm-input {
+  border: none !important;
+  outline: none !important;
+  background-color: $white;
+  box-shadow: none;
+  padding: none;
+  margin: none;
+  color: $lightblue;
+}
+
+.btn-copy-glyph {
+  border: none !important;
+  outline: none !important;
+  background-color: $white;
+  box-shadow: none;
+  padding: none;
+  margin: none;
+  color: $lightblue;
 }
 
 .dependency-switch{
@@ -30,36 +118,50 @@
   }
 }
 
+.form-header {
+  font-family: Roboto-Thin;
+  font-size: 22px;
+  text-align: center;
+  margin: 0 auto;
+  letter-spacing: 2px;
+  text-transform: lowercase;
+  padding-bottom: 10px;
+}
+
 .graph-type{
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-.details-module-div{
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin: 0 auto;
+.btn-group {
+
 }
 
-.details-module-name, .details-module-name:focus, .details-module-name:visited {
+.dl-horizontal {
+  margin: none;
+  padding: none;
+}
+
+.form-div {
+  font-family: Roboto-Light;
+  font-size: 14px;
+  text-align: left;
   color: $navy;
-  font-family: Roboto-Thin;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.details-module-name:hover {
-  text-decoration: none;
-  color: $red;
-}
-
-.details-module-description {
-  position: relative;
-  top: -10px;
 }
 
 .details-stats{
-  padding-top: 40px;
+  background-color: $white;
+  color: $darkgrey;
+  padding: 5px;
+  margin-top: 38px;
+  font-family: Roboto-Light;
+  font-size: 14px;
+  text-align: left;
+  margin: none;
+
+  dt {
+    width: 150px;
+  }
 }
 
 .details-readme{
@@ -79,26 +181,29 @@
 }
 
 #graph-container{
-  /*position: absolute;*/
   width: 100%;
   height: 500px;
   margin-bottom: 30px;
   background-color: $white;
-  border: 1px solid lightgrey;
+  border: none;
 
   .bar {
-    fill: $red;
+    fill: $blue;
     opacity: 0.75;  
+  }
+  
+  .bar:hover {
+    fill: $lightblue;
   }
 
   .moving-average {
-    stroke: $black;
+    stroke: $red;
     stroke-width: 2;
   }
 
   // Line Styling inside the graph-container ---------------------------------
   .versionVis {
-    font: 10px sans-serif;
+    font: 10px Roboto;
   }
 
   .axis path,
@@ -113,31 +218,32 @@
 
   .line {
     fill: none;
-    stroke: #b83130;
+    stroke: $blue;
     stroke-width: 1.5px;
   }
 
   .circle {
     stroke: #FFFFFF;
     opacity: 0.5;
+    fill: $blue;
     stroke-width: 1.5px;
   }
 
-  .circle:hover, .bar:hover {
-    fill: #C78A8A;
+  .circle:hover {
+    fill: $grey;
   }
 
   .d3-tip {
     line-height: 1;
     font-weight: bold;
     padding: 12px;
-    background: rgba(211, 211, 211, 0.9);
+    background: rgba(128, 128, 128, 0.9);
     color: #FFFFFF;
     border-radius: 2px;
   }
 
   .tip-values {
-    color: #b83130;
+    color: $blue;
   }
   // ------------------------------------------------------------------------
 

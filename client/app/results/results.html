@@ -18,7 +18,7 @@
          <a href="#" ng-click="setOrder('-dependentRank')" class="order-link">dependers</a>
        </li> 
        <li>
-         <a href="/#/top" class="order-link">Top 10 Modules</a>
+         <a href="/#/top" class="order-link top-10">view top 10</a>
        </li>
      </ul>
    </div>
@@ -50,8 +50,9 @@
       <div class="module-description">{{result.description}}</div>
       <br>
 
-      <div id="dropdown-div-{{$index}}" class="details-div" ng-show="result.show">
-
+      <div class="details-div" ng-show="result.show">
+        <div id="dropdown-div-{{$index}}" class="div-rank-chart"></div>
+        <br>
         <a href="/#/details/{{result.name}}"><button class="btn-view-more">view more</button></a>
       </div>
 
