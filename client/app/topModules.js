@@ -26,6 +26,8 @@ angular.module('app')
   });
 
   $scope.$on("$destroy", function(){
+    // DOES THIS WORK? 
+    // ALSO, need to ONLY render the graph if there ISNT a graph that exists
     $('svg').remove();
   });
 

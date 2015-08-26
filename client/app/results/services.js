@@ -667,8 +667,36 @@ angular.module('app')
 
     // D3 Chart drawing
 
-    x.domain([dateFormat.parse('2012-01-01'), dateFormat.parse('2015-08-25')])
-    y.domain([0, 800000]);
+    // Find the min,max for the entire data set for date and for download count
+    var moduleNames = Object.keys(data);
+    var maxCount;
+
+    // Returns an array of 3 elements in graphRanges.
+    // 0 - earliest download date
+    // 1 - last download date
+    // 2 - Maximum download count from the entire data set
+    var graphRanges = moduleNames.reduce(function(range, moduleName){
+      var downloadData = data[moduleName];
+      // Initialization on undefined
+      if(!range[0]) range[0] = downloadData[0].day;
+      if(!range[1]) range[1] = downloadData[0].day;
+      if(!range[2]) range[2] = downloadData[0].count;
+
+      var endIx = downloadData.length-1;
+      var firstRow = downloadData[0];
+      var lastRow = downloadData[endIx];
+
+      if(moment(firstRow.day).isBefore(range[0])) range[0] = firstRow.day;
+      if(moment(lastRow.day).isAfter(range[1])) range[1] = lastRow.day;
+
+      return range;
+    }, []);
+
+    console.log(graphRanges);
+
+
+    x.domain([dateFormat.parse(graphRanges[0]), dateFormat.parse(graphRanges[1])])
+    y.domain([0, graphRanges[2]]);
 
     chart.append("g")
         .attr("class", "x axis")
@@ -688,7 +716,6 @@ angular.module('app')
           .text("# of Total Daily Downloads");
 
     // Path Drawing
-    var moduleNames = Object.keys(data);
     moduleNames.forEach(function(name){
       data[name] = data[name].filter(onlyWeekdays);
     });
