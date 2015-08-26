@@ -667,10 +667,8 @@ angular.module('app')
 
     // D3 Chart drawing
 
-    // x.domain([dateFormat.parse(moment('01 01 2009')), dateFormat.parse(moment())])
-    // // y.domain([0, d3.max(data, function(d) { return d.count; })]);
-    // y.domain([0, 800000]);
-
+    x.domain([dateFormat.parse('2012-01-01'), dateFormat.parse('2015-08-25')])
+    y.domain([0, 800000]);
 
     chart.append("g")
         .attr("class", "x axis")
@@ -692,21 +690,25 @@ angular.module('app')
     // Path Drawing
     var moduleNames = Object.keys(data);
     moduleNames.forEach(function(name){
+      data[name] = data[name].filter(onlyWeekdays);
+    });
+
+    function onlyWeekdays(row){
+      var weekday = [1,2,3,4,5];
+      var date = moment(row.day);
+      return weekday.indexOf(date.day()) >= 0 ? true : false;
+    }
+
+
+    moduleNames.forEach(function(name){
       var downloadData = data[name];
       // has a .count , and .day
       var path = chart.append('path')
           .attr("class", "moving-average")
           .attr('d', line(downloadData))
+          .attr('stroke', color(name))
           .attr('fill', 'none')
-      
-      var totalLength = path.node().getTotalLength();
-
-      path.attr('stroke-dasharray', totalLength + ' ' + totalLength)
-        .attr('stroke-dashoffset', totalLength)
-        .transition()
-        .duration(1000)
-        .ease('linear')
-        .attr('stroke-dashoffset', 0);
+          .attr('stroke-width', '1')
     });
 
 
