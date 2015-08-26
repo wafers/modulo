@@ -637,7 +637,7 @@ angular.module('app')
   }
 
   // Render the top download graph on the top modules page 
-  this.topDownloadsGraph = function(dataObject, width){
+  this.topDownloadsGraph = function(data, width){
     var dateFormat = d3.time.format("%Y-%m-%d");
 
     var x = d3.time.scale()
@@ -730,8 +730,9 @@ angular.module('app')
     var data = {};
     moduleNames.forEach(function(e){
       $http.post('/detailedSearch', { data : e }).then(function(res){
-        data[e] = _.pick(res.data, 'downloads');
-        data[e].downloads = JSON.parse(data[e].downloads);
+        // data[e] = _.pick(res.data, 'downloads');
+        // data[e] = JSON.parse(data[e].downloads);
+        data[e] = JSON.parse(res.data.downloads);
 
         if(moduleNames.every(inDataObject)){
           topModulesService.topDownloadsData = data;
