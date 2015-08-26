@@ -635,10 +635,123 @@ angular.module('app')
       return d;
     }
   }
+
+  // Render the top download graph on the top modules page 
+  this.topDownloadsGraph = function(data, width){
+    var dateFormat = d3.time.format("%Y-%m-%d");
+
+    var x = d3.time.scale()
+      .range([0, width]);
+    var y = d3.scale.linear()
+        .range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+    var color = d3.scale.category10();        
+
+    var chart = d3.select("#top-modules-graph").append('svg')
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var line = d3.svg.line()
+      .x(function(d){ return x(dateFormat.parse(d.day)) })
+      .y(function(d){ return y(d.count) }) // potentially re-draw axis based off range test here
+      .interpolate('basis')
+
+    // D3 Chart drawing
+
+    // Find the min,max for the entire data set for date and for download count
+    var moduleNames = Object.keys(data);
+    var maxCount;
+
+    // Returns an array of 3 elements in graphRanges.
+    // 0 - earliest download date
+    // 1 - last download date
+    // 2 - Maximum download count from the entire data set
+    var graphRanges = moduleNames.reduce(function(range, moduleName, ix){
+      var downloadData = data[moduleName];
+      // Initialization on undefined
+      if(!range[0]) range[0] = downloadData[0].day;
+      if(!range[1]) range[1] = downloadData[0].day;
+      if(!range[2]) range[2] = downloadData[0].count;
+
+      // Define some helpful variables
+      var endIx = downloadData.length-1;
+      var firstRow = downloadData[0];
+      var lastRow = downloadData[endIx];
+
+      // First/last day checking on the data set
+      if(moment(firstRow.day).isBefore(range[0])) range[0] = firstRow.day;
+      if(moment(lastRow.day).isAfter(range[1])) range[1] = lastRow.day;
+
+      // Max D/l Check
+      var max = _.max(downloadData.map(function(row){ return row.count }));
+      if(max > range[2]) range[2] = max;
+
+      return range;
+    }, []);
+
+    x.domain([dateFormat.parse(graphRanges[0]), dateFormat.parse(graphRanges[1])])
+    y.domain([0, graphRanges[2]]);
+
+    chart.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis)
+
+    chart.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", -80)
+          .attr("x", -150)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+          .style("font-size", "18px")
+          .text("# of Total Daily Downloads");
+
+    // Path Drawing
+    moduleNames.forEach(function(name){
+      data[name] = data[name].filter(onlyWeekdays);
+    });
+
+    function onlyWeekdays(row){
+      var weekday = [1,2,3,4,5];
+      var date = moment(row.day);
+      return weekday.indexOf(date.day()) >= 0 ? true : false;
+    }
+
+
+    moduleNames.forEach(function(name){
+      var downloadData = data[name];
+      // has a .count , and .day
+      var path = chart.append('path')
+          .attr("class", "moving-average")
+          .attr('d', line(downloadData))
+          .attr('stroke', color(name))
+          .attr('fill', 'none')
+          .attr('stroke-width', '1')
+    });
+
+
+    function type(d) {
+      d.count = +d.count; // coerce to number
+      return d;
+    }
+  }
 }])
 
 .service('TopModules',['$http', function($http) {
   this.data = {};
+  this.topDownloadsData = {};
 
   var topModulesService = this;
 
@@ -647,4 +760,22 @@ angular.module('app')
       topModulesService.data = res.data;
     });
   } 
+
+  this.fetchTopModulesDownloadData = function(moduleNames){
+    var data = {};
+    moduleNames.forEach(function(e){
+      $http.post('/detailedSearch', { data : e }).then(function(res){
+        // data[e] = _.pick(res.data, 'downloads');
+        // data[e] = JSON.parse(data[e].downloads);
+        data[e] = JSON.parse(res.data.downloads);
+
+        if(moduleNames.every(inDataObject)){
+          topModulesService.topDownloadsData = data;
+          console.log('data download', data);
+        }
+      });
+    });
+
+    function inDataObject(property){ return data.hasOwnProperty(property); }
+  }
 }]);
