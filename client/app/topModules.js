@@ -25,6 +25,10 @@ angular.module('app')
     }
   });
 
+  $scope.$on("$destroy", function(){
+    $('svg').remove();
+  });
+
   // Watcher for return of top 10 downloads data from server endpoint
   $scope.$watch(function(){ return TopModules.topDownloadsData }, function(){
     // Send all the data packaged to Graph.topDownloadsGraph
