@@ -662,7 +662,7 @@ angular.module('app')
 
     var line = d3.svg.line()
       .x(function(d){ return x(dateFormat.parse(d.day)) })
-      .y(function(d){ return y(d.count) })
+      .y(function(d){ return y(d.count) }) // potentially re-draw axis based off range test here
       .interpolate('basis')
 
     // D3 Chart drawing
@@ -675,25 +675,28 @@ angular.module('app')
     // 0 - earliest download date
     // 1 - last download date
     // 2 - Maximum download count from the entire data set
-    var graphRanges = moduleNames.reduce(function(range, moduleName){
+    var graphRanges = moduleNames.reduce(function(range, moduleName, ix){
       var downloadData = data[moduleName];
       // Initialization on undefined
       if(!range[0]) range[0] = downloadData[0].day;
       if(!range[1]) range[1] = downloadData[0].day;
       if(!range[2]) range[2] = downloadData[0].count;
 
+      // Define some helpful variables
       var endIx = downloadData.length-1;
       var firstRow = downloadData[0];
       var lastRow = downloadData[endIx];
 
+      // First/last day checking on the data set
       if(moment(firstRow.day).isBefore(range[0])) range[0] = firstRow.day;
       if(moment(lastRow.day).isAfter(range[1])) range[1] = lastRow.day;
 
+      // Max D/l Check
+      var max = _.max(downloadData.map(function(row){ return row.count }));
+      if(max > range[2]) range[2] = max;
+
       return range;
     }, []);
-
-    console.log(graphRanges);
-
 
     x.domain([dateFormat.parse(graphRanges[0]), dateFormat.parse(graphRanges[1])])
     y.domain([0, graphRanges[2]]);
