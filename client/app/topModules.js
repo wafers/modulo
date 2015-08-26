@@ -34,8 +34,6 @@ angular.module('app')
     }
   });
 
-
-
   $scope.formatProperty = function(string){
     var stringArr = string.replace(/([a-z](?=[A-Z]))/g, '$1 ').split('');
     stringArr[0] = stringArr[0].toUpperCase();
