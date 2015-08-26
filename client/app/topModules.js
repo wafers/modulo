@@ -28,8 +28,10 @@ angular.module('app')
   // Watcher for return of top 10 downloads data from server endpoint
   $scope.$watch(function(){ return TopModules.topDownloadsData }, function(){
     // Send all the data packaged to Graph.topDownloadsGraph
-    var width = document.getElementById('top-modules-graph').offsetWidth;
-    Graph.topDownloadsGraph(TopModules.topDownloadsData, width);
+    if(!_.isEmpty(TopModules.topDownloadsData)){
+      var width = document.getElementById('top-modules-graph').offsetWidth;
+      Graph.topDownloadsGraph(TopModules.topDownloadsData, width);
+    }
   });
 
 

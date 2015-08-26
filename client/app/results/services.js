@@ -652,21 +652,25 @@ angular.module('app')
         .scale(y)
         .orient("left");
 
+    var color = d3.scale.category10();        
+
     var chart = d3.select("#top-modules-graph").append('svg')
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-      .append("g")
+        .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    // D3 Chart drawing
-
-    x.domain([dateFormat.parse(data[0].day), dateFormat.parse(data[data.length-1].day)])
-    y.domain([0, d3.max(data, function(d) { return d.count; })]);
 
     var line = d3.svg.line()
       .x(function(d){ return x(dateFormat.parse(d.day)) })
-      .y(function(d){ return y(d.movingAverage) })
+      .y(function(d){ return y(d.count) })
       .interpolate('basis')
+
+    // D3 Chart drawing
+
+    // x.domain([dateFormat.parse(moment('01 01 2009')), dateFormat.parse(moment())])
+    // // y.domain([0, d3.max(data, function(d) { return d.count; })]);
+    // y.domain([0, 800000]);
+
 
     chart.append("g")
         .attr("class", "x axis")
@@ -684,28 +688,27 @@ angular.module('app')
           .style("text-anchor", "end")
           .style("font-size", "18px")
           .text("# of Total Daily Downloads");
-      
-    var transit = d3.select('#top-modules-graph').select('svg')
-      .selectAll('rect')
-        .data(data)
-          .transition()
-          .duration(1000) 
-          .attr("y", function(d) { return y(d.count); })
-          .attr("height", function(d) { return height - y(d.count); })
 
-    var path = chart.append('path')
-        .attr("class", "moving-average")
-        .attr('d', line(data))
-        .attr('fill', 'none')
-    
-    var totalLength = path.node().getTotalLength();
-    
-    path.attr('stroke-dasharray', totalLength + ' ' + totalLength)
-      .attr('stroke-dashoffset', totalLength)
-      .transition()
-      .duration(1000)
-      .ease('linear')
-      .attr('stroke-dashoffset', 0);
+    // Path Drawing
+    var moduleNames = Object.keys(data);
+    moduleNames.forEach(function(name){
+      var downloadData = data[name];
+      // has a .count , and .day
+      var path = chart.append('path')
+          .attr("class", "moving-average")
+          .attr('d', line(downloadData))
+          .attr('fill', 'none')
+      
+      var totalLength = path.node().getTotalLength();
+
+      path.attr('stroke-dasharray', totalLength + ' ' + totalLength)
+        .attr('stroke-dashoffset', totalLength)
+        .transition()
+        .duration(1000)
+        .ease('linear')
+        .attr('stroke-dashoffset', 0);
+    });
+
 
     function type(d) {
       d.count = +d.count; // coerce to number
