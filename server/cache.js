@@ -24,7 +24,7 @@ module.exports.get = function(key, callback) {
 module.exports.set = function(key, value,cb) {
     memjs.set(key, JSON.stringify(value), function(error, result) {
       if(error){
-        cb(err)
+        cb(error)
       }else{
         cb(null,result)
       }
