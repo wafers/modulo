@@ -50,8 +50,6 @@ h3 {
   font-size: 18px;
 }
 
-.break { width: 80%; height: 1px; color: $blue; }
-
 .content-wrapper {
   min-height: 800px;
 }
@@ -146,3 +144,4 @@ input[type="text"]:focus, .uneditable-input:focus {
 @import 'results';
 @import 'details';
 @import 'graphs';
+@import 'top';

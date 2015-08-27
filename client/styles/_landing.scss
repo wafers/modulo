@@ -18,7 +18,10 @@ hr {
 }
 
 .landing-title-div {
-  padding-top: 60px;
+  position: relative;
+  padding-top: 100px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .landing-title {
@@ -36,6 +39,7 @@ hr {
 }
 
 .landing-header {
+  height: 450px;
   margin-bottom: 60px;
 }
 
@@ -56,6 +60,12 @@ hr {
   position: relative;
   width: 950px;
   left: 100px;
+}
+
+.modulo-chart-image {
+  position: relative;
+  width: 800px;
+  top: -250px;
 }
 
 .stats-a, .stats-b, .stats-c, .stats-d {

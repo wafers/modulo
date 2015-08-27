@@ -1,27 +1,31 @@
 <div class="container details-container" ng-init="init()">
 
-  <div class="row">
-    <div id="top-modules-graph" class="col-md-8 col-md-offset-1"></div>
-  </div>
+<div class="row">
+  <div id="top-modules-graph" class="col-md-8 col-md-offset-1"></div>
+</div>
+
+<center><span class="top-10-title">Top 10 Lists</span></center>
+  <br><br>
 
   <div class="col-md-6" ng-repeat="property in properties">
-    <div class="panel panel-danger">
-      <div class="panel-heading">Top Modules by <strong>{{formatProperty(property)}}</strong></div>
+    <div class="panel">
+      <div class="panel-heading"><strong>{{formatProperty(property)}}</strong></div>
+
       <!-- Table -->
       <table class="table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Module Name</th>
-            <th>{{formatProperty(property)}}</th>
+            <th></th>
+            <th class="table-header">Module</th>
+            <th class="table-header rank-column">Rank</th>
           </tr>
         </thead>
 
         <tbody>
           <tr ng-repeat="row in data[property].data">
-            <th scope="row">{{$index+1}}</th>
-            <th><a href="/#/details/{{row[0]}}">{{row[0]}}</a></th>
-            <th>{{row[1].toLocaleString()}}</th>
+            <th scope="row" class="row-number">{{$index+1}}</th>
+            <th class="row-name"><a href="/#/details/{{row[0]}}">{{row[0]}}</a></th>
+            <th class="rank-column rank-number">{{row[1].toLocaleString()}}</th>
           </tr>
         </tbody>
       </table>

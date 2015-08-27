@@ -12,6 +12,8 @@
 }
 
 .order-list {
+  padding-bottom: 10px;
+
   .span-sort-by {
     font-size: 15px;
     font-family: Roboto-Light;
@@ -32,14 +34,25 @@
     color: $red;
   }
 
-  .top-10 {
+  .top-10, .top-10:active, .top-10:visited, .top-10:focus  {
+    font-size: 15px;
+    font-family: Roboto-Thin;
+    letter-spacing: 1px;
     color: $red;
   }
+
+  .top-10:hover {
+    text-transform: uppercase;
+    text-decoration: none;
+    color: $blue;
+  }
+
 }
 
 .list-group {
   width: 100%;
   position: relative;
+  padding-bottom: 60px;
 }
 
 .list-group-item {
