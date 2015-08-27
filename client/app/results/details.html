@@ -12,7 +12,7 @@
         <button type="button" class="btn btn-xs btn-default" ng-click="drawGraph('version')">Version</button>
         <button type="button" class="btn btn-xs btn-default" ng-click="drawGraph('dependency')">Explore</button>
         <button type="button" class="btn btn-xs btn-default" ng-click="drawGraph('bullet')">Ranking</button>
-        <button type="button" class="btn btn-xs btn-default" ng-click="">Keywords</button>
+        <button type="button" class="btn btn-xs btn-default" ng-click="drawGraph('keyword')">Keywords</button>
         <button type="button" class="btn btn-xs btn-default" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
       </div>
       <div id="graph-container" data="{{selectedGraph}}"></div>
