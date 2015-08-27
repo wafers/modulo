@@ -70,7 +70,7 @@ var relationships = module.exports.relationships = function(req, res) {
 var detailedSearch = module.exports.detailedSearch = function(req, res) {
     var moduleName = req.body.data;
     cache.get("DETAILEDSEARCH_" + moduleName, function(err, value) {
-        if (err) {
+        if (err) { 
             console.log(err)
         } else if (value === null) {
             helpers.detailedSearch(moduleName, function(err, results) {
