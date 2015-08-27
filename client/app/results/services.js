@@ -202,7 +202,7 @@ angular.module('app')
                   doubleClickEnabled: false,
                   borderSize: 1,
                   autoRescale: false,
-                  labelThreshold: 6.1,
+                  labelThreshold: 6,
 
                   //Edge options
                   minEdgeSize: 0.5,

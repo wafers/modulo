@@ -46,31 +46,31 @@ var search = module.exports.search = function(req, res) {
 // Fetches module relationships
 var relationships = module.exports.relationships = function(req, res) {
     var moduleName = req.body.data;
-    cache.get("RELATIONSHIPS_" + moduleName, function(err, value) {
-        if (err) {
-            console.log(err)
-        } else if (value === null) {
+    // cache.get("RELATIONSHIPS_" + moduleName, function(err, value) {
+        // if (err) {
+        //     console.log(err)
+        // } else if (value === null) {
             helpers.findRelationships(moduleName, function(err, relationships) {
                 if (err) {
                     console.log('ERROR IN RELATIONSHIP FETCHING')
                     console.log(err)
                 } else {
-                    cache.set("RELATIONSHIPS_" + moduleName, relationships, function() {
+                    // cache.set("RELATIONSHIPS_" + moduleName, relationships, function() {
                         res.json(relationships);
-                    })
+                    // })
                 }
             })
-        } else {
-            res.json(value)
-        }
-    })
+        // } else {
+        //     res.json(value)
+        // }
+    // })
 }
 
 // Fetches all the data for a specific module
 var detailedSearch = module.exports.detailedSearch = function(req, res) {
     var moduleName = req.body.data;
     cache.get("DETAILEDSEARCH_" + moduleName, function(err, value) {
-        if (err) {
+        if (err) { 
             console.log(err)
         } else if (value === null) {
             helpers.detailedSearch(moduleName, function(err, results) {
