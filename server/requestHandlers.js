@@ -14,18 +14,25 @@ var npmSearch = module.exports.npmSearch = function(req, res) {
     })
 }
 
+
 // New keyword algorithm search results
 var search = module.exports.search = function(req, res) {
     var moduleName = req.body.data;
-    cache.get("SEARCH_" + moduleName, function(err, value) {
+    key = "SEARCH_"+moduleName
+    console.log("Memcached key is : " + key)
+    cache.get(key, function(err, value) {
         if (err) {
+            console.log("Error with the search")
             console.log(err)
         } else if (value === null) {
+            console.log("No data for key : " + key)
             helpers.keywordSearch(moduleName, function(err, searchResults) {
                 if (err) {
                     console.log('ERROR IN KEYWORD SEARCH') /*console.log(err)*/
                 } else {
-                    cache.set("SEARCH_" + moduleName, searchResults, function() {
+                    cache.set("SEARCH_" + moduleName, searchResults, function(err,results) {
+                        if(err)console.log(err)
+                        console.log(results)
                         res.json(searchResults);
                     })
                 }
@@ -34,7 +41,6 @@ var search = module.exports.search = function(req, res) {
             res.json(value)
         }
     })
-
 }
 
 // Fetches module relationships
