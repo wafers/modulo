@@ -106,7 +106,7 @@ angular.module('app')
     return $http.post('/search', {'data': this.navInput}).
       success(function(data, status, headers, config) {
         console.log('search results',data);
-        if (data === 'No results found') data = [{name: 'No results found for '+context.navInput}];
+        if (data === 'No results found' || data.length===0) data = [{name: 'No results found for '+context.navInput}];
 
         for (var i=0; i<data.length; i++) {
           if (data[i]){
@@ -133,6 +133,7 @@ angular.module('app')
       error(function(data, status, headers, config) {
         console.log('error');
         console.log(data);
+        data = [{name: 'No results found for '+context.navInput}]
       });
   }
 }])

@@ -139,7 +139,7 @@ var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
                 keywordResultArray.push(key);
             })
 
-            var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m , matches, k ORDER BY matches DESC';
+            var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} AND m.overallRank > 0 WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m, matches, k ORDER BY m.overallRank DESC LIMIT 200';
             dbRemote.query(secondQueryString, {keywordArray: keywordResultArray}, function(err, modulesFound){
                 if (err) {
                     console.log('ERROR IN FINDING MODULES BASED ON KEYWORD ARRAY')
