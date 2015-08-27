@@ -1,57 +1,67 @@
 <div class="container details-container" ng-init="init()">
-  <div class="row text-center details-module-name">
-      <h1><strong><a href="{{module.url}}">{{module.name}}</a></strong> - <small>{{module.description}}</small></h1> 
+  <div class="row details-module-div">
+      <a href="{{module.url}}" class="details-module-name">{{module.name}}</a><br>
+      <span class="details-module-description">{{module.description}}</span> 
   </div>
 
   <div class="row">
     <div class="col-md-9">
       <!-- Graphs Selection here -->
       <div class="btn-group graph-type">
-        <button type="button" class="btn btn-danger" ng-click="drawGraph('downloads')">Downloads</button> 
-        <button type="button" class="btn btn-danger" ng-click="drawGraph('version')">Version</button>
-        <button type="button" class="btn btn-danger" ng-click="drawGraph('dependency')">Explore</button>
-        <button type="button" class="btn btn-danger" ng-click="drawGraph('bullet')">Ranking</button>
-        <button type="button" class="btn btn-danger" ng-click="">Keywords</button>
-        <button type="button" class="btn btn-danger" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
+        <button type="button" class="btn btn-xs btn-default" ng-click="drawGraph('downloads')">Downloads</button> 
+        <button type="button" class="btn btn-xs btn-default" ng-click="drawGraph('version')">Version</button>
+        <button type="button" class="btn btn-xs btn-default" ng-click="drawGraph('dependency')">Explore</button>
+        <button type="button" class="btn btn-xs btn-default" ng-click="drawGraph('bullet')">Ranking</button>
+        <button type="button" class="btn btn-xs btn-default" ng-click="">Keywords</button>
+        <button type="button" class="btn btn-xs btn-default" ng-if="hasSearchResults()" ui-sref="app.results">Back to Search</button>
       </div>
       <div id="graph-container" data="{{selectedGraph}}"></div>
     </div>
+
     <div class="col-md-3">
       <!-- Module information here -->
-      <dt ng-click="copy()" id="install-link" data-clipboard-text="npm install {{module.name}}">
-        <small>Click to copy:</small>
-        <span class="glyphicon glyphicon-save ">&#32;</span>
-        npm install {{module.name}}
-      </dt>
       <dl class="dl-horizontal details-stats">
-        <dt>Monthly Downloads</dt>
-        <dd>{{module.monthlyDownloadSum}}</dd>
+        <dt>Monthly downloads</dt>
+        <dd>{{module.monthlyDownloadSum.toLocaleString()}}</dd>
         <div ng-show="selectedGraph === 'downloads'">
-          <dt># DL Today</dt>
-          <dd>{{downloadCount(1)}}</dd>
-          <dt># DL Last 7 days</dt>
-          <dd>{{downloadCount(7)}}</dd>
-          <dt>Weekly DL % Change</dt>
+          <dt>Downloads today</dt>
+          <dd>{{downloadCount(1).toLocaleString()}}</dd>
+          <dt>Downloads last 7 days</dt>
+          <dd>{{downloadCount(7).toLocaleString()}}</dd>
+          <dt>Weekly percent change</dt>
           <dd ng-style="isPositive">{{downloadPercentageChange(7)}}</dd>
           <dt>&nbsp;</dt>
           <dd>&nbsp;</dd>
         </div>
-        <dt>Last Update</dt>
+        <dt>Last update</dt>
         <dd>{{module.lastUpdate}}</dd>
-        <dt>Latest Version</dt>
+        <dt>Latest version</dt>
         <dd>{{module.latestVersion}}</dd>
-        <dt>Starred</dt>
+        <dt>NPM stars</dt>
         <dd>{{module.starred}}</dd>
-        <dt># of Dependents</dt>
-        <dd>{{module.dependentsSize}}</dd>
+        <dt>Dependents</dt>
+        <dd>{{module.dependentsSize.toLocaleString()}}</dd>
       </dl>
-      <div class="details-description" ng-switch="selectedGraph">
+
+      <div ng-click="copy()" id="install-link" data-clipboard-text="npm install {{module.name}}" class="div-npm-copy">
+        <button class="btn-copy-glyph"><span class="glyphicon glyphicon-copy"></span></button>
+        <input type="text" class="npm-input" ng-value='"npm install " + module.name' ng-cloak>
+      </div>
+
+      <br>
+      <br>
+
+
+      <div class="details-description form-div" ng-switch="selectedGraph">
+
         <div ng-switch-when="downloads">
-          <h4>Monthly Downloads.</h4>
+          <h4 class="form-header">Monthly downloads</h4>
+
           <form ng-submit="drawGraph('downloads')" class="form-horizontal">
+
             <!-- Bar Width --> 
             <div class="form-group">
-              <label for="bar-width" class="col-md-4 control-label">Bar Width</label>
+              <label for="bar-width" class="col-md-4 control-label">Bar width</label>
               <div class="col-md-8">
                 <input type="number" class="form-control" id="bar-width" min='1' max='10' ng-model="dlForm.barWidth">
               </div>
@@ -59,7 +69,7 @@
 
             <!-- Ma Period --> 
             <div class="form-group">
-              <label for="ma-period" class="col-md-4 control-label">MA Period</label>
+              <label for="ma-period" class="col-md-4 control-label">MA period</label>
               <div class="col-md-8">
                 <input type="number" class="form-control" id="ma-period" min='10' max='500' ng-model="dlForm.maPeriod">
               </div>
@@ -67,90 +77,90 @@
 
             <!-- Date Range controls -->
             <div class="form-group">
-              <label for="start-date" class="col-md-4 control-label">Start Date</label>
+              <label for="start-date" class="col-md-4 control-label">Start date</label>
               <div class="col-md-8">
                 <input type="date" class="form-control" id="start-date" ng-model="dlForm.startDate">
               </div>
             </div>
             <div class="form-group">
-              <label for="end-date" class="col-md-4 control-label">End Date</label>
+              <label for="end-date" class="col-md-4 control-label">End date</label>
               <div class="col-md-8">
                 <input type="date" class="form-control" id="end-date" ng-model="dlForm.endDate">
               </div>
             </div>
 
+
             <!-- All, weekend, weekday filter -->
-            <div class="radio-buttons">
-              <div class="radio">
-                <label>
-                  <input type="radio" ng-model="dlForm.filter" name="optionsRadios" id="optionsRadios1" value="all">
-                  All
-                </label>
+            
+            <form class="form-inline" role="form">
+              <div class="form-group">
+                <center>
+                  <div class="radio-div">
+                    <label class="radio-inline">
+                      <input type="radio" ng-model="dlForm.filter" name="optionsRadios" id="optionsRadios1" value="all" />
+                      all
+                    </label>
+
+                    <label class="radio-inline">
+                      <input type="radio" ng-model="dlForm.filter" name="optionsRadios" id="optionsRadios2" value="weekdays">
+                      weekdays
+                    </label>
+
+                    <label class="radio-inline">
+                      <input type="radio" ng-model="dlForm.filter" name="optionsRadios" id="optionsRadios3" value="weekends">
+                      weekends
+                    </label>
+                  </div>                
+                  <button type="submit" class="btn btn-xs">view</button>
+                </center>
+
               </div>
-              <div class="radio">
-                <label>
-                  <input type="radio" ng-model="dlForm.filter" name="optionsRadios" id="optionsRadios2" value="weekdays">
-                  Weekdays
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  <input type="radio" ng-model="dlForm.filter" name="optionsRadios" id="optionsRadios3" value="weekends">
-                  Weekends
-                </label>
-              </div>
-            </div>
-    
-            <!-- Submit button -->
-            <div class="form-group">
-              <div class="col-md-offset-7 col-md-5">
-                <button type="submit" class="btn btn-success">Submit</button>
-              </div>
-            </div>
+            </form>
+
           </form>
         </div>
-        <div class="dependency-switch" ng-switch-when="dependency">
-          <h4>Modules that list {{module.name}} as a dependency.</h4>
-          <p><span>Instructions:</span> Left click a node to view information. Double click a node to view its analytics page.</p>
+
+        <div class="dependency-switch form-div" ng-switch-when="dependency">
+          <h4 class="form-header">Modules that depend on {{module.name}}</h4>
+          <p><span>Instructions:</span> Click on a module to view more information. Double click on a module to view its analytics page.</p>
           <div class="target-stats">
             <h3 ng-if="!selectedModule.name">Selected Module</h3>
             <a href="/#/details/{{selectedModule.name}}"><h3 ng-if="selectedModule.name">{{selectedModule.name}}</h3></a>
-            <dl class="dl-horizontal">
-              <dt>Monthly Downloads</dt>
+            <dl class="dl-horizontal" style="">
+              <dt>Monthly downloads</dt>
               <dd>{{selectedModule.monthlyDownloadSum}}</dd>
-              <dt>Last Update</dt>
+              <dt>Last update</dt>
               <dd>{{selectedModule.lastUpdate}}</dd>
-              <dt>Latest Version</dt>
+              <dt>Latest version</dt>
               <dd>{{selectedModule.latestVersion}}</dd>
-              <dt>Starred</dt>
+              <dt>NPM stars</dt>
               <dd>{{selectedModule.starred}}</dd>
-              <dt># of Dependents</dt>
+              <dt>Dependents</dt>
               <dd>{{selectedModule.dependentsSize}}</dd>
             </dl>
           </div>
         </div>
-        <div ng-switch-when="version">
-          <h4>Version release history.</h4>
+
+        <div ng-switch-when="version" class="form-div">
+          <h4 class="form-header">Version release history</h4>
           <form ng-submit="drawGraph('version')" class="form-horizontal">
             <!-- Date Range controls -->
             <div class="form-group">
-              <label for="start-date" class="col-md-4 control-label">Start Date</label>
+              <label for="start-date" class="col-md-4 control-label">Start date</label>
               <div class="col-md-8">
                 <input type="date" class="form-control" id="start-date" ng-model="dlForm.startDate">
               </div>
             </div>
             <div class="form-group">
-              <label for="end-date" class="col-md-4 control-label">End Date</label>
+              <label for="end-date" class="col-md-4 control-label">End date</label>
               <div class="col-md-8">
                 <input type="date" class="form-control" id="end-date" ng-model="dlForm.endDate">
               </div>
             </div>
-            <!-- Submit button -->
-            <div class="form-group">
-              <div class="col-md-offset-7 col-md-5">
-                <button type="submit" class="btn btn-success">Submit</button>
-              </div>
-            </div>
+
+            <center><button type="submit" class="btn btn-xs">view</button></center>
+
+
           </form>
         </div>
       </div>
@@ -158,6 +168,6 @@
   </div>
 
   <div class="row details-readme">
-    <h1><strong>Readme</strong></h1><p ng-bind-html='readmeMarkdown'></p>
+    <p ng-bind-html='readmeMarkdown'></p>
   </div>
 </div>
