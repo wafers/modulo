@@ -776,7 +776,7 @@ angular.module('app')
     } else {
       d3Draw();
     }
-    
+
     function d3Draw() {
       //d3 stuff
       var width = options.width;
@@ -788,7 +788,7 @@ angular.module('app')
 
 
       d3.layout.cloud()
-        .size([500, 800])
+        .size([800, 500])
         .words(module.keywordGraph)
         .rotate(0)
         .text(function(d){return d.text})
@@ -801,7 +801,7 @@ angular.module('app')
           .attr("height", 500)
           .attr("width", 800)
           .append("g")
-          .attr('transform', 'translate(200,350)');
+          .attr('transform', 'translate(250,250)');
 
         chart.selectAll("text")
           .data(words)
