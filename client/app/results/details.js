@@ -56,7 +56,7 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
     } else if (type === 'keyword') {
       // Draw the keyword cloud
       var options = {width: width};
-      Graph.keywordGraph(this.module.keywords, options);
+      Graph.keywordGraph(this.module, options);
     }
   }
 
