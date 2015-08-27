@@ -1,11 +1,19 @@
 <div class="container details-container" ng-init="init()">
 
-<div class="row">
-  <div id="top-modules-graph" class="col-md-8 col-md-offset-1"></div>
-</div>
+  <center><span class="top-10-title">Top 10 Lists</span></center>
+    <br><br>
 
-<center><span class="top-10-title">Top 10 Lists</span></center>
-  <br><br>
+
+    <div class="col-md-12">
+      <div class="panel">
+        <div class="panel-heading"><strong>Top 10 Modules - Downloads Over Time</strong></div>
+
+        <div class="row">
+          <div id="top-modules-graph" class="col-md-8 col-md-offset-1"></div>
+        </div>
+      </div>
+    </div>
+
 
   <div class="col-md-6" ng-repeat="property in properties">
     <div class="panel">
