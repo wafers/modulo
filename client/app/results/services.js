@@ -746,11 +746,7 @@ angular.module('app')
       d.count = +d.count; // coerce to number
       return d;
     }
-  this.keywordGraph = function(keywordArray, options){
-    $http.post('/relatedKeywordSearch', {"data": keywordArray})
-    .success(function(data){
-      console.log('Related keywords:', data)
-    })
+  }
 
   this.keywordGraph = function(module, options){
     var keywordArray = module.keywords;
@@ -788,11 +784,12 @@ angular.module('app')
 
 
       d3.layout.cloud()
-        .size([800, 500])
+        .size([750, 450])
         .words(module.keywordGraph)
         .rotate(0)
         .text(function(d){return d.text})
         .fontSize(function(d) { return d.size; })
+        .font('impact')
         .on("end", draw)
         .start();
 
