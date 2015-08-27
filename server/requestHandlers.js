@@ -112,15 +112,16 @@ var topModules = module.exports.topModules = function(req, res) {
 
 // Fetches 8 most-related keywords for a given keyword. Used in keyword graph.
 var relatedKeywordSearch = module.exports.relatedKeywordSearch = function(req, res) {
-    cache.get("KEYWORDGRAPH", function(err, value) {
+    var keywordArray = req.body.data
+    cache.get("KEYWORDGRAPH_"+keywordArray, function(err, value) {
         if (err) {
             console.log(err)
         } else if (value === null) {
-          helpers.relatedKeywordSearch(req.body.data, function(err, data) {
+          helpers.relatedKeywordSearch(keywordArray, function(err, data) {
             if (err) {
               res.send('No keywords found')
             } else {
-                cache.set("KEYWORDGRAPH", data, function() {
+                cache.set("KEYWORDGRAPH_"+keywordArray, data, function() {
                         res.json(data);
                     })
             }
