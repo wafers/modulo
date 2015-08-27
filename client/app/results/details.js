@@ -53,6 +53,10 @@ function(Graph, ModulePass, $showdown, $scope, $rootScope, $stateParams, Search)
       // Draw the bulletGraph
       var options = { width: width };
       Graph.bulletGraph(this.module, undefined, options);
+    } else if (type === 'keyword') {
+      // Draw the keyword cloud
+      var options = {width: width};
+      Graph.keywordGraph(this.module, options);
     }
   }
 

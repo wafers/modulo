@@ -1,6 +1,7 @@
 var helpers = require(__dirname + '/helpers.js')
 var config = (process.env.DATABASE_URL) ? process.env.DATABASE_URL :  require(__dirname + '/config').db;
-var fs = require('fs')
+var fs = require('fs');
+var _ = require('underscore');
 
 var dbRemote = require("seraph")({
     user: process.env.DATABASE_USER || config.username,
@@ -149,6 +150,25 @@ var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
             })
         }
     })
+}
+
+var relatedKeywordSearch = module.exports.relatedKeywordSearch = function (keywordArray, cb) {
+    var queryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE m.name IN {keywords} WITH k, COUNT(m) AS matches, COLLECT(m) AS m, COLLECT(r) AS r WHERE matches > 1 RETURN m , matches, k, r ORDER BY matches DESC'
+    console.log(keywordArray)
+    dbRemote.query(queryString, {keywords: keywordArray}, function(err, keywordResults){
+        if (err) {
+            console.log('ERROR IN FINDING RELATED KEYWORDS', err);
+            cb(err, null);
+        } else {
+            console.log(keywordResults)
+            keywordResultsArray = keywordResults.map(function(keyword){
+               if (keyword.r[0].properties.count+keyword.r[1].properties.count > 20) return {name: keyword.k.name, count: keyword.r[0].properties.count+keyword.r[1].properties.count};
+               else return;
+            })
+            keywordResultsArray = _.compact(keywordResultsArray)
+            cb(null, keywordResultsArray)
+        }
+    });
 }
 
 var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){

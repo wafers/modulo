@@ -746,6 +746,76 @@ angular.module('app')
       d.count = +d.count; // coerce to number
       return d;
     }
+  this.keywordGraph = function(keywordArray, options){
+    $http.post('/relatedKeywordSearch', {"data": keywordArray})
+    .success(function(data){
+      console.log('Related keywords:', data)
+    })
+
+  this.keywordGraph = function(module, options){
+    var keywordArray = module.keywords;
+    if (!module.keywordGraph){
+      $http.post('/relatedKeywordSearch', {"data": keywordArray})
+      .success(function(data){
+        module.keywordGraph = data;
+
+        keywordArray.forEach(function(primaryWord){
+          module.keywordGraph.push({name: primaryWord, count: 75})
+        })
+        module.keywordGraph = module.keywordGraph.map(function(keyObj){
+          return {
+            text: keyObj.name,
+            size: keyObj.count,
+            test: 'haha'
+          };
+        })
+
+        d3Draw();
+
+      })
+    } else {
+      d3Draw();
+    }
+
+    function d3Draw() {
+      //d3 stuff
+      var width = options.width;
+      var buckets = 10;
+      var colors = ["#3498DB", "#3286BF", "#327DB1", "#3174A3", "#306B96", "#2F6288", "#2E597A", "#2E506C", "#2D475E", "#2C3E50"]
+      var colorScale = d3.scale.quantize()
+        .domain([0, buckets-1, 100])
+        .range(colors);
+
+
+      d3.layout.cloud()
+        .size([800, 500])
+        .words(module.keywordGraph)
+        .rotate(0)
+        .text(function(d){return d.text})
+        .fontSize(function(d) { return d.size; })
+        .on("end", draw)
+        .start();
+
+      function draw(words) {
+        var chart = d3.select("#graph-container").append('svg').attr("class", "wordcloud")
+          .attr("height", 500)
+          .attr("width", 800)
+          .append("g")
+          .attr('transform', 'translate(250,250)');
+
+        chart.selectAll("text")
+          .data(words)
+            .enter().append("text")
+            .style("font-size", function(d) { 
+              return d.size + "px"; })
+            .style("fill", function(d) { return colorScale(d.size); })
+            .attr("transform", function(d) {
+              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .text(function(d) {
+              return d.text; });
+            }
+    }
   }
 }])
 

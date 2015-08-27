@@ -363,5 +363,10 @@ var updateMissingData = module.exports.updateMissingData = function(){
   db.updateModules();
 }
 
+// FIND RELATED KEYWORDS ENDPOINT HELPER
+var relatedKeywordSearch = module.exports.relatedKeywordSearch = function(keyword, cb) {
+  db.relatedKeywordSearch(keyword, cb);
+}
+
 // TOP MODULES GET ENDPOINT helper-----------------------------------------------------------------
 var getTopModules = module.exports.getTopModules = db.fetchTopModuleData;
