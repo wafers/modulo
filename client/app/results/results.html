@@ -11,14 +11,11 @@
        <li ng-class="{'active': order=='-dateRank'}">
          <a href="#" ng-click="setOrder('-dateRank')" class="order-link">last update</a>
        </li>
-       <li ng-class="{'active': order=='-starRank'}">
-         <a href="#" ng-click="setOrder('-starRank')" class="order-link">npm stars</a>
-       </li>
        <li ng-class="{'active': order=='-dependentRank'}">
          <a href="#" ng-click="setOrder('-dependentRank')" class="order-link">dependers</a>
        </li> 
        <li>
-         <a href="/#/top" class="order-link top-10">view top 10</a>
+         <a href="/#/top" class="top-10">top 10 lists</a>
        </li>
      </ul>
    </div>
@@ -39,7 +36,7 @@
             </div>
             <div class="rank dependent-number">
               <div class="rank-int">{{result.dependentRank}}</div>
-              <div class="rank-sub">DEPENDENTS</div>
+              <div class="rank-sub">DEPENDERS</div>
             </div>
             <div class="rank overall">
               <div class="rank-int">{{result.overallRank}}</div>

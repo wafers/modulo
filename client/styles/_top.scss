@@ -1,0 +1,70 @@
+.top-10-title {
+	font-size: 40px;
+	font-family: Roboto-Thin;
+	letter-spacing: 2px;
+  color: $lightblue;
+  text-transform: uppercase;
+}
+
+.panel-heading {
+	background-color: $red;
+	border-radius: 0;
+	color: $white;
+	font-size: 20px;
+	font-family: Roboto-Light;
+	letter-spacing: 1px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.panel {
+	outline: none;
+	border: 0;
+}
+
+.table {
+	outline: none;
+	border-radius: 0;
+}
+
+.table-header {
+	font-family: Roboto-Light;
+	font-size: 14px;
+	color: $blue;
+	text-transform: uppercase;
+}
+
+.row-name > a {
+  color: $navy;
+}
+
+.row-number {
+	font-family: Roboto-Light;
+	font-size: 20px;
+	color: $lightblue;
+	text-align: center;
+}
+
+.rank-column {
+	width: 200px;
+	text-align: right;
+}
+
+.rank-number {
+	font-family: Roboto-Light;
+	font-size: 20px;
+	color: $navy;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    border-top: 0;
+}
+
+.table>thead>tr>th {
+    vertical-align: bottom;
+    border-bottom: 1px solid $grey;
+}
+
+.panel {
+    border-bottom-left-radius: 0 !important;
+}
