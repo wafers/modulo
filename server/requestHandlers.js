@@ -120,7 +120,9 @@ var relatedKeywordSearch = module.exports.relatedKeywordSearch = function(req, r
             if (err) {
               res.send('No keywords found')
             } else {
-              res.json(data)
+                cache.set("KEYWORDGRAPH", data, function() {
+                        res.json(data);
+                    })
             }
           })
         } else {

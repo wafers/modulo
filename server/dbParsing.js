@@ -160,7 +160,6 @@ var relatedKeywordSearch = module.exports.relatedKeywordSearch = function (keywo
             console.log('ERROR IN FINDING RELATED KEYWORDS', err);
             cb(err, null);
         } else {
-            console.log(keywordResults)
             keywordResultsArray = keywordResults.map(function(keyword){
                if (keyword.r[0].properties.count+keyword.r[1].properties.count > 20) return {name: keyword.k.name, count: keyword.r[0].properties.count+keyword.r[1].properties.count};
                else return;
