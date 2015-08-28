@@ -7,8 +7,8 @@ angular.module('app')
 
   // Watch function on the search results, change when return from async GET request
   $scope.$watch(function() { return Search.results.searchResults}, function(){
-    $scope.results = Search.showResults().searchResults
-    $scope.setOrder('-overallRank')
+    $scope.results = Search.showResults().searchResults;
+    $scope.setOrder('-overallRank');
   });
 
   // Toggle a search results dropdown
@@ -20,5 +20,8 @@ angular.module('app')
 
   $rootScope.$on('$stateChangeSuccess', function() {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
+    $scope.results.forEach(function(result){
+      if(result.show) result.show = !result.show;
+    })
   });
 }]);
