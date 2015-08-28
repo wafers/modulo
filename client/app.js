@@ -17,7 +17,7 @@ angular.module('app', ['ui.router', 'angular-loading-bar', 'ng-showdown'])
       },
       '': {
         abstract: true,
-        templateUrl: './app/content.html'
+        templateUrl: './app/content/content.html'
       }
     }
   })
@@ -46,7 +46,7 @@ angular.module('app', ['ui.router', 'angular-loading-bar', 'ng-showdown'])
         controller: 'NavController'
       },
       '': {
-        templateUrl: './app/topModules.html',
+        templateUrl: './app/topModules/topModules.html',
         controller: 'TopModulesController'
       }
     }
