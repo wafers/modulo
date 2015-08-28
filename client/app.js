@@ -12,7 +12,7 @@ angular.module('app', ['ui.router', 'angular-loading-bar', 'ng-showdown'])
     views: {
       'app.nav': {
         abstract: true,
-        templateUrl: './app/results/nav.html',
+        templateUrl: './app/nav/nav.html',
         controller: 'NavController'
       },
       '': {
@@ -29,11 +29,11 @@ angular.module('app', ['ui.router', 'angular-loading-bar', 'ng-showdown'])
     url : '/details/:moduleName',
     views: { 
       'app.nav': {
-        templateUrl: './app/results/nav.html',
+        templateUrl: './app/nav/nav.html',
         controller: 'NavController'
       },
       '': {
-        templateUrl: './app/results/details.html',
+        templateUrl: './app/details/details.html',
         controller: 'DetailsController'
       }
     }
@@ -42,7 +42,7 @@ angular.module('app', ['ui.router', 'angular-loading-bar', 'ng-showdown'])
     url: '/top',
     views: {
       'app.nav' : {
-        templateUrl: './app/results/nav.html',
+        templateUrl: './app/nav/nav.html',
         controller: 'NavController'
       },
       '': {
