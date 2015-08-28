@@ -7,8 +7,9 @@ angular.module('app')
 
   // Watch function on the search results, change when return from async GET request
   $scope.$watch(function() { return Search.results.searchResults}, function(){
-    $scope.results = Search.showResults().searchResults;
-    $scope.setOrder('-overallRank');
+    $scope.results = Search.showResults().searchResults
+    $scope.setOrder('-overallRank')
+    $scope.searchInput = Search.navInput;
   });
 
   // Toggle a search results dropdown
