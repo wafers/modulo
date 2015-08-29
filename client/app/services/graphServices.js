@@ -586,21 +586,23 @@ angular.module('app')
     if (!module.keywordGraph){
       $http.post('/relatedKeywordSearch', {"data": keywordArray})
       .success(function(data){
-        module.keywordGraph = data;
+        var currentGraph = $('#graph-container').attr('data');
+        if(currentGraph === 'keyword') {
+          module.keywordGraph = data;
 
-        keywordArray.forEach(function(primaryWord){
-          module.keywordGraph.push({name: primaryWord, count: 75})
-        })
-        module.keywordGraph = module.keywordGraph.map(function(keyObj){
-          return {
-            text: keyObj.name,
-            size: keyObj.count,
-            test: 'haha'
-          };
-        })
+          keywordArray.forEach(function(primaryWord){
+            module.keywordGraph.push({name: primaryWord, count: 75})
+          })
+          module.keywordGraph = module.keywordGraph.map(function(keyObj){
+            return {
+              text: keyObj.name,
+              size: keyObj.count,
+              test: 'haha'
+            };
+          })
 
-        d3Draw();
-
+          d3Draw();
+        }
       })
     } else {
       d3Draw();
