@@ -34,7 +34,7 @@ var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
     keywordArray.forEach(function(key){ keywordResultArray.push(key); })
 
     // Finds the 200 most highest ranked modules that match at least 2 of the keywords
-    var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} AND m.overallRank > 0 WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m, matches, k ORDER BY m.overallRank DESC LIMIT 200';
+    var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m) WHERE k.name IN {keywordArray} AND m.overallRank > 0 WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m, matches, k ORDER BY m.overallRank DESC LIMIT 200';
     dbRemote.query(secondQueryString, {keywordArray: keywordResultArray}, function(err, modulesFound){
       if (err) { console.log(err); cb(err, null); return; }
       cb(null, modulesFound);
@@ -46,7 +46,7 @@ var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
 
 // DB Query used for the keyword cloud graph. Finding any keywords that have a relationship to the modules' keywords
 var relatedKeywordSearch = module.exports.relatedKeywordSearch = function (keywordArray, cb) {
-  var queryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE m.name IN {keywords} WITH k, COUNT(m) AS matches, COLLECT(m) AS m, COLLECT(r) AS r WHERE matches > 1 RETURN m , matches, k, r ORDER BY matches DESC'
+  var queryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m) WHERE m.name IN {keywords} WITH k, COUNT(m) AS matches, COLLECT(m) AS m, COLLECT(r) AS r WHERE matches > 1 RETURN m , matches, k, r ORDER BY matches DESC'
   console.log(keywordArray)
   dbRemote.query(queryString, {keywords: keywordArray}, function(err, keywordResults){
     if (err) {
@@ -66,7 +66,7 @@ var relatedKeywordSearch = module.exports.relatedKeywordSearch = function (keywo
 
 // Finds all the relationships that will feed the Sigma Graph
 var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
-  var queryString = "MATCH (n:MODULE { name: {name} })<-[r:DEPENDS_ON]-(m:MODULE) RETURN m.name, m.monthlyDownloadSum;"
+  var queryString = "MATCH (n:MODULE { name: {name} })<-[r:DEPENDS_ON]-(m) RETURN m.name, m.monthlyDownloadSum;"
   dbRemote.query(queryString, {name: moduleName}, function(err, result){
     if(err) { console.log(err); cb(err, null); return; }
 
