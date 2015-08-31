@@ -4,233 +4,111 @@ var fs = require('fs');
 var _ = require('underscore');
 
 var dbRemote = require("seraph")({
-    user: process.env.DATABASE_USER || config.username,
-    pass: process.env.DATABASE_PASS || config.password,
-    server: process.env.DATABASE_URL || config.dbURL
+  user: process.env.DATABASE_USER || config.username,
+  pass: process.env.DATABASE_PASS || config.password,
+  server: process.env.DATABASE_URL || config.dbURL
 });
 
-var dependencys = {}
-
-var dbInsert = function(collection) {
-    var finished = 0;
-    for (var y = 0; y < collection.length; y++) {
-        helpers.moduleDataBuilder(collection[y], function(err, data) {
-            if (err) {
-                finished++;
-                if (finished === collection.length) {
-                    console.log("Done inserting nodes, now working on relationships.")
-                    relationshipInsert(dependencys)
-                }
-                return console.log("Oh, oh error")
-            } else {
-                var querryString = "MATCH (n{name:{name}}) SET n.description = {description}, n.time = {time}, n.url = {url} , n.starred = {starred}, n.downloads = {downloads}, n.monthlyDownloadSum = {monthlyDownloadSum}, n.dependentsSize = {dependentsSize}, n.readme = {readme}, n.keywords = {keywords}, n.subscribers = {subscribers}, n.forks = {forks}, n.watchers = {watchers}, n.openIssues = {openIssues}"
-                console.log("Working on inserting into database. Finish count is", finished, "and y count is:", y)
-                dependencys[data.name] = data.dependents
-                dbRemote.queryRaw(querryString, {
-                        name: data.name,
-                        description: data.description,
-                        time: JSON.stringify(data.time),
-                        url: data.url,
-                        starred: data.starred.length,
-                        downloads: JSON.stringify(data.downloads),
-                        monthlyDownloadSum: data.monthlyDownloadSum,
-                        dependentsSize : data.dependents.length,
-                        readme : data.readme,
-                        keywords: data.keywords,
-                        subscribers : data.subscribers,
-                        forks : data.forks,
-                        watchers: data.watchers,
-                        openIssues: data.openIssues
-                    },
-                    function(err, node) {
-                        if (err) {
-                            console.log(err)
-                        } else {
-                            console.log("INSERTION SUCCESS")
-                        }
-                    })
-
-                finished++;
-                if (finished === collection.length) {
-                    console.log("Done inserting nodes, now working on relationships.")
-                    relationshipInsert(dependencys)
-                }
-            }
-        })
-    }
-}
-
-var relationshipInsert = function(collection) {
-    console.log("Inside relationshipsInsert")
-        // console.log(collection)
-    for (var key in collection) {
-        console.log("Inserting Relationship for ", key)
-        for (var i = 0; i < collection[key].length; i++) {
-            console.log("\t |")
-            console.log("\t |-> Relationship With", collection[key][i])
-
-            dbRemote.queryRaw("MATCH (n { name : '" + collection[key][i] + "'  }),(m { name: '" + key + "' }) CREATE UNIQUE (n)-[:DEPENDS_ON]->(m)",
-                function(err, result) {
-                    if (err) console.log(err);
-                    console.log(result)
-                })
-        }
-    }
-}
-
-
-var insertBatch = function(collection) {
-    var txn = dbRemote.batch();
-    var nodeArr = []
-    for (var a = 0; a < collection.length; a++) {
-        nodeArr.push(txn.save({
-            name: collection[a]
-        }));
-        if (nodeArr.length === 100) {
-            console.log((a / collection.length) * 100)
-            console.log("About to Insert Modules")
-            txn.label(nodeArr, 'Module');
-            txn.commit(function(err, results) {
-                if (err) console.log("Error", err)
-                console.log("Submited 100 Nodes");
-
-            });
-            nodeArr = []
-            txn = dbRemote.batch();
-        }
-    }
-    txn.label(nodeArr, 'Module');
-    txn.commit(function(err, results) {
-        if (err) console.log("Error", err)
-        console.log("Submited last " + nodeArr.length + "Nodes");
-    });
-
-}
-
-// helpers.getAllNames(function(nameArr) {
-//     // insertBatch(nameArr);
-// })
-
-// DB endpoint setup
+// DB Query to for the old NPM search 
 var search = module.exports.search = function(moduleName, cb){
-    dbRemote.find({name: moduleName},"MODULE", function(err, objs){
-        if(err || !objs[0]){
-            console.log(err);
-            cb(err, null);  
-        }
-        else {
-            cb(null, objs[0]);
-        }
-    })
-}
-
-var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
-    var queryString = "MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE k.name IN {keywordInput} RETURN m, r ORDER BY r.count DESC LIMIT 8"
-    dbRemote.query(queryString, {keywordInput: keywordArray}, function(err, keywordResults){
-        if (err) { 
-            console.log('ERROR IN FINDING RELATED KEYWORDS');
-            cb(err, null);
-        } else {
-            keywordResultArray = keywordResults.map(function(keyword){
-                return keyword.m.name;
-            })
-
-            keywordArray.forEach(function(key){
-                keywordResultArray.push(key);
-            })
-
-            var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} AND m.overallRank > 0 WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m, matches, k ORDER BY m.overallRank DESC LIMIT 200';
-            dbRemote.query(secondQueryString, {keywordArray: keywordResultArray}, function(err, modulesFound){
-                if (err) {
-                    console.log('ERROR IN FINDING MODULES BASED ON KEYWORD ARRAY')
-                    cb(err, null)
-                } else {
-                    cb(null, modulesFound);
-                }
-            })
-        }
-    })
-}
-
-var relatedKeywordSearch = module.exports.relatedKeywordSearch = function (keywordArray, cb) {
-    var queryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE m.name IN {keywords} WITH k, COUNT(m) AS matches, COLLECT(m) AS m, COLLECT(r) AS r WHERE matches > 1 RETURN m , matches, k, r ORDER BY matches DESC'
-    console.log(keywordArray)
-    dbRemote.query(queryString, {keywords: keywordArray}, function(err, keywordResults){
-        if (err) {
-            console.log('ERROR IN FINDING RELATED KEYWORDS', err);
-            cb(err, null);
-        } else {
-            keywordResultsArray = keywordResults.map(function(keyword){
-               if (keyword.r[0].properties.count+keyword.r[1].properties.count > 20) return {name: keyword.k.name, count: keyword.r[0].properties.count+keyword.r[1].properties.count};
-               else return;
-            })
-            keywordResultsArray = _.compact(keywordResultsArray)
-            cb(null, keywordResultsArray)
-        }
-    });
-}
-
-var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
-    var queryString = "MATCH (n:MODULE { name: {name} })<-[r:DEPENDS_ON]-(m:MODULE) RETURN m.name, m.monthlyDownloadSum;"
-    dbRemote.query(queryString, {name: moduleName}, function(err, result){
-      if(err) { console.log(err); cb(err, null); return; }
-
-      // change the data 
-      if (!Array.isArray(result)) {
-        result = [result];
-      }
-      var result = result.map(function(obj){
-        return { name : obj['m.name'], monthlyDownloadSum : obj['m.monthlyDownloadSum'] };
-      });
-      cb(null, result);
-    })
-}
-
-var updateModules = module.exports.updateModules = function(){
-    var databaseNodes = []
-    dbRemote.queryRaw('MATCH (n) RETURN n.name LIMIT 1000;',function(err,node){
-        if(err) console.log(err)
-        node.data.forEach(function(item){
-            databaseNodes.push(item[0])
-        })
-        dbInsert(databaseNodes)
-    })
-}
-
-var updateMissingDataModules = module.exports.updateMissingDataModules = function(){
-    var databaseNodes = []
-    dbRemote.queryRaw('MATCH (n) WHERE n.description IS NULL RETURN n.name LIMIT 1000;',function(err,node){
-        if(err) console.log(err)
-        node.data.forEach(function(item){
-            databaseNodes.push(item[0])
-        })
-        dbInsert(databaseNodes)
-    })
-}
-
-// dbInsert(['basscss-base-forms']);
-
-var fetchTopModuleData = module.exports.fetchTopModuleData = function(cb){
-    var data = {};
-    var dataToFetch = ['overallRank', 'monthlyDownloadSum', 'dependentRank'];
-
-    dataToFetch.forEach(addToDataObject);
-
-    function inDataObject(property){ return data.hasOwnProperty(property); }
-
-    function addToDataObject(property){
-        var queryString = "MATCH (n:MODULE) WHERE n." + property + " IS NOT NULL return n.name, n." + property + " order by n." + property + " DESC LIMIT 10;";
-
-        // Send the DB QUERY
-        dbRemote.queryRaw(queryString, function(err, result){
-            console.log('inside the dbquery for ', property);
-            if(err) {console.log(err); cb(err, null); return;}
-            data[property] = result;
-
-            // Check if the data object is ready to be sent back
-            if(dataToFetch.every(inDataObject)){
-                cb(null, data);
-            }
-        });
+  dbRemote.find({name: moduleName},"MODULE", function(err, objs){
+    if(err || !objs[0]){
+      console.log(err);
+      cb(err, null);  
     }
+    else {
+      cb(null, objs[0]);
+    }
+  })
 }
+
+// DB Query for the keyword search algorithm 
+var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
+  var queryString = "MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE k.name IN {keywordInput} RETURN m, r ORDER BY r.count DESC LIMIT 8"
+
+  // Finds the eight most closely related keywords
+  dbRemote.query(queryString, {keywordInput: keywordArray}, function(err, keywordResults){
+    if(err){ console.log(err); cb(err, null); return; }
+      
+    keywordResultArray = keywordResults.map(toModuleName);
+    keywordArray.forEach(function(key){ keywordResultArray.push(key); })
+
+    // Finds the 200 most highest ranked modules that match at least 2 of the keywords
+    var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} AND m.overallRank > 0 WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m, matches, k ORDER BY m.overallRank DESC LIMIT 200';
+    dbRemote.query(secondQueryString, {keywordArray: keywordResultArray}, function(err, modulesFound){
+      if (err) { console.log(err); cb(err, null); return; }
+      cb(null, modulesFound);
+    });
+  });
+
+  function toModuleName(row){ return row.m.name; }
+}
+
+// DB Query used for the keyword cloud graph. Finding any keywords that have a relationship to the modules' keywords
+var relatedKeywordSearch = module.exports.relatedKeywordSearch = function (keywordArray, cb) {
+  var queryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE m.name IN {keywords} WITH k, COUNT(m) AS matches, COLLECT(m) AS m, COLLECT(r) AS r WHERE matches > 1 RETURN m , matches, k, r ORDER BY matches DESC'
+  console.log(keywordArray)
+  dbRemote.query(queryString, {keywords: keywordArray}, function(err, keywordResults){
+    if (err) {
+      console.log('ERROR IN FINDING RELATED KEYWORDS', err);
+      cb(err, null);
+    } else {
+      keywordResultsArray = keywordResults.map(function(keyword){
+        // Only returning keywords with a relationship strength of 20 or greater
+       if (keyword.r[0].properties.count+keyword.r[1].properties.count > 20) return {name: keyword.k.name, count: keyword.r[0].properties.count+keyword.r[1].properties.count};
+       else return;
+     })
+      keywordResultsArray = _.compact(keywordResultsArray)
+      cb(null, keywordResultsArray)
+    }
+  });
+}
+
+// Finds all the relationships that will feed the Sigma Graph
+var fetchRelationships = module.exports.fetchRelationships = function(moduleName, cb){
+  var queryString = "MATCH (n:MODULE { name: {name} })<-[r:DEPENDS_ON]-(m:MODULE) RETURN m.name, m.monthlyDownloadSum;"
+  dbRemote.query(queryString, {name: moduleName}, function(err, result){
+    if(err) { console.log(err); cb(err, null); return; }
+
+    // change the data 
+    if (!Array.isArray(result)) {
+      result = [result];
+    }
+    var result = result.map(function(obj){
+      return { name : obj['m.name'], monthlyDownloadSum : obj['m.monthlyDownloadSum'] };
+    });
+    cb(null, result);
+  })
+}
+
+// Send a query to the database to get all the data used for the Top 10 modules page.
+// Grabs overall rank, monthlydownloadsum, dependentRank
+var fetchTopModuleData = module.exports.fetchTopModuleData = function(cb){
+  var data = {};
+  var dataToFetch = ['overallRank', 'monthlyDownloadSum', 'dependentRank'];
+
+  dataToFetch.forEach(addToDataObject);
+
+  function addToDataObject(property){
+    var queryString = "MATCH (n:MODULE) WHERE n." + property + " IS NOT NULL return n.name, n." + property + " order by n." + property + " DESC LIMIT 10;";
+
+    // Send the DB QUERY
+    dbRemote.queryRaw(queryString, function(err, result){
+      // Error Handling
+      if(err) {
+        console.log(err); 
+        cb(err, null); 
+        return;
+      }
+      data[property] = result;
+
+      // Check if the data object is ready to be sent back
+      if(dataToFetch.every(inDataObject)){
+        cb(null, data);
+      }
+    });
+  }
+
+  function inDataObject(property){ return data.hasOwnProperty(property); }
+}
+
