@@ -71,7 +71,7 @@ angular.module('app')
         s.bind('doubleClickNode', function(e) {
           // Double click sigma event handler. Should re-route to the target node's analytics page
           var node = e.data.node;
-          window.location = "/#/details/"+node.label; // Redirect to the node double clicked
+          window.location = "/#/"+node.label; // Redirect to the node double clicked
         });
       }
     })

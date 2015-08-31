@@ -32,7 +32,7 @@
         <tbody>
           <tr ng-repeat="row in data[property].data">
             <th scope="row" class="row-number">{{$index+1}}</th>
-            <th class="row-name"><a href="/#/details/{{row[0]}}">{{row[0]}}</a></th>
+            <th class="row-name"><a href="/#/{{row[0]}}">{{row[0]}}</a></th>
             <th class="rank-column rank-number">{{row[1].toLocaleString()}}</th>
           </tr>
         </tbody>
