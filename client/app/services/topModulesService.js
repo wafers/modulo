@@ -23,6 +23,9 @@ angular.module('app')
         if(moduleNames.every(inDataObject)){
           topModulesService.topDownloadsData = data;
           console.log('data download', data);
+
+          
+          
         }
       });
     });
