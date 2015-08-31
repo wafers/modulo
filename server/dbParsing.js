@@ -24,7 +24,7 @@ var search = module.exports.search = function(moduleName, cb){
 
 // DB Query for the keyword search algorithm 
 var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
-  var queryString = "MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m:KEYWORD) WHERE k.name IN {keywordInput} RETURN m, r ORDER BY r.count DESC LIMIT 8"
+  var queryString = "MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m) WHERE k.name IN {keywordInput} RETURN m, r ORDER BY r.count DESC LIMIT 8"
 
   // Finds the eight most closely related keywords
   dbRemote.query(queryString, {keywordInput: keywordArray}, function(err, keywordResults){
