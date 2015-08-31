@@ -34,7 +34,7 @@ angular.module('app')
   // Watcher for return of top 10 downloads data from server endpoint
   $scope.$watch(function(){ return TopModules.topDownloadsData }, function(){
     // Send all the data packaged to Graph.topDownloadsGraph
-    if(!_.isEmpty(TopModules.topDownloadsData)){
+    if(!_.isEmpty(TopModules.topDownloadsData) && $('svg').length === 0){
       var width = document.getElementById('top-modules-graph').offsetWidth;
       Graph.topDownloadsGraph(TopModules.topDownloadsData, width);
     }

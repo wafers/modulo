@@ -25,27 +25,27 @@ angular.module('app')
       var currentGraph = $('#graph-container').attr('data');
       if(currentGraph === 'dependency'){  // Check to make sure only to render sigma if the dependency graph is still selected
         s = new sigma({ 
-                graph: data,
-                renderer: {
-                  container: document.getElementById('graph-container'),
-                  type: 'canvas'
-                },
-                settings: {
-                  doubleClickEnabled: false,
-                  borderSize: 1,
-                  autoRescale: false,
-                  labelThreshold: 6,
+          graph: data,
+          renderer: {
+            container: document.getElementById('graph-container'),
+            type: 'canvas'
+          },
+          settings: {
+            doubleClickEnabled: false,
+            borderSize: 1,
+            autoRescale: false,
+            labelThreshold: 6,
 
-                  //Edge options
-                  minEdgeSize: 0.5,
-                  maxEdgeSize: 4,
-                  enableEdgeHovering: true,
-                  edgeHoverColor: 'edge',
-                  defaultEdgeColor: "#eee",
-                  defaultEdgeHoverColor: "#000",
-                  edgeHoverSizeRatio: 1,
-                  edgeHoverExtremities: true,
-                }
+            //Edge options
+            minEdgeSize: 0.5,
+            maxEdgeSize: 4,
+            enableEdgeHovering: true,
+            edgeHoverColor: 'edge',
+            defaultEdgeColor: "#eee",
+            defaultEdgeHoverColor: "#000",
+            edgeHoverSizeRatio: 1,
+            edgeHoverExtremities: true,
+          }
         });
 
         s.bind('clickNode', function(e) {
@@ -499,10 +499,13 @@ angular.module('app')
       .interpolate('basis')
 
     // D3 Chart drawing
+    var moduleNames = _.without(Object.keys(data), 'apostrophe');
 
     // Find the min,max for the entire data set for date and for download count
-    var moduleNames = Object.keys(data);
     var maxCount;
+
+    // Remove outlier
+    data = _.omit(data, 'apostrophe')
 
     // Returns an array of 3 elements in graphRanges.
     // 0 - earliest download date
