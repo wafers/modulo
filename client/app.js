@@ -25,19 +25,6 @@ angular.module('app', ['ui.router', 'angular-loading-bar', 'ng-showdown'])
     templateUrl: './app/results/results.html',
     controller: 'ResultsController'
   })
- .state('details', {
-    url : '/details/:moduleName',
-    views: { 
-      'app.nav': {
-        templateUrl: './app/nav/nav.html',
-        controller: 'NavController'
-      },
-      '': {
-        templateUrl: './app/details/details.html',
-        controller: 'DetailsController'
-      }
-    }
-  })
   .state('top', {
     url: '/top',
     views: {
@@ -48,6 +35,19 @@ angular.module('app', ['ui.router', 'angular-loading-bar', 'ng-showdown'])
       '': {
         templateUrl: './app/topModules/topModules.html',
         controller: 'TopModulesController'
+      }
+    }
+  })
+ .state('details', {
+    url : '/:moduleName',
+    views: { 
+      'app.nav': {
+        templateUrl: './app/nav/nav.html',
+        controller: 'NavController'
+      },
+      '': {
+        templateUrl: './app/details/details.html',
+        controller: 'DetailsController'
       }
     }
   })

@@ -125,7 +125,7 @@
           <p><span>Instructions:</span> Click on a module to view more information. Double click on a module to view its analytics page.</p>
           <div class="target-stats">
             <h3 ng-if="!selectedModule.name">Selected Module</h3>
-            <a href="/#/details/{{selectedModule.name}}"><h3 ng-if="selectedModule.name">{{selectedModule.name}}</h3></a>
+            <a href="/#/{{selectedModule.name}}"><h3 ng-if="selectedModule.name">{{selectedModule.name}}</h3></a>
             <dl class="dl-horizontal" style="">
               <dt>Monthly downloads</dt>
               <dd>{{selectedModule.monthlyDownloadSum}}</dd>
