@@ -28,31 +28,20 @@ var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
 
   // Finds the eight most closely related keywords
   dbRemote.query(queryString, {keywordInput: keywordArray}, function(err, keywordResults){
-    if (err) { 
-      console.log('ERROR IN FINDING RELATED KEYWORDS');
-      cb(err, null);
-    } else {
-      keywordResultArray = keywordResults.map(function(keyword){
-        return keyword.m.name;
-      })
+    if(err){ console.log(err); cb(err, null); return; }
+      
+    keywordResultArray = keywordResults.map(toModuleName);
+    keywordArray.forEach(function(key){ keywordResultArray.push(key); })
 
-      keywordArray.forEach(function(key){
-        keywordResultArray.push(key);
-      })
+    // Finds the 200 most highest ranked modules that match at least 2 of the keywords
+    var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} AND m.overallRank > 0 WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m, matches, k ORDER BY m.overallRank DESC LIMIT 200';
+    dbRemote.query(secondQueryString, {keywordArray: keywordResultArray}, function(err, modulesFound){
+      if (err) { console.log(err); cb(err, null); return; }
+      cb(null, modulesFound);
+    });
+  });
 
-      var secondQueryString = 'MATCH (k:KEYWORD)-[r:KEYWORD_OF]->(m:MODULE) WHERE k.name IN {keywordArray} AND m.overallRank > 0 WITH m, COUNT(k) AS matches, COLLECT(k) AS k WHERE matches > 1 RETURN m, matches, k ORDER BY m.overallRank DESC LIMIT 200';
-
-      // Finds the 200 most highest ranked modules that match at least 2 of the keywords
-      dbRemote.query(secondQueryString, {keywordArray: keywordResultArray}, function(err, modulesFound){
-        if (err) {
-          console.log('ERROR IN FINDING MODULES BASED ON KEYWORD ARRAY')
-          cb(err, null)
-        } else {
-          cb(null, modulesFound);
-        }
-      })
-    }
-  })
+  function toModuleName(row){ return row.m.name; }
 }
 
 // DB Query used for the keyword cloud graph. Finding any keywords that have a relationship to the modules' keywords
