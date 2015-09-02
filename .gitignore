@@ -3,3 +3,4 @@ bower_components
 .DS_Store
 server/config.js
 *.txt
+install.sh
