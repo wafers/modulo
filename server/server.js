@@ -4,9 +4,11 @@ var bodyParser = require('body-parser');
 var searchHelpers = require('./helpers.js');
 var routes = require('./routes.js');
 var cache = require('./cache.js');
+var logger = require('morgan');
 
 var app = express();
 
+app.use(logger);
 app.use('/scripts', express.static(__dirname+'/../bower_components'));
 app.use(express.static(__dirname+'/../client'));
 app.use(bodyParser.json());
