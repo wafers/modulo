@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var searchHelpers = require('./helpers.js');
 var routes = require('./routes.js');
 var cache = require('./cache.js');
+var winston = require('winston');
 
 var app = express();
 
