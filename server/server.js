@@ -5,6 +5,7 @@ var searchHelpers = require('./helpers.js');
 var routes = require('./routes.js');
 var cache = require('./cache.js');
 var logger = require('morgan');
+var fs = require('fs');
 
 var app = express();
 
