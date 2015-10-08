@@ -1,3 +1,5 @@
+var winston = require('winston');
+
 // Add request handlers to routes in here
 var helpers = require('./helpers.js');
 var cache = require('./cache.js');
@@ -38,6 +40,7 @@ var search = module.exports.search = function(req, res) {
         }
       })
     } else {
+      winston.info('Search Term: ' + moduleName;
       res.json(value)
     }
   })
