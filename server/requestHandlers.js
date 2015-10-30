@@ -2,9 +2,8 @@
 var helpers = require('./helpers.js');
 var cache = require('./cache.js');
 var MongoClient = require('mongodb').MongoClient;
-var configs = require('./config')
 
-var mongoUrl = process.env.MONGOLAB_URI || configs.mongo.connectionUrl;
+var mongoUrl = process.env.MONGOLAB_URI;
 var mongoCollections = {
   searches: true,
   details: true,
