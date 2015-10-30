@@ -34,7 +34,7 @@ var search = module.exports.search = function(req, res) {
 
     var searches = db.collection('searches');
 
-    searches.insert(key, function(err, result) {
+    searches.insert({search: key}, function(err, result) {
       if(err) console.log('MONGO ERR', err);
       db.close();
     });
