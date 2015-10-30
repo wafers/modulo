@@ -36,6 +36,7 @@
     "gulp-sourcemaps": "^1.5.2",
     "memjs": "^0.8.6",
     "moment": "^2.10.6",
+    "mongodb": "^2.0.47",
     "morgan": "^1.6.1",
     "npm-download-counts": "^0.1.1",
     "npm-registry": "^0.1.13",
