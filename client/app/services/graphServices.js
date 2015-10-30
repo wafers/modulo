@@ -81,7 +81,6 @@ angular.module('app')
   }
 
   this.bulletGraph = function(module, index, options) {
-    Search.calculateRank(module);
     // Comment out ranks including GitHub data. May re-implement later. 
     // var ranks = [['Overall Rank',module.overallRank, 'overallRank'], ['Last Update Rank', module.dateRank, 'lastUpdate'], ['Number of Versions Rank', module.versionNumberRank, 'time'], ['Module Data Completeness', module.completenessRank, 'completenessRank'], ['Monthly Download Rank', module.downloadRank, 'monthlyDownloadSum'], ['Dependers Rank', module.dependentRank, 'dependentsSize'], ['Number of Stars Rank', module.starRank, 'starred'], ['GitHub Repo Rank', module.githubRank, 'github']];
     var ranks = [['Overall Rank',module.overallRank, 'overallRank'], ['Last Update Rank', module.dateRank, 'lastUpdate'], ['Number of Versions Rank', module.versionNumberRank, 'time'], ['Module Data Completeness', module.completenessRank, 'completenessRank'], ['Monthly Download Rank', module.downloadRank, 'monthlyDownloadSum'], ['Dependers Rank', module.dependentRank, 'dependentsSize'], ['Number of Stars Rank', module.starRank, 'starred']];
