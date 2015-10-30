@@ -38,7 +38,7 @@ var search = module.exports.search = function(req, res) {
     searches.insert(key, function(err, result) {
       if(err) console.log('MONGO ERR', err);
       db.close();
-    };
+    });
   });
 
   console.log("Memcached key is : " + key)
