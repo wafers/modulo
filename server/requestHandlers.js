@@ -1,6 +1,15 @@
 // Add request handlers to routes in here
 var helpers = require('./helpers.js');
 var cache = require('./cache.js');
+var MongoClient = require('mongodb').MongoClient;
+var configs = require('./config')
+
+var mongoUrl = process.env.MONGOLAB_URI || configs.mongo.connectionUrl;
+var mongoCollections = {
+  searches: true,
+  details: true,
+  topModules: true
+};
 
 // Old npm search crawling + parsing for search results
 var npmSearch = module.exports.npmSearch = function(req, res) {
@@ -19,6 +28,19 @@ var npmSearch = module.exports.npmSearch = function(req, res) {
 var search = module.exports.search = function(req, res) {
   var moduleName = req.body.data;
   key = "SEARCH_"+moduleName
+
+  // Log search to Mongo
+  MongoClient.connect(mongoUrl, function(err, db) {
+    if(err) console.log('MONGO ERR', err);
+
+    var searches = db.collection('searches');
+
+    searches.insert(key, function(err, result) {
+      if(err) console.log('MONGO ERR', err);
+      db.close();
+    };
+  });
+
   console.log("Memcached key is : " + key)
   cache.get(key, function(err, value) {
     if (err) {
