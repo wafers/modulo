@@ -5,26 +5,44 @@
 // Dependencies
 // -----------------------------------------------------------------------------
 
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var autoprefixer = require('gulp-autoprefixer');
-var sassdoc = require('sassdoc');
+var gulp         = require('gulp'),
+    sass         = require('gulp-sass'),
+    sourcemaps   = require('gulp-sourcemaps'),
+    autoprefixer = require('gulp-autoprefixer'),
+    sassdoc      = require('sassdoc'),
+    concat       = require('gulp-concat');
 
 
 // -----------------------------------------------------------------------------
 // Configuration
 // -----------------------------------------------------------------------------
 
-var input = 'client/styles/*.scss';
-var output = 'client/';
-var sassOptions = { outputStyle: 'expanded' };
-var autoprefixerOptions = { browsers: ['last 2 versions', '> 5%', 'Firefox ESR'] };
-var sassdocOptions = { dest: 'dist/sassdoc' };
+var input               = 'client/styles/*.scss',
+    output              = 'client/',
+    sassOptions         = { outputStyle: 'expanded' },
+    autoprefixerOptions = { browsers: ['last 2 versions', '> 5%', 'Firefox ESR'] },
+    sassdocOptions      = { dest: 'dist/sassdoc' },
+    bowerPath           = './bower_components/',
+    bowerComponents     = [
+        bowerPath + 'underscore/underscore.js',
+        bowerPath + 'jquery/dist/jquery.js',
+        bowerPath + 'angular/angular.js',
+        bowerPath + 'angular-ui-router/release/angular-ui-router.js',
+        bowerPath + 'moment/moment.js',
+        bowerPath + 'bootstrap/dist/js/bootstrap.js',
+        bowerPath + 'd3/d3.js',
+        bowerPath + 'd3-tip/index.js',
+        bowerPath + 'angular-loading-bar/src/loading-bar.js',
+        bowerPath + 'zeroclipboard/dist/ZeroClipboard.js',
+        bowerPath + 'angular-sanitize/angular-sanitize.js',
+        bowerPath + 'showdown/dist/showdown.js',
+        bowerPath + 'ng-showdown/dist/ng-showdown.js',
+        bowerPath + 'angular-markdown-directive/markdown.js'
+    ];
 
 
 // -----------------------------------------------------------------------------
-// Sass compilation
+// Tasks
 // -----------------------------------------------------------------------------
 
 gulp.task('sass', function () {
@@ -37,11 +55,6 @@ gulp.task('sass', function () {
     .pipe(gulp.dest(output));
 });
 
-
-// -----------------------------------------------------------------------------
-// Sass documentation generation
-// -----------------------------------------------------------------------------
-
 gulp.task('sassdoc', function () {
   return gulp
     .src(input)
@@ -49,6 +62,11 @@ gulp.task('sassdoc', function () {
     .resume();
 });
 
+gulp.task('concatenate', function() {
+    return gulp.src(bowerComponents)
+    .pipe(concat('scripts.js'))
+    .pipe(gulp.dest('./client/'));
+});
 
 // -----------------------------------------------------------------------------
 // Watchers
