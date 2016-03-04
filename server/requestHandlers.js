@@ -33,8 +33,12 @@ var search = module.exports.search = function(req, res) {
     if(err) console.log('MONGO ERR', err);
 
     var searches = db.collection('searches');
+    var logObject = {
+      search   : key,
+      timestamp: new Date()
+    };
 
-    searches.insert({search: key}, function(err, result) {
+    searches.insert(logObject, function(err, result) {
       if(err) console.log('MONGO ERR', err);
       db.close();
     });
