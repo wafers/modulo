@@ -1,13 +1,14 @@
 // Add request handlers to routes in here
-var helpers = require('./helpers.js');
-var cache = require('./cache.js');
-var MongoClient = require('mongodb').MongoClient;
+var helpers = require('./helpers.js'),
+    cache = require('./cache.js'),
+    MongoClient = require('mongodb').MongoClient;
 
-var mongoUrl = process.env.MONGOLAB_URI;
-var mongoCollections = {
-  searches: true,
-  details: true,
-  topModules: true
+var mongoUrl = process.env.MONGOLAB_URI,
+    mongoCollections = {
+  searches   : true,
+  details    : true,
+  topModules : true,
+  searchTally: true
 };
 
 // Old npm search crawling + parsing for search results
@@ -33,6 +34,7 @@ var search = module.exports.search = function(req, res) {
     if(err) console.log('MONGO ERR', err);
 
     var searches = db.collection('searches');
+    var searchTally = db.collection('searchTally');
     var logObject = {
       search   : key,
       timestamp: new Date()
@@ -40,6 +42,12 @@ var search = module.exports.search = function(req, res) {
 
     searches.insert(logObject, function(err, result) {
       if(err) console.log('MONGO ERR', err);
+
+      var currentTally = searchTally.find({"_id": {"$oid": "56d9dc28e4b00cf3135ebd91"}});
+      currentTally[key] = currentTally[key] + 1 || 1;
+
+      searchTally.update({"_id": {"$oid": "56d9dc28e4b00cf3135ebd91"}}, currentTally);
+
       db.close();
     });
   });
