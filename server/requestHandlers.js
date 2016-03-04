@@ -43,7 +43,7 @@ var search = module.exports.search = function(req, res) {
     searches.insert(logObject, function(err, result) {
       if(err) console.log('MONGO ERR', err);
 
-      var currentTally = searchTally.find({"_id": {"$oid": "56d9dc28e4b00cf3135ebd91"}});
+      var currentTally = searchTally.findOne({"_id": {"$oid": "56d9dc28e4b00cf3135ebd91"}});
       currentTally[key] = currentTally[key] + 1 || 1;
       console.log('SEARCH TALLY TO BE UPDATED: \n', currentTally);
 
