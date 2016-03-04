@@ -5,3 +5,4 @@ server/config.js
 server/access.log
 *.txt
 install.sh
+.idea
