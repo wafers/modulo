@@ -1,14 +1,6 @@
 // Add request handlers to routes in here
-var helpers = require('./helpers.js');
-var cache = require('./cache.js');
-var MongoClient = require('mongodb').MongoClient;
-
-var mongoUrl = process.env.MONGOLAB_URI;
-var mongoCollections = {
-  searches: true,
-  details: true,
-  topModules: true
-};
+var helpers = require('./helpers.js'),
+    cache = require('./cache.js');
 
 // Old npm search crawling + parsing for search results
 var npmSearch = module.exports.npmSearch = function(req, res) {
@@ -29,20 +21,8 @@ var search = module.exports.search = function(req, res) {
   key = "SEARCH_"+moduleName
 
   // Log search to Mongo
-  MongoClient.connect(mongoUrl, function(err, db) {
-    if(err) console.log('MONGO ERR', err);
-
-    var searches = db.collection('searches');
-    var logObject = {
-      search   : key,
-      timestamp: new Date()
-    };
-
-    searches.insert(logObject, function(err, result) {
-      if(err) console.log('MONGO ERR', err);
-      db.close();
-    });
-  });
+  helpers.mongoLogger('searches', moduleName);
+  helpers.mongoLogger('searchTally', moduleName);
 
   console.log("Memcached key is : " + key)
   cache.get(key, function(err, value) {
@@ -103,11 +83,13 @@ var detailedSearch = module.exports.detailedSearch = function(req, res) {
           console.log('ERROR IN detailedSearch FETCHING') /*console.log(err)*/
         } else {
           cache.set("DETAILEDSEARCH_" + moduleName, results, function() {
+            helpers.mongoLogger('details', moduleName);
             res.json(results);
           })
         }
       })
     } else {
+      helpers.mongoLogger('details', moduleName);
       res.json(value)
     }
   })
