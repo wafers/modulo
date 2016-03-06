@@ -1,17 +1,24 @@
 // Imports
-var fs = require('fs');
-var Registry = require('npm-registry');
-var downloadCount = require('npm-download-counts');
-var moment = require('moment');
-var _ = require('underscore');
-var request = require('request');
-var cheerio = require('cheerio');  
-var npm = new Registry({
-  registry: "http://skimdb.npmjs.com/registry/",
-  retries: 3
-});
-var db = require(__dirname + '/dbParsing.js');
-
+var fs               = require('fs'),
+    Registry         = require('npm-registry'),
+    downloadCount    = require('npm-download-counts'),
+    moment           = require('moment'),
+    _                = require('underscore'),
+    request          = require('request'),
+    cheerio          = require('cheerio'),
+    npm              = new Registry({
+      registry: "http://skimdb.npmjs.com/registry/",
+      retries: 3
+    }),
+    db               = require(__dirname + '/dbParsing.js'),
+    MongoClient      = require('mongodb').MongoClient,
+    mongoUrl         = process.env.MONGOLAB_URI,
+    mongoCollections = {
+      searches   : true,
+      details    : true,
+      topModules : true,
+      searchTally: true
+    };
 
 ///////////////// HELPER FUNCTIONS /////////////////
 // Returns an array of all the dependents
@@ -376,3 +383,43 @@ var relatedKeywordSearch = module.exports.relatedKeywordSearch = function(keywor
 
 // TOP MODULES GET ENDPOINT helper-----------------------------------------------------------------
 var getTopModules = module.exports.getTopModules = db.fetchTopModuleData;
+
+// MONGO LOGGING helper
+var mongoLogger = module.exports.mongoLogger = function(collection, moduleName) {
+  return MongoClient.connect(mongoUrl, function(err, db) {
+    if(err) console.log('MONGO ERR', err);
+
+    var collectionType = db.collection(collection);
+    switch (collection) {
+      case 'searches':
+        var logObject = {
+          search   : moduleName,
+          timestamp: new Date()
+        };
+
+        collectionType.insert(logObject);
+        db.close();
+        break;
+
+      case 'searchTally':
+        collectionType.find().toArray(function(err, results) {
+          results[0][moduleName] = results[0][moduleName] + 1 || 1;
+
+          collectionType.update({}, results[0]);
+
+          db.close();  
+        });
+        break;
+
+      case 'details': 
+        var logObject = {
+          search   : moduleName,
+          timestamp: new Date()
+        };
+
+        collectionType.insert(logObject);
+        db.close();
+        break;
+    }
+  });
+}

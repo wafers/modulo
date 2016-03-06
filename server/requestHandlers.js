@@ -1,15 +1,6 @@
 // Add request handlers to routes in here
 var helpers = require('./helpers.js'),
-    cache = require('./cache.js'),
-    MongoClient = require('mongodb').MongoClient;
-
-var mongoUrl = process.env.MONGOLAB_URI,
-    mongoCollections = {
-  searches   : true,
-  details    : true,
-  topModules : true,
-  searchTally: true
-};
+    cache = require('./cache.js');
 
 // Old npm search crawling + parsing for search results
 var npmSearch = module.exports.npmSearch = function(req, res) {
@@ -30,30 +21,8 @@ var search = module.exports.search = function(req, res) {
   key = "SEARCH_"+moduleName
 
   // Log search to Mongo
-  MongoClient.connect(mongoUrl, function(err, db) {
-    if(err) console.log('MONGO ERR', err);
-
-    var searches = db.collection('searches');
-    var searchTally = db.collection('searchTally');
-    var logObject = {
-      search   : key,
-      timestamp: new Date()
-    };
-
-    searches.insert(logObject, function(err, result) {
-      if(err) console.log('MONGO ERR', err);
-
-      var currentTally = searchTally.findOne({"_id": {"$oid": "56d9dc28e4b00cf3135ebd91"}})
-        .then(function(document) {
-          currentTally[key] = currentTally[key] + 1 || 1;
-          console.log('SEARCH TALLY TO BE UPDATED: \n', currentTally);
-
-          searchTally.update({"_id": {"$oid": "56d9dc28e4b00cf3135ebd91"}}, currentTally);
-
-          db.close();  
-        })
-    });
-  });
+  helpers.mongoLogger('searches', moduleName);
+  helpers.mongoLogger('searchTally', moduleName);
 
   console.log("Memcached key is : " + key)
   cache.get(key, function(err, value) {
@@ -114,11 +83,13 @@ var detailedSearch = module.exports.detailedSearch = function(req, res) {
           console.log('ERROR IN detailedSearch FETCHING') /*console.log(err)*/
         } else {
           cache.set("DETAILEDSEARCH_" + moduleName, results, function() {
+            helpers.mongoLogger('details', moduleName);
             res.json(results);
           })
         }
       })
     } else {
+      helpers.mongoLogger('details', moduleName);
       res.json(value)
     }
   })
