@@ -12,7 +12,7 @@ var fs               = require('fs'),
     }),
     db               = require(__dirname + '/dbParsing.js'),
     MongoClient      = require('mongodb').MongoClient,
-    mongoUrl         = process.env.MONGOLAB_URI,
+    mongoUrl         = process.env.MONGOLAB_URI ? process.env.MONGOLAB_URI : require('./config').mongo.url,
     mongoCollections = {
       searches   : true,
       details    : true,
