@@ -38,6 +38,15 @@ var input               = 'client/styles/*.scss',
         bowerPath + 'showdown/dist/showdown.js',
         bowerPath + 'ng-showdown/dist/ng-showdown.js',
         bowerPath + 'angular-markdown-directive/markdown.js'
+    ],
+    angularPath         = './client/app/',
+    angularComponents   = [
+        angularPath + 'content/content.js',
+        angularPath + 'details/details.js',
+        angularPath + 'nav/nav.js',
+        angularPath + 'results/results.js',
+        angularPath + 'topModules/topModules.js',
+        angularPath + 'services/*.js'
     ];
 
 
@@ -68,6 +77,12 @@ gulp.task('concatenate', function() {
     .pipe(gulp.dest('./client/'));
 });
 
+gulp.task('angularConcatenate', function() {
+    return gulp.src(angularComponents)
+    .pipe(concat('angularComponents.js'))
+    .pipe(gulp.dest('./client/'));
+});
+
 // -----------------------------------------------------------------------------
 // Watchers
 // -----------------------------------------------------------------------------
@@ -89,7 +104,7 @@ gulp.task('watch', function() {
 // Production build
 // -----------------------------------------------------------------------------
 
-gulp.task('prod', ['sassdoc'], function () {
+gulp.task('prod', ['sassdoc', 'concatenate', 'angularConcatenate'], function () {
   return gulp
     .src(input)
     .pipe(sass({ outputStyle: 'compressed' }))

@@ -1,6 +1,8 @@
 node_modules
 bower_components
 client/scripts.js
+client/angularComponents.js
+dist/
 .DS_Store
 server/config.js
 server/access.log
