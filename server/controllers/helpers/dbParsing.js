@@ -1,4 +1,4 @@
-var helpers = require(__dirname + '/helpers.js')
+var helpers = require('./index.js')
 var config = (process.env.DATABASE_URL) ? process.env.DATABASE_URL :  require(__dirname + '/config').db;
 var fs = require('fs');
 var _ = require('underscore');
@@ -9,12 +9,12 @@ var dbRemote = require("seraph")({
   server: process.env.DATABASE_URL || config.dbURL
 });
 
-// DB Query to for the old NPM search 
+// DB Query to for the old NPM search
 var search = module.exports.search = function(moduleName, cb){
   dbRemote.find({name: moduleName},"MODULE", function(err, objs){
     if(err || !objs[0]){
       console.log(err);
-      cb(err, null);  
+      cb(err, null);
     }
     else {
       cb(null, objs[0]);
@@ -22,14 +22,14 @@ var search = module.exports.search = function(moduleName, cb){
   })
 }
 
-// DB Query for the keyword search algorithm 
+// DB Query for the keyword search algorithm
 var keywordSearch = module.exports.keywordSearch = function(keywordArray, cb) {
   var queryString = "MATCH (k:KEYWORD)-[r:KEYWORD_RELATED_WITH]-(m) WHERE k.name IN {keywordInput} RETURN m, r ORDER BY r.count DESC LIMIT 8"
 
   // Finds the eight most closely related keywords
   dbRemote.query(queryString, {keywordInput: keywordArray}, function(err, keywordResults){
     if(err){ console.log(err); cb(err, null); return; }
-      
+
     keywordResultArray = keywordResults.map(toModuleName);
     keywordArray.forEach(function(key){ keywordResultArray.push(key); })
 
@@ -70,7 +70,7 @@ var fetchRelationships = module.exports.fetchRelationships = function(moduleName
   dbRemote.query(queryString, {name: moduleName}, function(err, result){
     if(err) { console.log(err); cb(err, null); return; }
 
-    // change the data 
+    // change the data
     if (!Array.isArray(result)) {
       result = [result];
     }
@@ -96,8 +96,8 @@ var fetchTopModuleData = module.exports.fetchTopModuleData = function(cb){
     dbRemote.queryRaw(queryString, function(err, result){
       // Error Handling
       if(err) {
-        console.log(err); 
-        cb(err, null); 
+        console.log(err);
+        cb(err, null);
         return;
       }
       data[property] = result;
@@ -111,4 +111,3 @@ var fetchTopModuleData = module.exports.fetchTopModuleData = function(cb){
 
   function inDataObject(property){ return data.hasOwnProperty(property); }
 }
-
